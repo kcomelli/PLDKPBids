@@ -1,0 +1,16 @@
+Änderungen PLDKPBids  3.0
+-----------------------------------
+
+- Anpassung auf WoW 3.0 und WotlK
+- Neuer Slashbefehl /pldkp clearwinners ... Löscht die gesammte Gewinnerliste
+- Neuer Slashbefehl /pldkp getmain <char name> ... Liefert den namen des Mainchars eines Twinks
+- RaiID Erstellung und Erkennung von Raidgröße, Schwierigkeitsgrad und Zone (interne Funktion)
+- Neue Twinkerkennungsfunktion
+  Das Addon erkennt nun automatisch anhand der Gildenliste und den Member-Notizen ob ein char
+  ein Twink ist und wenn ja welcher Char der Mainchar ist.
+- Funktion eingebaut um Gebote von Twink zu erlauben oder zu blockieren
+- Automatische Erkennung von Set-Token Items (Twinkgebote werden bei diesen Items deaktiviert)
+- Notizen für Gewinner eingeben. (z.b. wenn das Item zu einem anderen Preis vergeben wurde, oder den Looter bei mehreren Gewinnern)
+- BUGFIX: Mindestgebote sollten nun von allen Leuten akzeptiert werden (auch wenn keine DKP vorliegen)
+- Sortierung DKP Liste nun nach Namen
+- Sortierung der Gewinner listen nun nach Raid ID (und datum)

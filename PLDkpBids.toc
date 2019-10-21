@@ -1,0 +1,18 @@
+## Interface: 11302
+## Title: PL DKP Bids
+## Author: Aori/Fuddler (Destromath-EU, Venoxis-EU)
+## Version: 4.0
+## Notes: Primal Legion - DKP Bidding System
+## URL: https://www.primal-legion.net
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: PLDkpBidsOptions, PLDKP_LastWinners
+localization.lua
+PLDkpBidsLogic.lua
+PLDkpBidsDkpLogic.lua
+PLDkpBidsPLDkpData.lua
+PLDkpBidsGetDkp.lua
+PLDkpBidsMRTIntegration.lua
+PLDkpBids.xml
+PLDkpBidsOptions.xml
+PLDkpBidsNote.xml

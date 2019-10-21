@@ -1,0 +1,19 @@
+-- TODO:
+
+1. UI einbaun (siehe schmierzettel)
+   im nurfed-ui options style
+   
+2. optionen (zusätzlich)
+   x erlaube gebote die aktuellen dkp stand überschreiten (braucht getdkp)
+   - maximal gebot zum eingeben 
+   - welches gebot als entgültig genommen wird (höchstes, 2. höchstes)
+   x maximale -dkp die durch gebot erreicht werden dürfen (auch funktion ein/aus)
+   x schritte zu ändern (z.b. gebote in 5er schritten)
+   - mindest dkp für slots festlegen
+   x countdown mit raid_warning anzeigen ja/nein
+   x während der bietphase whispers von spielern ausserhalb der raidgrp od. grp ignorieren
+   x bei gleichen geboten nach aktuellen dkp-stand verteilen ja/nein (braucht getdkp)
+   - während dem raid gekaufte items und preise merken und bei nachfolgenden geboten abziehn (braucht getdkp)
+   - client funktion, ctra channel sync von dkp werten und auktionszeit
+   
+   
