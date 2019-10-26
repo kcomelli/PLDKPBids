@@ -26,7 +26,7 @@ function PLDKPBids:PlayerHasDkpData(name)
         return false
     end
 
-    return PLDKPBids.dkp_data.players[transName] ~= nill or PLDKPBids.dkp_data.players[transServerName] ~= nil
+    return PLDKPBids.dkp_data.players[transName] ~= nil or PLDKPBids.dkp_data.players[transServerName] ~= nil
 end
 
 ---------------------------------------------------------------------
@@ -38,10 +38,10 @@ function PLDKPBids:PlayerGetDkpData(name)
     local transName, transRealm, transServerName = PLDKPBids:CharaterNameTranslation(name)
     
     if(PLDKPBids:PlayerHasDkpData(name) == false) then
-        return false
+        return 0
     end
 
-    if(PLDKPBids.dkp_data.players[transName] ~= nill) then
+    if(PLDKPBids.dkp_data.players[transName] ~= nil) then
         return PLDKPBids.dkp_data.players[transName].dkp_current
     else
         return PLDKPBids.dkp_data.players[transServerName].dkp_current
@@ -60,7 +60,7 @@ function PLDKPBids:PlayerGetDkpClass(name)
         return false
     end
 
-    if(PLDKPBids.dkp_data.players[transName] ~= nill) then
+    if(PLDKPBids.dkp_data.players[transName] ~= nil) then
         return PLDKPBids.dkp_data.players[transName].class
     else
         return PLDKPBids.dkp_data.players[transServerName].class
