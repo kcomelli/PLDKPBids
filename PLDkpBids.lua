@@ -1139,7 +1139,7 @@ function PLDKP_EndOfBids()
 				
 				for i = 1, table.getn(winners) do
 					local mainCharName = PLDkpBidsFrame_GetMainCharOfTwink(winners[i]) 
-					if ( mainCharName~= nil and PLDKPBids.PlayerHasDkpData(mainCharName) ~= nil ) then
+					if ( mainCharName~= nil and PLDKPBids:PlayerHasDkpData(mainCharName) ~= nil ) then
 						local charDkp = PLDKPBids:PlayerGetDkpData(mainCharName)
 
 						if ( charDkp >= nCurHighDKP ) then
@@ -1154,7 +1154,7 @@ function PLDKP_EndOfBids()
 				
 					local mainCharName = PLDkpBidsFrame_GetMainCharOfTwink(winners[i]) 
 
-					if ( mainCharName~= nil and PLDKPBids.PlayerHasDkpData(mainCharName) ~= nil ) then
+					if ( mainCharName~= nil and PLDKPBids:PlayerHasDkpData(mainCharName) ~= nil ) then
 						local charDkp = PLDKPBids:PlayerGetDkpData(mainCharName)
 
 						if ( charDkp >= nCurHighDKP ) then
@@ -1709,7 +1709,7 @@ function PLDKP_processWhisper(name, message)
 							else
 								if ( PLDKPBids:IsDkpDataLoaded() ) then
 								
-									if ( PLDKPBids.PlayerHasDkpData(mainCharName) ~= nil ) then
+									if ( PLDKPBids:PlayerHasDkpData(mainCharName) ~= nil ) then
 										local charCurrentDkp = PLDKPBids:PlayerGetDkpData(mainCharName)
 
 										if ( PLDkpBidsOptions["AllowBidsGreaterThanDKP"] == false ) then
@@ -2862,7 +2862,7 @@ function PLDkpBidsFrame_FillCurBids()
 			
 			getglobal("CurBidsListButton"..i.."Name"):SetText(pName);
 			
-			if ( PLDKPBids.PlayerHasDkpData(pName) ) then
+			if ( PLDKPBids:PlayerHasDkpData(pName) ) then
 				local curDkp = PLDKPBids:PlayerGetDkpData(pName)
 				local className = PLDKPBids:PlayerGetDkpClass(pName)
 
@@ -2879,7 +2879,7 @@ function PLDkpBidsFrame_FillCurBids()
 				getglobal("CurBidsListButton"..i.."Class"):SetText(UnitClass(pName));
 				getglobal("CurBidsListButton"..i.."DKP"):SetText("?");
 				
-				if ( PLDKPBids.PlayerHasDkpData(mainCharName) ) then
+				if ( PLDKPBids:PlayerHasDkpData(mainCharName) ) then
 					local curDkp = PLDKPBids:PlayerGetDkpData(mainCharName)
 				    local className = PLDKPBids:PlayerGetDkpClass(mainCharName)
 
@@ -3088,18 +3088,18 @@ function PLDKP_FindAndAnswerPlayerDkp(name)
 
 	if(PLDKPBids.dkp_info and PLDKPBids.dkp_info.date) then
 		pointUpdateDateInfo = string.format(PLDKP_DKPINFO_LASTUPDATE, DKPInfo.date)
-	end
-
-    if ( PLDKPBids.PlayerHasDkpData(incName) ) then
-        local charDkp = PLDKPBids:PlayerGetDkpData(incName)
+	end  
+ 
+    if ( PLDKPBids:PlayerHasDkpData(incName) ) then
+        local charDkp = PLDKPBids:PlayerGetDkpData(incName) 
 
 		-- a main is requesting dkp
-		PLDKP_sendWhisper(name, string.format(PLDKP_DKPINFO_SEND, charDkp))
+		PLDKP_sendWhisper(name, string.format(PLDKP_DKPINFO_SEND, charDkp, pointUpdateDateInfo))
 		return
 	else
 
 		if( mainChar ~= incName) then
-            if ( PLDKPBids.PlayerHasDkpData(mainChar) ) then
+            if ( PLDKPBids:PlayerHasDkpData(mainChar) ) then
                 local charDkp = PLDKPBids:PlayerGetDkpData(mainChar)
 
 				-- a twink is requesting dkp
@@ -3108,7 +3108,7 @@ function PLDKP_FindAndAnswerPlayerDkp(name)
 				return
 			end
 		else
-            if ( PLDKPBids.PlayerHasDkpData(incName) ~= nil ) then
+            if ( PLDKPBids:PlayerHasDkpData(incName) ~= nil ) then
                 local charDkp = PLDKPBids:PlayerGetDkpData(incName)
 
 				-- a main is requesting dkp

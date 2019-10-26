@@ -1,0 +1,35 @@
+{
+    "deploy.reloaded" : {
+        "packages": [
+            {
+                "name": "PL DKP Bids Addon",
+                "description" : "test",
+                "files": [
+                    "**/*.*"
+                ],
+                "exclude": [
+                    "**/min/*.*"
+                ],
+
+                "deployOnSave": [ "WoWAddonPLDKPBIDS" ]
+            }
+        ],
+        "targets": [
+            {
+            "type": "local",
+            "name": "WoWAddonPLDKPBIDS",
+            "description": "Classic addon",
+            "target":"E:/Games/World of Warcraft/_classic_/Interface/Addons/PLDKPBids"
+            }
+        ],
+    },
+    "fsdeploy.nodes": [
+        {
+            "source":"/Privat/PrimalLegion/AddonDev/PLDKPBids",
+            "target":"e:/Games/World of Warcraft/_classic_/Interface/Addons/PLDKPBids",
+            "include":"**/*.*",
+            "exclude":"**/min/*.*"
+        }
+    ],
+    "fsdeploy.deployOnSave": true
+}
