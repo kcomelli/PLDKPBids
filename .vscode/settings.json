@@ -2,7 +2,7 @@
     "deploy.reloaded" : {
         "packages": [
             {
-                "name": "PL DKP Bids Addon",
+                "name": "PLDKP Bids Addon",
                 "description" : "test",
                 "files": [
                     "**/*.*"
@@ -19,7 +19,7 @@
             "type": "local",
             "name": "WoWAddonPLDKPBIDS",
             "description": "Classic addon",
-            "target":"E:/Games/World of Warcraft/_classic_/Interface/Addons/PLDKPBids"
+            "dir": "E:/Games/World of Warcraft/_classic_/Interface/Addons/PLDKPBids",
             }
         ],
     },

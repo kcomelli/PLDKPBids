@@ -1591,9 +1591,9 @@ end
 ---------------------------------------------------------------------
 function PLDKP_processWhisper(name, message)
 	local lmsg = string.lower(message);
-	local biddenNumber = nil;
+	local biddenNumber = nil; 
 	local partyCheck = "N";
-	local mainCharName = "";
+	local mainCharName = ""; 
 	
 	PLDKP_debug("PLDKP_processWhisper from " .. name .. "(" .. message .. ")...");
 	
@@ -1606,7 +1606,7 @@ function PLDKP_processWhisper(name, message)
 			return false;
 		end
 
-		return false;
+		return false;  
 	end
 	
 	if ( PLDkpBidsOptions["IgnoreBidsOutsideGrp"] == true ) then
@@ -3070,8 +3070,9 @@ end
 ---------------------------------------------------------------------
 function PLDKP_FindAndAnswerPlayerDkp(name)
 
-    if(PLDKPBids:IsDkpDataLoaded() == fale) then
-        -- send no DKP data laoded
+    if(PLDKPBids:IsDkpDataLoaded() == false) then
+		-- send no DKP data laoded
+		return
     end
 
 	PLDkpBidsFrame_GenerateTwinktranslationTable()
