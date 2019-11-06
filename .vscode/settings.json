@@ -25,8 +25,8 @@
     },
     "fsdeploy.nodes": [
         {
-            "source":"/Privat/PrimalLegion/AddonDev/PLDKPBids",
-            "target":"e:/Games/World of Warcraft/_classic_/Interface/Addons/PLDKPBids",
+            "source":"/PrimalLegion/PLDKPBids/",
+            "target":"../../Games/World of Warcraft/_classic_/Interface/Addons/PLDKPBids/",
             "include":"**/*.*",
             "exclude":"**/min/*.*"
         }
