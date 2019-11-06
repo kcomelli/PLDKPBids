@@ -7,6 +7,9 @@
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: PLDkpBidsOptions, PLDKP_LastWinners
+
+libs\AceComm-3.0\AceComm-3.0.xml
+
 localization.lua
 PLDkpBidsLogic.lua
 PLDkpBidsDkpLogic.lua
