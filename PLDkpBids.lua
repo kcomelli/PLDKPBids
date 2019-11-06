@@ -608,7 +608,7 @@ function PLDkpBidsFrame_GetMainCharOfTwink(characterName)
 	end
 
 	-- check with realm name aswell
-	nameToCheck = nameToCheck .. "-" .. _pldkp_localRealm
+	nameToCheck = nameToCheck .. "-" .. PLDKPBids.localRealm
 
 	if( PLDKP_TwinktranslationTable[nameToCheck] ~= nil) then
 		if( PLDKP_TwinktranslationTable[nameToCheck] ~= nameToCheck ) then
