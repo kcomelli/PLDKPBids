@@ -97,10 +97,10 @@ PLDKP_ITEM_TOKENINFO = "** PLDKP: %s recognized as set item token.";
 PLDKP_NOTE_SAVED = "** PLDKP: Note '%s' saved.";
 PLDKP_NOTE_NOTSAVED = "** PLDKP: Note '%s' NOT saved.";
 
-PLDKP_DKPINFO_PLAYERUNKNOWN = "PLDKP: You do not have earned any DKP yet or your player name has not been added to the DKP system!";
-PLDKP_DKPINFO_SEND = "PLDKP: You have %d DKP (%s)";
-PLDKP_DKPINFO_TWINKDETECT = "PLDKP: Detected your character is a twink of %s";
-PLDKP_DKPINFO_SENDTWINK = "PLDKP: %s has %d DKP (%s)";
+PLDKP_DKPINFO_PLAYERUNKNOWN = "** PLDKP: You do not have earned any DKP yet or your player name has not been added to the DKP system!";
+PLDKP_DKPINFO_SEND = "** PLDKP: You have %d DKP (%s)";
+PLDKP_DKPINFO_TWINKDETECT = "** PLDKP: Detected your character is a twink of %s";
+PLDKP_DKPINFO_SENDTWINK = "** PLDKP: %s has %d DKP (%s)";
 PLDKP_DKPINFO_BEGINOFRAID = "begin of raid";
 PLDKP_DKPINFO_LASTUPDATE = "updated: %s";
 
@@ -289,10 +289,10 @@ end
 	PLDKP_NOTE_SAVED = "** PLDKP: Notiz '%s' gespeichert.";
 	PLDKP_NOTE_NOTSAVED = "** PLDKP: Notiz '%s' NICHT gespeichert.";
 
-	PLDKP_DKPINFO_PLAYERUNKNOWN = "PLDKP: Du hast noch keine DKP gesammelt oder dein Character ist im DKP System nicht bekannt!";
-	PLDKP_DKPINFO_SEND = "PLDKP: Du hast %d DKP (%s)";
-	PLDKP_DKPINFO_TWINKDETECT = "PLDKP: Du bist ein Twink von %s";
-	PLDKP_DKPINFO_SENDTWINK = "PLDKP: %s hat %d DKP (%s)";
+	PLDKP_DKPINFO_PLAYERUNKNOWN = "** PLDKP: Du hast noch keine DKP gesammelt oder dein Character ist im DKP System nicht bekannt!";
+	PLDKP_DKPINFO_SEND = "** PLDKP: Du hast %d DKP (%s)";
+	PLDKP_DKPINFO_TWINKDETECT = "** PLDKP: Du bist ein Twink von %s";
+	PLDKP_DKPINFO_SENDTWINK = "** PLDKP: %s hat %d DKP (%s)";
 	PLDKP_DKPINFO_BEGINOFRAID = "Begin des Raids";
 	PLDKP_DKPINFO_LASTUPDATE = "Stand: %s";
 	
