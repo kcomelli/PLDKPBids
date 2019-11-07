@@ -953,6 +953,7 @@ function PLDKP_StartAuction(itemLink, itemTexture, minPrice, sec)
 		SendChatMessage(PLDKP_BID_OPENING6, PLDKP_GetAnnounceChannel());
 	end
 	
+	-- ERROR: invalid character in itemLink if posted in RAID channel?
 	SendChatMessage(string.format(PLDKP_BID_OPENING3, itemLink), PLDKP_GetAnnounceChannel());
 	SendChatMessage(string.format(PLDKP_BID_OPENING4, playerName, _pldkp_currentMinBid), PLDKP_GetAnnounceChannel());
 
@@ -1530,6 +1531,7 @@ function PLDKP_GetPlayerGroupStatus(pName)
 	local ownStatus = PLDKP_GetMyGroupStatus();
 	local nMemberCnt = 0;
 	local nCounter=0;
+	local checkName, checkRealm, checkServerName = PLDkpBids:CharaterNameTranslation(pName)
 	
 	PLDKP_debug("Checking player status of " .. pName)
 	
@@ -1542,7 +1544,7 @@ function PLDKP_GetPlayerGroupStatus(pName)
 				name, rank, subgroup, level, class, filename, zone, online, isdead = GetRaidRosterInfo(nCounter);
 				
 				if (name ~= nil) then
-					if( name == pName) then
+					if( name == checkName or name == checkServerName) then
 						status = "R";
 						return status;
 					end
@@ -1572,13 +1574,15 @@ function PLDKP_GetPlayerGroupStatus(pName)
 				if (name ~= nil) then
 					PLDKP_debug( "cnt" .. nCounter .. " name=" .. name);
 					
-					if( name == pName) then
+					if( name == checkName or name == checkServerName) then
 						status = "P";
 						return status;
 					end
 				end
 			end
 		end
+	else
+		PLDKP_debug( "I am not in a group!");
 	end
 	
 	return status;

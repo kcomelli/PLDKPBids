@@ -239,7 +239,7 @@ end
 	PLDKP_BID_OPENING1 = "*** Primal Legion Bietsystem ***";
 	PLDKP_BID_OPENING2 = "*** MACHT EURE GEBOTE (Zeit: %d Sekunden)";
 	PLDKP_BID_OPENING3 = "*** Biete fuer Item: %s";
-	PLDKP_BID_OPENING4 = "*** Format: /w %s <DKP-Wert> (Mindestwert: %d)";
+	PLDKP_BID_OPENING4 = "*** Format: whisper %s DKP-Wert (Mindestwert: %d)";
 	PLDKP_BID_OPENING5 = "*** Twinkgebote sind ERLAUBT (main need vor twink need)";
 	PLDKP_BID_OPENING6 = "*** Twinkgebote sind NICHT ERLAUBT";
 	
