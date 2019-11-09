@@ -1531,7 +1531,7 @@ function PLDKP_GetPlayerGroupStatus(pName)
 	local ownStatus = PLDKP_GetMyGroupStatus();
 	local nMemberCnt = 0;
 	local nCounter=0;
-	local checkName, checkRealm, checkServerName = PLDkpBids:CharaterNameTranslation(pName)
+	local checkName, checkRealm, checkServerName = PLDKPBids:CharaterNameTranslation(pName)
 	
 	PLDKP_debug("Checking player status of " .. pName)
 	
