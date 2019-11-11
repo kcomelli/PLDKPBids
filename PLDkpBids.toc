@@ -8,6 +8,8 @@
 ## LoadOnDemand: 0
 ## SavedVariables: PLDkpBidsOptions, PLDKP_LastWinners
 
+#libs\LibStub\LibStub.lua
+#libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 #libs\AceComm-3.0\AceComm-3.0.xml
 
 localization.lua
