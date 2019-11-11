@@ -85,3 +85,46 @@ function PLDKPBids:CountDKPEntries()
 	
 	return nRet;
 end
+
+---------------------------------------------------------------------
+-- function  PLDKPBids:CalculateMinBidPrice(itemLink)
+--
+-- extracts the minimum DKP of an item based on configuration
+---------------------------------------------------------------------
+function PLDKPBids:CalculateMinBidPrice(itemLink)
+    local nRet = PLDkpBidsOptions["DefaultMinDKP"]
+
+    if itemLink ~= nil then
+        local itemId = PLDKPBids:GetItemIdFromLink(itemLink)
+        local itemName, itemLink, itemRarity, _, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, itemVendorPrice, classID = GetItemInfo (itemId);
+
+        -- check if the item id is part of the special table
+        if PLDkpBidsOptions["MinDKPSpecial"] and PLDkpBidsOptions["MinDKPSpecial"][itemId] then
+            PLDKP_debug("Item id " .. tostring(itemId) .. " has configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPSpecial"][itemId]));
+            return PLDkpBidsOptions["MinDKPSpecial"][itemId]
+        end
+
+        if PLDKPBids:IsTwoHand(itemLink) and PLDkpBidsOptions["MinDKPTwoHand"] then
+            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as 2H Weapon with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPTwoHand"]));
+            return PLDkpBidsOptions["MinDKPTwoHand"]
+        end
+
+        if PLDKPBids:IsOneHand(itemLink) and PLDkpBidsOptions["MinDKPOneHand"] then
+            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as 1H Weapon/Shield/Offhand/Wand/Gun/Bow with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPOneHand"]));
+            return PLDkpBidsOptions["MinDKPOneHand"]
+        end
+
+        if PLDKPBids:IsEquip(itemLink)  then
+            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as equipment ");
+
+            if PLDKPBids:IsSetItem(itemLink) and PLDkpBidsOptions["MinDKPSetEquip"] then
+                PLDKP_debug("Item id " .. tostring(itemId) .. " identified as SET with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPSetEquip"]));
+                return PLDkpBidsOptions["MinDKPSetEquip"]
+            elseif PLDkpBidsOptions["MinDKPEquip"] then
+                return PLDkpBidsOptions["MinDKPEquip"]
+            end
+        end
+    end
+
+    return nRet
+end

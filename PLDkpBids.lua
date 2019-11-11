@@ -239,6 +239,9 @@ function PLDKP_ItemLinkClick(chatframe, linktype, data, button)
 		
 		_pldkp_currentItem = data;
 		_pldkp_currentItemTexture = gitemTexture;
+		-- get min bid based on item
+		_pldkp_currentMinBid = PLDKPBids:CalculateMinBidPrice(data)
+
 		PLDKPForm_ShowAuctionInfo();
 		PLDkpBidsFrame_SetVisible(true);
 	else
@@ -324,6 +327,9 @@ function PLDKP_LootFrameItem_OnClick(self, button)
 			
 			_pldkp_currentItem = itemlink;
 			_pldkp_currentItemTexture = texture;
+			-- get min bid based on item
+			_pldkp_currentMinBid = PLDKPBids:CalculateMinBidPrice(itemlink)
+
 			PLDKPForm_ShowAuctionInfo();
 			PLDkpBidsFrame_SetVisible(true);
 		end
@@ -887,6 +893,9 @@ function PLDKP_StartBidding(args)
 			PLDKP_errln(PLDKP_ERROR_NOITEMLINK);
 			return;
 		end
+
+		-- get min bid based on item
+		_pldkp_currentMinBid = PLDKPBids:CalculateMinBidPrice(sItem)
 		
 		-- get item texture
 		_,_, itemId = string.find(sItem, "item:(%d+):");
@@ -1034,7 +1043,7 @@ end
 ---------------------------------------------------------------------
 function PLDKP_ResetMod()
 	PLDkpBidsOptions = {};
-	PLDkpBidsOptions["DefaultMinDKP"] = _pldkp_currentMinBid;
+	--PLDkpBidsOptions["DefaultMinDKP"] = _pldkp_currentMinBid;
 	PLDkpBidsOptions["DefBidTSpan"] = _pldkp_currentBidTime;
 	PLDkpBidsOptions["AnnounceChannel"] = "AUTO";
 	
@@ -1345,7 +1354,7 @@ function PLDkpBids_InitOptions()
 	end
 	
 	if ( not PLDkpBidsOptions["DebugMode"] ) then
-		PLDkpBidsOptions["DebugMode"] = true;
+		PLDkpBidsOptions["DebugMode"] = false;
 	end
 
 	if not PLDkpBidsOptions["EnableMRTIntegration"] then
@@ -1353,6 +1362,42 @@ function PLDkpBids_InitOptions()
 		PLDkpBidsOptions["EnableMRTIntegration"] = ( MRT_RegisterItemCostHandler ~= nil )
 	end
 	
+	if ( not PLDkpBidsOptions["MinDKPOneHand"]) then
+		-- min DKP for 1H weapons or Off-Hands
+		PLDkpBidsOptions["MinDKPOneHand"] = 40;
+	end
+
+	if ( not PLDkpBidsOptions["MinDKPTwoHand"]) then
+		-- min DKP for 2H weapons
+		PLDkpBidsOptions["MinDKPTwoHand"] = 80;
+	end
+
+	if ( not PLDkpBidsOptions["MinDKPSetEquip"]) then
+		-- min DKP for set-equipment slot
+		PLDkpBidsOptions["MinDKPSetEquip"] = 25;
+	end
+
+	if ( not PLDkpBidsOptions["MinDKPEquip"]) then
+		-- min DKP for equipment slot
+		PLDkpBidsOptions["MinDKPEquip"] = 20;
+	end
+
+	if ( not PLDkpBidsOptions["MinDKPSpecial"]) then
+		-- special per item min DKP
+		PLDkpBidsOptions["MinDKPSpecial"] = {};
+		-- Ancient Petrified Leaf https://classic.wowhead.com/item=18703/ancient-petrified-leaf
+		PLDkpBidsOptions["MinDKPSpecial"][18703] = 80;
+		-- The Eye of Divinity https://classic.wowhead.com/item=18646/the-eye-of-divinity
+		PLDkpBidsOptions["MinDKPSpecial"][18646] = 80;
+		-- Mature Black Dragon Sinew https://classic.wowhead.com/item=18705/mature-black-dragon-sinew
+		PLDkpBidsOptions["MinDKPSpecial"][18705] = 80;
+		-- Bindings of the Windseeker (right) https://classic.wowhead.com/item=18564/bindings-of-the-windseeker
+		PLDkpBidsOptions["MinDKPSpecial"][18564] = 200;
+		-- Bindings of the Windseeker (left) https://classic.wowhead.com/item=18563/bindings-of-the-windseeker
+		PLDkpBidsOptions["MinDKPSpecial"][18563] = 200;
+		-- Eye of Sulfuras https://classic.wowhead.com/item=17204/eye-of-sulfuras
+		PLDkpBidsOptions["MinDKPSpecial"][17204] = 250;
+	end
 	
 	PLDkpBidsFrame_SetVisible(PLDkpBidsOptions["Visible"]);
 end
@@ -1606,7 +1651,16 @@ function PLDKP_processWhisper(name, message)
 
 		local dkpIndex = string.find(lmsg, "dkp", 1, true)
 		if ( dkpIndex == 1 ) then
-			PLDKP_FindAndAnswerPlayerDkp(name)
+
+			local whisperArgs = PLDKP_ParseArguments(lmsg)
+
+			if #whisperArgs > 1 then
+				-- argument 2 is name of the player
+				PLDKP_FindAndAnswerPlayerDkp(whisperArgs[2], name)
+			else
+				PLDKP_FindAndAnswerPlayerDkp(name)
+			end
+
 			return false;
 		end
 
@@ -3067,12 +3121,13 @@ function PLDkpBidsFrame_GetDKPPlayerByIndex(index)
 end
 
 ---------------------------------------------------------------------
--- function PLDKP_FindAndAnswerPlayerDkp(name)
+-- function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 --
 -- Search DKP value for given character name and respond with its DKP
 -- twinks are supported
+-- whisper target to allow query DKP of other chars
 ---------------------------------------------------------------------
-function PLDKP_FindAndAnswerPlayerDkp(name)
+function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 
     if(PLDKPBids:IsDkpDataLoaded() == false) then
 		-- send no DKP data laoded
@@ -3091,6 +3146,10 @@ function PLDKP_FindAndAnswerPlayerDkp(name)
 
 	pointUpdateDateInfo = PLDKP_DKPINFO_BEGINOFRAID
 
+	if whisperTarget == nil then
+		whisperTarget = name
+	end
+
 	if(PLDKPBids.dkp_info and PLDKPBids.dkp_info.date) then
 		pointUpdateDateInfo = string.format(PLDKP_DKPINFO_LASTUPDATE, DKPInfo.date)
 	end  
@@ -3099,7 +3158,7 @@ function PLDKP_FindAndAnswerPlayerDkp(name)
         local charDkp = PLDKPBids:PlayerGetDkpData(incName) 
 
 		-- a main is requesting dkp
-		PLDKP_sendWhisper(name, string.format(PLDKP_DKPINFO_SEND, charDkp, pointUpdateDateInfo))
+		PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SEND, charDkp, pointUpdateDateInfo))
 		return
 	else
 
@@ -3108,8 +3167,8 @@ function PLDKP_FindAndAnswerPlayerDkp(name)
                 local charDkp = PLDKPBids:PlayerGetDkpData(mainChar)
 
 				-- a twink is requesting dkp
-				PLDKP_sendWhisper(name, string.format(PLDKP_DKPINFO_TWINKDETECT, mainChar))	
-				PLDKP_sendWhisper(name, string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp, pointUpdateDateInfo))	
+				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_TWINKDETECT, mainChar))	
+				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp, pointUpdateDateInfo))	
 				return
 			end
 		else
@@ -3117,7 +3176,7 @@ function PLDKP_FindAndAnswerPlayerDkp(name)
                 local charDkp = PLDKPBids:PlayerGetDkpData(incName)
 
 				-- a main is requesting dkp
-				PLDKP_sendWhisper(name, string.format(PLDKP_DKPINFO_SEND, charDkp, pointUpdateDateInfo))	
+				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SEND, charDkp, pointUpdateDateInfo))	
 				return
 			end
 		end
@@ -3125,7 +3184,7 @@ function PLDKP_FindAndAnswerPlayerDkp(name)
 	end
 
 	-- unkown player or no dkp
-	PLDKP_sendWhisper(name, PLDKP_DKPINFO_PLAYERUNKNOWN)	
+	PLDKP_sendWhisper(whisperTarget, PLDKP_DKPINFO_PLAYERUNKNOWN)	
 end
 
 
