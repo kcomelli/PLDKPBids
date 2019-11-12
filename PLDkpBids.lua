@@ -25,6 +25,11 @@ local _whisperingMyself = false;
 PLDKPBids.localRealm = PLDKPBids.localRealm or ""
 -- after player entering world, the player name will be set
 PLDKPBids.myName, PLDKPBids.myRealm, PLDKPBids.myServerName = ""
+PLDKPBids.IsOfficer = ""
+PLDKPBids.LastVerCheck = 0
+PLDKPBids.TriggerSentDkpData = 0
+PLDKPBids.MostRecentDkpVersion = 0
+PLDKPBids.KnownVersions = {}
 
 -- will reference dkp data object
 PLDKPBids.dkp_data = PLDKPBids.dkp_data or nil
@@ -436,6 +441,10 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 		PLDKPBids.localRealm = GetRealmName()
 		PLDKPBids.myName, PLDKPBids.myRealm, PLDKPBids.myServerName = PLDKPBids:CharaterNameTranslation(UnitName("player"))
 
+		-- initiate DKP version communication in order to
+		-- send or receive DKP data
+		PLDKPBids:InitiateDkpVersionComms()
+
 		if(not PLDKP_Loaded) then
 			PLDKP_debug("PLDKP_Loaded=false"); 
 			return;
@@ -456,29 +465,7 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 			PLDKP_LastWinners = {};
 		end
 		
-		-- create help table
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text0);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text1);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text2);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text3);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text4);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text5);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text6);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text7);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text8);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text9);
-		table.insert(PLDKP_HelpTable, PLDKP_Help_Text10);
-		
-		-- dkp plugin
-		PLDKPBids:PLDKP_CheckGetDkp()
-		if PLDkpBidsOptions["EnableMRTIntegration"] then
-			-- check MRT integration
-			if PLDKPBids:PLDKP_RegisterWithMRT() then
-				--table.insert(PLDKP_HelpTable, PLDKP_Help_TextMRT);
-			end
-		end
-
-		table.insert(PLDKP_HelpTable, PLDKP_Help_TextEND);
+		PLDKPBids:CreateHelpTable()
 		
 		_pldkp_currentMinBid = PLDkpBidsOptions["DefaultMinDKP"];
 		_pldkp_currentBidTime = PLDkpBidsOptions["DefBidTSpan"];
@@ -494,6 +481,33 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 	end
 end
 
+function PLDKPBids:CreateHelpTable()
+	-- create help table
+	PLDKP_HelpTable = {}
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text0);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text1);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text2);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text3);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text4);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text5);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text6);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text7);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text8);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text9);
+	table.insert(PLDKP_HelpTable, PLDKP_Help_Text10);
+	
+	-- dkp plugin
+	PLDKPBids:EnsureDkpData()
+
+	if PLDkpBidsOptions["EnableMRTIntegration"] then
+		-- check MRT integration
+		if PLDKPBids:PLDKP_RegisterWithMRT() then
+			--table.insert(PLDKP_HelpTable, PLDKP_Help_TextMRT);
+		end
+	end
+
+	table.insert(PLDKP_HelpTable, PLDKP_Help_TextEND);
+end
 ---------------------------------------------------------------------
 -- function PLDKPBids_compareDesc(arg1, arg2)
 --
@@ -720,6 +734,12 @@ end
 -- Called at periodic times. Used for UI-updates and timing issues
 ---------------------------------------------------------------------
 function PLDkpBidsFrame_OnUpdate(self, elapsed)
+
+	if PLDKPBids.TriggerSentDkpData > 0 and PLDKPBids.TriggerSentDkpData <= time() then
+		PLDKPBids.TriggerSentDkpData = 0
+		-- broadcast DKP data
+		PLDKPBids.Sync:BroadcastDkpData()
+	end
 
 	if (_pldkp_bidRunning == false) then
 		return;
@@ -1271,6 +1291,9 @@ function PLDKP_AddLastWinner(pName, nPrice)
 	PLDKP_LastWinners[sDate]["ItemName"] = name;
 	PLDKP_LastWinners[sDate]["ItemLink"] = _pldkp_currentItem;
 	PLDKP_LastWinners[sDate]["ItemTexture"] = _pldkp_currentItemTexture;
+
+	-- send winner data to other addons
+	PLDKPBids.Sync:BroadCastLastWinnerData(sDate, PLDKP_LastWinners[sDate])
 end
 
 

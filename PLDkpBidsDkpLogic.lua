@@ -4,6 +4,44 @@ local _, PLDKPBids = ...
 -- DKP related functions
 -------------------------------------------------------------------------------
 
+function PLDKPBids:EnsureDkpData() 
+    -- dkp pulgins - add here
+    PLDKPBids:PLDKP_CheckGetDkp()
+
+    -- check if saved variable dkp info version
+    if PLDKPBids:IsDkpDataLoaded() then
+        if PLDKP_DkpInfo then
+            -- check if stored version or loaded needs to be updated
+            if tonumber(PLDKP_DkpInfo.timestamp) > tonumber(PLDKPBids.dkp_info.timestamp) then
+                -- use saved variable DKP data because it is newer
+                PLDKPBids.dkp_info = PLDKP_DkpInfo
+                PLDKPBids.dkp_data = PLDKP_DkpData
+            elseif tonumber(PLDKP_DkpInfo.timestamp) < tonumber(PLDKPBids.dkp_info.timestamp) then
+                -- update save variable dkp data
+                PLDKP_DkpInfo = PLDKPBids.dkp_info
+                PLDKP_DkpData = PLDKPBids.dkp_data    
+            end
+        else
+            -- save current dkp info and data since none is stored yet
+            PLDKP_DkpInfo = PLDKPBids.dkp_info
+            PLDKP_DkpData = PLDKPBids.dkp_data
+        end
+
+        -- store my current DKP version as most recent one
+        PLDKPBids.MostRecentDkpVersion = tonumber(PLDKPBids.dkp_info.timestamp)
+    end
+end
+
+function PLDKPBids:InitiateDkpVersionComms() 
+    if PLDKPBids:IsDkpDataLoaded() then
+        -- broadcast my version
+        PLDKPBids.Sync:SendData("PLDKPDkpVersion", tostring(PLDKPBids.MostRecentDkpVersion))
+    else
+        -- i do not have any DKP data
+        -- request a version
+        PLDKPBids.Sync:VerifyAndRequestVersion(nil)
+    end
+end
 
 ---------------------------------------------------------------------
 -- function PLDKPBids:IsDkpDataLoaded()

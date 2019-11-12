@@ -75,6 +75,8 @@ function PLDKPBids:CharaterNameTranslation(characterName)
 	return nameOnly, realmName, serverName
 end
 
+
+
 function PLDKPBids:GetItemIdFromName(itemName)
 	if itemName then
 		local itemName, itemLink, itemRarity, _, itemMinLevel, itemType, _, _, _, _, itemVendorPrice, classID = GetItemInfo (itemName);
@@ -179,3 +181,72 @@ function PLDKPBids:IsSetItem(itemLink)
 
 	return false
 end
+
+function PLDKPBids:GetGuildRank(player)
+	local name, rank, rankIndex;
+	local guildSize;
+  
+	if IsInGuild() then
+	  guildSize = GetNumGuildMembers();
+	  for i=1, guildSize do
+		name, rank, rankIndex = GetGuildRosterInfo(i)
+		name = strsub(name, 1, string.find(name, "-")-1)  -- required to remove server name from player (can remove in classic if this is not an issue)
+		if name == player then
+		  return rank, rankIndex;
+		end
+	  end
+	  return "NOTINGUILD";
+	end
+	return "NOGUILD"
+  end
+  
+  function PLDKPBids:GetGuildRankIndex(player)
+	local name, rank;
+	local guildSize,_,_ = GetNumGuildMembers();
+  
+	if IsInGuild() then
+	  for i=1, tonumber(guildSize) do
+		name,_,rank = GetGuildRosterInfo(i)
+		name = strsub(name, 1, string.find(name, "-")-1)  -- required to remove server name from player (can remove in classic if this is not an issue)
+		if name == player then
+		  return rank+1;
+		end
+	  end
+	  return false;
+	end
+  end
+
+  function PLDKPBids:IsGuildPlayerOnline(player)
+	local name, rank, rankIndex;
+	local guildSize;
+  
+	if IsInGuild() then
+	  guildSize = GetNumGuildMembers();
+	  for i=1, guildSize do
+		name, rank, rankIndex, _, _, _, _, _, isOnline, _, _, _, _, isMobile = GetGuildRosterInfo(i)
+		name = strsub(name, 1, string.find(name, "-")-1)  -- required to remove server name from player (can remove in classic if this is not an issue)
+		if name == player and isOnline == true and isMobile == false then
+		  return true
+		end
+	  end
+	  return false
+	end
+	return false
+  end
+
+function PLDKPBids:CheckOfficer()      -- checks if user is an officer IF core.IsOfficer is empty. Use before checks against core.IsOfficer
+	if PLDKPBids.IsOfficer == "" then      -- used as a redundency as it should be set on load in init.lua GUILD_ROSTER_UPDATE event
+	  if PLDKPBids:GetGuildRankIndex(UnitName("player")) == 1 then       -- automatically gives permissions above all settings if player is guild leader
+		PLDKPBids.IsOfficer = true
+		return;
+	  end
+	  if IsInGuild() then
+		local curPlayerRank = PLDKPBids:GetGuildRankIndex(UnitName("player"))
+		if curPlayerRank then
+			PLDKPBids.IsOfficer = C_GuildInfo.GuildControlGetRankFlags(curPlayerRank)[12]
+		end
+	  else
+		PLDKPBids.IsOfficer = false;
+	  end
+	end
+  end

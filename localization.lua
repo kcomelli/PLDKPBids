@@ -37,6 +37,7 @@ PLDKP_Command_GetMain = "getmain";
 -------------------------------------------------------------------------------
 
 PLDKP_VERSION_STRING = "Primal Legion DKP-Bids 4.0";
+PLDKP_BUILD_NUMBER = "4000001"
 
 PLDKP_ClosedMessage = "PL DKP-Bids window closed.  Type \"/pldkp show\" to make it visible again."
 
@@ -219,6 +220,11 @@ PLDKP_OPTIONS_MAXMINUSDKP = "Max minus DKP (0 to disable)";
 PLDKP_OPTIONS_MAXMINUSDKP_TP = "Click here to change the maximum minus DKP a player may get with a bid.";
 
 PLDKP_OPTIONS_NODKPPOINTS = "No DKP point data or known DKP AddOn found!";
+
+
+PLDKP_BUILD_OUTOFDATE = "PLDKP: Your version of PLDkp Bids is out-of-date! Please update to latest version!"
+PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Received new DKP data from: %s"
+PLDKP_RECEIVED_WINNER_INFO = "PLDKP: Received auction winner information: %s"
 
 -------------------------------------------------------------------------------
 -- German localization
@@ -410,3 +416,7 @@ end
 	PLDKP_OPTIONS_MAXMINUSDKP_TP = "Hier klicken um die maximalen Minus DKP die durch ein Gebot erreicht werden koennen festzulegen.";
 
 	PLDKP_OPTIONS_NODKPPOINTS = "Keine Daten zu DKP Punkten oder ein bekanntes Punkte-AddOn gefunden!";
+
+	PLDKP_BUILD_OUTOFDATE = "PLDKP: Deine Version von PLDkp Bids ist veraltet! Bitte update auf die neuerste Version!"
+	PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Neue DKP Daten erhalten. Stand: %s"
+	PLDKP_RECEIVED_WINNER_INFO = "PLDKP: Neue Gewinnerinformationen erhalten: %s"
