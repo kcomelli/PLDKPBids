@@ -55,8 +55,7 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
         end
     elseif prefix == "PLDKPDkpVRequest" and sender ~= UnitName("player") then
         if PLDKPBids:IsDkpDataLoaded() then
-            if tonumber(PLDKPBids.dkp_info.timestamp) >= tonumber(message) and 
-                PLDKPBids.MostRecentDkpVersion >= tonumber(message)  then
+            if tonumber(PLDKPBids.dkp_info.timestamp) >= tonumber(message) then
                 -- 2 seconds delay before sending actual DKP data (see PLDkpBidsFrame_OnUpdate)
                 -- this will allow addOn sync if multiple versions are installed
                 -- to detect the highest version
@@ -81,7 +80,7 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
 
             PLDKPBids.MostRecentDkpVersion = tonumber(PLDKPBids.dkp_info.timestamp)
 
-            PLDKP_screen(string.format(PLDKP_RECEIVED_NEW_DKPDATA, PLDKPBids.dkp_info.date))
+            PLDKP_screen(string.format(PLDKP_RECEIVED_NEW_DKPDATA, PLDKPBids.dkp_info.date, sender))
             -- update help table since DKP data is available
             PLDKPBids:CreateHelpTable()
 
@@ -95,7 +94,7 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
         local success, deserialized = LibAceSerializer:Deserialize(decoded);
         if success then
             PLDKP_LastWinners[deserialized.raidId] = deserialized.data
-            PLDKP_screen(string.format(PLDKP_RECEIVED_WINNER_INFO, (deserialized.data["Name"] or "na") .. " - " .. (deserialized.data["ItemLink"] or "na") .. " - " .. (deserialized.data["Price"] or "na") .. "DKP"))
+            PLDKP_screen(string.format(PLDKP_RECEIVED_WINNER_INFO, (deserialized.data["Name"] or "na") .. " - " .. (deserialized.data["ItemLink"] or "na") .. " - " .. (deserialized.data["Price"] or "na") .. "DKP"), sender)
         else
             print(deserialized)  -- error reporting if string doesn't get deserialized correctly
         end
@@ -125,7 +124,7 @@ function PLDKPBids.Sync:BroadcastDkpData()
 
             if otherRank < rankIndex or (otherRank == rankIndex and otherName < PLDKPBids.myName and PLDKPBids:IsGuildPlayerOnline(otherName)) then
                 doSend = false
-                PLDKP_debug("Cancel sending DKP data because another officer with the same version is currently online and elected to send");
+                PLDKP_debug("Cancel sending DKP data because another officer with the same version is currently online and elected to send data");
             end
         end
     end
@@ -136,6 +135,7 @@ function PLDKPBids.Sync:BroadcastDkpData()
         dkpData.dkp_info = PLDKPBids.dkp_info
         dkpData.dkp_data = PLDKPBids.dkp_data
 
+        PLDKP_debug("Broadcasting DKP data in guild AddOn channel")
         -- send data
         PLDKPBids.Sync:SendData("PLDKPDkpSync", dkpData)
     end
