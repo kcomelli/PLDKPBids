@@ -47,11 +47,16 @@ function PLDKPBids:MrtQueryItemCost(notifierInfo)
     --PLDKP_LastWinners[sDate]["ItemLink"] = _pldkp_currentItem;
     --PLDKP_LastWinners[sDate]["ItemTexture"] = _pldkp_currentItemTexture;
     
+    PLDKP_debug("MRT querying item price for: " ..  notifierInfo["ItemLink"] .. ", looted by " .. notifierInfo["Looter"])
+
     local queryData = PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(notifierInfo["Looter"], notifierInfo["ItemLink"], notifierInfo["ItemCount"], notifierInfo["Time"])
 
     if queryData then 
         local lootAction = nil
+        PLDKP_debug("Found price: " .. tostring(queryData["Price"]) .. " buyer " .. queryData["MainCharName"] or queryData["Name"])
         return true, queryData["Price"], queryData["MainCharName"] or queryData["Name"], queryData["Note"], lootAction, true
+    else
+        PLDKP_debug("No data found for item and looter")
     end
 
     return false

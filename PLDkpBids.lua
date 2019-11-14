@@ -377,19 +377,19 @@ function PLDKP_ChatFrame_OnWhisperIncoming(chatFrame, event, arg1, arg2)
 
 	if (arg1 and arg2) then		
 		if( PLDKP_InBuffer[arg2]==nil or PLDKP_InBuffer[arg2] ~= arg1) then
-			PLDKP_debug("in-msg: " .. arg1);
-			PLDKP_debug("in-player: " .. arg2);
+			--PLDKP_debug("in-msg: " .. arg1);
+			--PLDKP_debug("in-player: " .. arg2);
 
 			-- incoming whisper
 			if ((string.find(arg1,"^** PLDKP: ")) and (arg2 == PLDKPBids:GetPlayerName("player"))) then
 				PLDKP_InBuffer[arg2] = arg1;
-				PLDKP_debug("1 filter incoming whisper...");
+				--PLDKP_debug("1 filter incoming whisper...");
 				return true;
 			end
 
 			if (PLDKP_processWhisper(arg2,arg1)) then
 				PLDKP_InBuffer[arg2] = arg1;
-				PLDKP_debug("2 filter incoming whisper...");
+				--PLDKP_debug("2 filter incoming whisper...");
 				return true;
 			end
 		else
@@ -410,8 +410,8 @@ function PLDKP_ChatFrame_OnWhisperOutgoing(chatFrame, event, arg1, arg2)
 	if (arg1 and arg2) then
 		if( PLDKP_OutBuffer[arg2]==nil or PLDKP_OutBuffer[arg2] ~= arg1) then
 			
-			PLDKP_debug("out-msg: " .. arg1);
-			PLDKP_debug("out-player: " .. arg2);
+			--PLDKP_debug("out-msg: " .. arg1);
+			--PLDKP_debug("out-player: " .. arg2);
 	
 			
 			if (string.find(arg1,"^** PLDKP: ")) then
@@ -607,7 +607,7 @@ function PLDkpBidsFrame_GenerateTwinktranslationTable()
 			PLDKP_TwinktranslationTable[transName] = mainName;
 			PLDKP_TwinktranslationTable[transServerName] = mainName;
 			
-			PLDKP_debug( "" .. i .. ": " .. nname .. " (" .. nrank .. "): " .. nnote .. " (" .. nofficernote ..")") ;
+			--PLDKP_debug( "" .. i .. ": " .. nname .. " (" .. nrank .. "): " .. nnote .. " (" .. nofficernote ..")") ;
 		end 
 	end
 end
@@ -1636,11 +1636,11 @@ function PLDKP_GetPlayerGroupStatus(pName)
 				--name = UnitName("party"..unitID);
 				name = PLDKPBids:GetPlayerName("party"..nCounter);
 				
-				PLDKP_debug( "cnt" .. nCounter .. " unitid=" .. nCounter);
+				--PLDKP_debug( "cnt" .. nCounter .. " unitid=" .. nCounter);
 				
 				
 				if (name ~= nil) then
-					PLDKP_debug( "cnt" .. nCounter .. " name=" .. name);
+					--PLDKP_debug( "cnt" .. nCounter .. " name=" .. name);
 					
 					if( name == checkName or name == checkServerName) then
 						status = "P";
@@ -3159,13 +3159,13 @@ function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 
 	PLDkpBidsFrame_GenerateTwinktranslationTable()
 
-	PLDKP_debug("Name: " .. name)
+	--PLDKP_debug("Name: " .. name)
 	local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(name)
-	PLDKP_debug("Name1: " .. incName)
-	PLDKP_debug("Name2: " .. incRealm)
-	PLDKP_debug("Name3: " .. incFullName)
+	--PLDKP_debug("Name1: " .. incName)
+	--PLDKP_debug("Name2: " .. incRealm)
+	--PLDKP_debug("Name3: " .. incFullName)
 	local mainChar = PLDkpBidsFrame_GetMainCharOfTwink(incName)
-	PLDKP_debug("Main: " .. mainChar)
+	--PLDKP_debug("Main: " .. mainChar)
 
 	pointUpdateDateInfo = PLDKP_DKPINFO_BEGINOFRAID
 
