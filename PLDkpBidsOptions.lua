@@ -64,7 +64,26 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 		PLDkpBidsOptionFrameValueStepEditBtn:SetText(PLDkpBidsOptions["ValueStep"]);
 		
 
-		
+		PLDkpBidsOptionFrameMinDKPEquipLabel:SetText(PLDKP_OPTIONS_MINDKP_EQUIP);
+		PLDkpBidsOptionFrameMinDKPEquipUnitLabel:SetText(PLDKP_LABEL_DKP);
+		PLDkpBidsOptionFrameMinDKPEquipEdit:Hide();
+		PLDkpBidsOptionFrameMinDKPEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPEquip"]);
+
+		PLDkpBidsOptionFrameMinDKPSetEquipLabel:SetText(PLDKP_OPTIONS_MINDKP_SET);
+		PLDkpBidsOptionFrameMinDKPSetEquipUnitLabel:SetText(PLDKP_LABEL_DKP);
+		PLDkpBidsOptionFrameMinDKPSetEquipEdit:Hide();
+		PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
+
+		PLDkpBidsOptionFrameMinDKPOneHandLabel:SetText(PLDKP_OPTIONS_MINDKP_OH);
+		PLDkpBidsOptionFrameMinDKPOneHandUnitLabel:SetText(PLDKP_LABEL_DKP);
+		PLDkpBidsOptionFrameMinDKPOneHandEdit:Hide();
+		PLDkpBidsOptionFrameMinDKPOneHandEditBtn:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
+
+		PLDkpBidsOptionFrameMinDKPTwoHandLabel:SetText(PLDKP_OPTIONS_MINDKP_TH);
+		PLDkpBidsOptionFrameMinDKPTwoHandUnitLabel:SetText(PLDKP_LABEL_DKP);
+		PLDkpBidsOptionFrameMinDKPTwoHandEdit:Hide();
+		PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
+
 	
 		PLDkpBidsOptionFrameAllowMinBidLabel:SetText(PLDKP_OPTIONS_ALLOW_MINBID);
 		PLDkpBidsOptionFrameAllowMinBidCheck:SetChecked(PLDkpBidsOptions["AllwaysAllowMinBid"]);
@@ -88,6 +107,9 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 		PLDkpBidsOptionFrameMaxMinusDKPUnitLabel:SetText(PLDKP_LABEL_DKP);
 		PLDkpBidsOptionFrameMaxMinusDKPEdit:Hide();
 		PLDkpBidsOptionFrameMaxMinusDKPEditBtn:SetText(PLDkpBidsOptions["MaxMinusDKP"]);
+
+		PLDkpBidsOptionFrameEnableDebugLabel:SetText(PLDKP_OPTIONS_DEBUG_MODE);
+		PLDkpBidsOptionFrameEnableDebugCheck:SetChecked(PLDkpBidsOptions["DebugMode"]);
 		
 		PLDkpBidsOptionFrameDKPAddOnNotInstalledLabel:SetText(PLDKP_OPTIONS_NODKPPOINTS);
 		
@@ -315,4 +337,90 @@ function PLDkpBidsOptionsFrame_ShowMaxMinusDKPEdit()
 	PLDkpBidsOptionFrameMaxMinusDKPEdit:SetText(PLDkpBidsOptions["MaxMinusDKP"]);
 	PLDkpBidsOptionFrameMaxMinusDKPEdit:Show();
 	PLDkpBidsOptionFrameMaxMinusDKPEditBtn:Hide();
+end
+
+
+function PLDkpBidsOptionsFrame_MinDKPEquipESC()
+	PLDkpBidsOptionFrameMinDKPEquipEdit:Hide();
+	PLDkpBidsOptionFrameMinDKPEquipEdit:SetText(PLDkpBidsOptions["MinDKPEquip"]);
+	PLDkpBidsOptionFrameMinDKPEquipEditBtn:Show();
+end
+function PLDkpBidsOptionsFrame_MinDKPEquipENTER()
+	PLDkpBidsOptionFrameMinDKPEquipEdit:Hide();
+	tmp = PLDkpBidsOptionFrameMinDKPEquipEdit:GetText();
+	if( tonumber(tmp) ~= nil ) then
+		PLDkpBidsOptions["MinDKPEquip"] = tonumber(tmp);
+	end
+	PLDkpBidsOptionFrameMinDKPEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPEquip"]);
+	PLDkpBidsOptionFrameMinDKPEquipEditBtn:Show();
+end
+function PLDkpBidsOptionsFrame_ShowMinDKPEquipEdit()
+	PLDkpBidsOptionFrameMinDKPEquipEdit:SetText(PLDkpBidsOptions["MinDKPEquip"]);
+	PLDkpBidsOptionFrameMinDKPEquipEdit:Show();
+	PLDkpBidsOptionFrameMinDKPEquipEditBtn:Hide();
+end
+
+function PLDkpBidsOptionsFrame_MinDKPSetEquipESC()
+	PLDkpBidsOptionFrameMinDKPSetEquipEdit:Hide();
+	PLDkpBidsOptionFrameMinDKPSetEquipEdit:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
+	PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:Show();
+end
+function PLDkpBidsOptionsFrame_MinDKPSetEquipENTER()
+	PLDkpBidsOptionFrameMinDKPSetEquipEdit:Hide();
+	tmp = PLDkpBidsOptionFrameMinDKPSetEquipEdit:GetText();
+	if( tonumber(tmp) ~= nil ) then
+		PLDkpBidsOptions["MinDKPSetEquip"] = tonumber(tmp);
+	end
+	PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
+	PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:Show();
+end
+function PLDkpBidsOptionsFrame_ShowMinDKPSetEquipEdit()
+	PLDkpBidsOptionFrameMinDKPSetEquipEdit:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
+	PLDkpBidsOptionFrameMinDKPSetEquipEdit:Show();
+	PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:Hide();
+end
+
+
+function PLDkpBidsOptionsFrame_MinDKPOneHandESC()
+	PLDkpBidsOptionFrameMinDKPOneHandEdit:Hide();
+	PLDkpBidsOptionFrameMinDKPOneHandEdit:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
+	PLDkpBidsOptionFrameMinDKPOneHandEditBtn:Show();
+end
+function PLDkpBidsOptionsFrame_MinDKPOneHandENTER()
+	PLDkpBidsOptionFrameMinDKPOneHandEdit:Hide();
+	tmp = PLDkpBidsOptionFrameMinDKPOneHandEdit:GetText();
+	if( tonumber(tmp) ~= nil ) then
+		PLDkpBidsOptions["MinDKPOneHand"] = tonumber(tmp);
+	end
+	PLDkpBidsOptionFrameMinDKPOneHandEditBtn:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
+	PLDkpBidsOptionFrameMinDKPOneHandEditBtn:Show();
+end
+function PLDkpBidsOptionsFrame_ShowMinDKPOneHandEdit()
+	PLDkpBidsOptionFrameMinDKPOneHandEdit:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
+	PLDkpBidsOptionFrameMinDKPOneHandEdit:Show();
+	PLDkpBidsOptionFrameMinDKPOneHandEditBtn:Hide();
+end
+
+function PLDkpBidsOptionsFrame_MinDKPTwoHandESC()
+	PLDkpBidsOptionFrameMinDKPTwoHandEdit:Hide();
+	PLDkpBidsOptionFrameMinDKPTwoHandEdit:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
+	PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:Show();
+end
+function PLDkpBidsOptionsFrame_MinDKPTwoHandENTER()
+	PLDkpBidsOptionFrameMinDKPTwoHandEdit:Hide();
+	tmp = PLDkpBidsOptionFrameMinDKPTwoHandEdit:GetText();
+	if( tonumber(tmp) ~= nil ) then
+		PLDkpBidsOptions["MinDKPTwoHand"] = tonumber(tmp);
+	end
+	PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
+	PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:Show();
+end
+function PLDkpBidsOptionsFrame_ShowMinDKPTwoHandEdit()
+	PLDkpBidsOptionFrameMinDKPTwoHandEdit:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
+	PLDkpBidsOptionFrameMinDKPTwoHandEdit:Show();
+	PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:Hide();
+end
+
+function PLDkpBidsOptionsFrame_ToggleDebugModeClick()
+	PLDkpBidsOptions["DebugMode"] = not PLDkpBidsOptions["DebugMode"];
 end

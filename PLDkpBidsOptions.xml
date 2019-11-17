@@ -5,7 +5,7 @@
 	<!-- PLDkpBids Options Frame -->
 	<Frame name="PLDkpBidsOptionFrame" enableMouse="false" movable="true" toplevel="true" frameStrata="DIALOG" hidden="true" parent="UIParent">
 		<Size>
-			<AbsDimension x="350" y="350"/>
+			<AbsDimension x="650" y="350"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -1439,6 +1439,844 @@
 				</Layer>
 			</Layers>
 		</Frame>
+
+
+		<!-- COL 2-->
+
+		<Frame name="$parentMinDKPEquip">
+			<Size>
+				<AbsDimension x="190" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="300" y="-25" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min price EQUIP:" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<Frame name="$parentMinDKPSetEquip">
+			<Size>
+				<AbsDimension x="190" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="300" y="-45" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min price SETITEMS:" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<EditBox name="$parentMinDKPEquipEdit" historyLines="0" letters="99999999">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="500" y="-25" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer level="BACKGROUND">
+					<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="65" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="-10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+						<Size>
+							<AbsDimension x="25" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset>
+									<AbsDimension x="10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="5" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+				</Layer>
+			</Layers>
+			<FontString inherits="ChatFontNormal"/>
+			<Scripts>
+				<OnEscapePressed>
+					PLDkpBidsOptionsFrame_MinDKPEquipESC();
+				</OnEscapePressed>
+				<OnEnterPressed>
+					PLDkpBidsOptionsFrame_MinDKPEquipENTER();
+				</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+		<EditBox name="$parentMinDKPSetEquipEdit" historyLines="0" letters="99999999">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="500" y="-45" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer level="BACKGROUND">
+					<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="65" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="-10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+						<Size>
+							<AbsDimension x="25" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset>
+									<AbsDimension x="10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="5" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+				</Layer>
+			</Layers>
+			<FontString inherits="ChatFontNormal"/>
+			<Scripts>
+				<OnEscapePressed>
+					PLDkpBidsOptionsFrame_MinDKPSetEquipESC();
+				</OnEscapePressed>
+				<OnEnterPressed>
+					PLDkpBidsOptionsFrame_MinDKPSetEquipENTER();
+				</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+
+
+		<Button name="$parentMinDKPEquipEditBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="500" y="-26" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ShowMinDKPEquipEdit();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MINDKP_EQUIP_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="0.8196079" b="0" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</NormalText>
+			<HighlightText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="1" b="1" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</HighlightText>
+			<DisabledText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</DisabledText>
+			<PushedTextOffset x="0" y="0" />
+		</Button>
+		<Button name="$parentMinDKPSetEquipEditBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="500" y="-49" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ShowMinDKPSetEquipEdit();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MINDKP_SET_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="0.8196079" b="0" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</NormalText>
+			<HighlightText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="1" b="1" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</HighlightText>
+			<DisabledText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</DisabledText>
+			<PushedTextOffset x="0" y="0" />
+		</Button>
+		<Frame name="$parentMinDKPEquipUnit">
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="560" y="-25" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="DKP" justifyH="LEFT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<Frame name="$parentMinDKPSetEquipUnit">
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="560" y="-45" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="DKP" justifyH="LEFT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>			
+			
+	
+		<Frame name="$parentMinDKPOneHand">
+			<Size>
+				<AbsDimension x="190" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="300" y="-68" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min price 1H:" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<EditBox name="$parentMinDKPOneHandEdit" historyLines="0" letters="99999999">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="500" y="-70" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer level="BACKGROUND">
+					<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="65" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="-10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+						<Size>
+							<AbsDimension x="25" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset>
+									<AbsDimension x="10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="5" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+				</Layer>
+			</Layers>
+			<FontString inherits="ChatFontNormal"/>
+			<Scripts>
+				<OnEscapePressed>
+					PLDkpBidsOptionsFrame_MinDKPOneHandESC();
+				</OnEscapePressed>
+				<OnEnterPressed>
+					PLDkpBidsOptionsFrame_MinDKPOneHandENTER();
+				</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+		<Button name="$parentMinDKPOneHandEditBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="500" y="-71" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ShowMinDKPOneHandEdit();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MINDKP_OH_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="0.8196079" b="0" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</NormalText>
+			<HighlightText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="1" b="1" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</HighlightText>
+			<DisabledText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</DisabledText>
+			<PushedTextOffset x="0" y="0" />
+		</Button>
+		<Frame name="$parentMinDKPOneHandUnit">
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="560" y="-68" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="DKP" justifyH="LEFT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		
+		<Frame name="$parentMinDKPTwoHand">
+			<Size>
+				<AbsDimension x="190" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="300" y="-91" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min price 2H:" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<EditBox name="$parentMinDKPTwoHandEdit" historyLines="0" letters="99999999">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="500" y="-95" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer level="BACKGROUND">
+					<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="65" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="-10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+						<Size>
+							<AbsDimension x="25" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset>
+									<AbsDimension x="10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="5" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+				</Layer>
+			</Layers>
+			<FontString inherits="ChatFontNormal"/>
+			<Scripts>
+				<OnEscapePressed>
+					PLDkpBidsOptionsFrame_MinDKPTwoHandESC();
+				</OnEscapePressed>
+				<OnEnterPressed>
+					PLDkpBidsOptionsFrame_MinDKPTwoHandENTER();
+				</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+		<Button name="$parentMinDKPTwoHandEditBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="500" y="-96" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ShowMinDKPTwoHandEdit();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MINDKP_TH_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="0.8196079" b="0" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</NormalText>
+			<HighlightText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="1" b="1" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</HighlightText>
+			<DisabledText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</DisabledText>
+			<PushedTextOffset x="0" y="0" />
+		</Button>
+		<Frame name="$parentMinDKPTwoHandUnit">
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="560" y="-91" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="DKP" justifyH="LEFT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+
+
+		<Frame name="$parentEnableDebug">
+			<Size>
+				<AbsDimension x="200" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="300" y="-153" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Debug mode1" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<CheckButton name="$parentEnableDebugCheck" inherits="OptionsCheckButtonTemplate">
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="505" y="-153" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ToggleDebugModeClick();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_DEBUG_MODE_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+		</CheckButton>
 		
 		<Button name="$parentCloseButton" inherits="GameMenuButtonTemplate" text="Close">
 			<Anchors>
@@ -1460,10 +2298,13 @@
 		<Scripts>
 			<OnLoad>
 				PLDkpBidsOptionFrame_OnLoad();
+				self:RegisterForDrag("LeftButton");
 			</OnLoad>
 			<OnEvent>
 				PLDkpBidsOptionFrame_OnEvent(event);
 			</OnEvent>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+  			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 		</Scripts>
 	</Frame>
 	<!-- END OF PLDkpBids Options Frame -->

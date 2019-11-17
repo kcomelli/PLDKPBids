@@ -221,6 +221,21 @@ PLDKP_OPTIONS_MAXMINUSDKP_TP = "Click here to change the maximum minus DKP a pla
 
 PLDKP_OPTIONS_NODKPPOINTS = "No DKP point data or known DKP AddOn found!";
 
+PLDKP_OPTIONS_MINDKP_EQUIP = "Min DKP (EQUIP)";
+PLDKP_OPTIONS_MINDKP_EQUIP_TP = "Click here to change the minimum DKP for equipments.";
+
+PLDKP_OPTIONS_MINDKP_SET = "Min DKP (SET-Item)";
+PLDKP_OPTIONS_MINDKP_SET_TP = "Click here to change the minimum DKP for Set items.";
+
+PLDKP_OPTIONS_MINDKP_OH = "Min DKP (1H)";
+PLDKP_OPTIONS_MINDKP_OH_TP = "Click here to change the minimum DKP for 1H Weapons, Offhand, Wands, Guns, Bows, Relics, Thrown.";
+
+PLDKP_OPTIONS_MINDKP_TH = "Min DKP (2H)";
+PLDKP_OPTIONS_MINDKP_TH_TP = "Click here to change the minimum DKP for 2H Weapons.";
+
+PLDKP_OPTIONS_DEBUG_MODE = "Debug mode";
+PLDKP_OPTIONS_DEBUG_MODE_TP = "Click here to turn debug mode on or off.";
+
 
 PLDKP_BUILD_OUTOFDATE = "PLDKP: Your version of PLDkp Bids is out-of-date! Please update to latest version!"
 PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Received new DKP data from: %s from player %s"
@@ -416,6 +431,21 @@ end
 	PLDKP_OPTIONS_MAXMINUSDKP_TP = "Hier klicken um die maximalen Minus DKP die durch ein Gebot erreicht werden koennen festzulegen.";
 
 	PLDKP_OPTIONS_NODKPPOINTS = "Keine Daten zu DKP Punkten oder ein bekanntes Punkte-AddOn gefunden!";
+
+	PLDKP_OPTIONS_MINDKP_EQUIP = "Min DKP (EQUIP)";
+	PLDKP_OPTIONS_MINDKP_EQUIP_TP = "Hier klicken um die mindest DKP für Ausrüstung zu definieren.";
+
+	PLDKP_OPTIONS_MINDKP_SET = "Min DKP (SET-Item)";
+	PLDKP_OPTIONS_MINDKP_SET_TP = "Hier klicken um die mindest DKP für ASet-Itemsusrüstung zu definieren.";
+
+	PLDKP_OPTIONS_MINDKP_OH = "Min DKP (1H)";
+	PLDKP_OPTIONS_MINDKP_OH_TP = "Hier klicken um die mindest DKP für 1H Waffern, Schilde, Off-Hands, Bogen, Schusswaffen, Relikte zu definieren.";
+
+	PLDKP_OPTIONS_MINDKP_TH = "Min DKP (2H)";
+	PLDKP_OPTIONS_MINDKP_TH_TP = "Hier klicken um die mindest DKP für 2H Waffen zu definieren.";
+
+	PLDKP_OPTIONS_DEBUG_MODE = "Debug mode";
+	PLDKP_OPTIONS_DEBUG_MODE_TP = "Hier klicken um den Debug Modus ein/aus zu schalten.";
 
 	PLDKP_BUILD_OUTOFDATE = "PLDKP: Deine Version von PLDkp Bids ist veraltet! Bitte update auf die neuerste Version!"
 	PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Neue DKP Daten erhalten. Stand: %s von %s"

@@ -449,6 +449,21 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 			PLDKP_debug("PLDKP_Loaded=false"); 
 			return;
 		end
+
+
+		PLDkpBidsFrame_GenerateTwinktranslationTable()
+		local main = PLDkpBidsFrame_GetMainCharOfTwink(PLDKPBids.myName)
+
+		if PLDKPBids:PlayerHasDkpData(PLDKPBids.myName) then
+			PLDKPFormMyNameLabel:SetText(PLDKPBids.myName)
+			PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(PLDKPBids.myName)) .. " DKP")
+		elseif PLDKPBids:PlayerHasDkpData(main) then
+			PLDKPFormMyNameLabel:SetText(main)
+			PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(main)) .. " DKP")
+		else
+			PLDKPFormMyName:Hide()
+			PLDKPFormMyDkp:Hide()
+		end
 	end
 
 	if (event == "VARIABLES_LOADED") then
