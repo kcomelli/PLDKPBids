@@ -3085,6 +3085,9 @@ end
 -- Returns the playername by index
 ---------------------------------------------------------------------
 function PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(playerName, itemLink, itemCount, lootTime)
+
+	PLDKP_debug("Searching winner info for item: " .. (itemLink or "n/a") .. " and player: " .. (playerName or "n/a"))
+	PLDKP_debug("Using current raidId: " .. (PLDKP_CurrentRaidID or "n/a"))
 	local nCount=0;
 	
 	if ( PLDKP_LastWinners ~= nil ) then
@@ -3094,13 +3097,15 @@ function PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(playerName, itemLink, ite
 
 			if winnerData then
 				local checkName, checkRealm, checkServerName = PLDKPBids:CharaterNameTranslation(playerName)
-				local winnerName, winnerRealm, winnerServerName = PLDKPBids:CharaterNameTranslation(winnerData["Name"])
+				local winnerName, winnerRealm, winnerServerName = PLDKPBids:CharaterNameTranslation(winnerData["MainCharName"] or winnerData["Name"])
 
 				if checkServerName == winnerServerName and itemLink ==  winnerData["ItemLink"] and winnerData["RaidID"] == PLDKP_CurrentRaidID then
 					return winnerData
 				end
 			end
 		end
+	else
+		PLDKP_debug("Cannot get winner info - last winner table is nil")
 	end
 	
 	return nil
