@@ -270,7 +270,7 @@
 					PLDkpBidsOptionsFrame_ShowAcceptTimeEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_DEF_TS_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_DEF_TS_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -330,7 +330,7 @@
 					PLDkpBidsOptionsFrame_ShowMinDKPEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_DEF_MINDP_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_DEF_MINDP_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -557,7 +557,7 @@
 					PLDkpBidsOptionsFrame_ShowValueAddEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_VAL_ADD_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_VAL_ADD_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -751,7 +751,7 @@
 					PLDkpBidsOptionsFrame_ShowValueStepEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_VAL_STEP_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_VAL_STEP_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -923,7 +923,7 @@
 					PLDkpBidsOptionsFrame_AllowMinBidClick();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_ALLOW_MINBID_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_ALLOW_MINBID_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -979,7 +979,7 @@
 					PLDkpBidsOptionsFrame_AllowHighOverwriteClick();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_ALLOW_HIGHOV_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_ALLOW_HIGHOV_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -1035,7 +1035,7 @@
 					PLDkpBidsOptionsFrame_RaidWarningClick();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_RAIDWARNING_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_RAIDWARNING_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -1091,7 +1091,7 @@
 					PLDkpBidsOptionsFrame_AllowDeleteClick();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_ALLOWDELETE_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_ALLOWDELETE_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -1182,7 +1182,7 @@
 					PLDkpBidsOptionsFrame_DKPonEqualBidsClick();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_USEDKPONEQUAL_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_USEDKPONEQUAL_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -1238,7 +1238,7 @@
 					PLDkpBidsOptionsFrame_HighBidsClick();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_ALLOWMAXDKPBIDS_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_ALLOWMAXDKPBIDS_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -1363,7 +1363,7 @@
 					PLDkpBidsOptionsFrame_ShowMaxMinusDKPEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MAXMINUSDKP_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MAXMINUSDKP_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -1663,7 +1663,7 @@
 					PLDkpBidsOptionsFrame_ShowMinDKPEquipEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MINDKP_EQUIP_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_EQUIP_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -1723,7 +1723,7 @@
 					PLDkpBidsOptionsFrame_ShowMinDKPSetEquipEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MINDKP_SET_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_SET_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -1950,7 +1950,7 @@
 					PLDkpBidsOptionsFrame_ShowMinDKPOneHandEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MINDKP_OH_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_OH_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -2144,7 +2144,7 @@
 					PLDkpBidsOptionsFrame_ShowMinDKPTwoHandEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_MINDKP_TH_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_TH_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -2270,7 +2270,7 @@
 					PLDkpBidsOptionsFrame_ToggleDebugModeClick();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(PLDKP_OPTIONS_DEBUG_MODE_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_DEBUG_MODE_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();

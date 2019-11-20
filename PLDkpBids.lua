@@ -1974,13 +1974,13 @@ end
 -------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------
--- function PLDkpBidsFrame_DisplayTooltip( Message)
+-- function PLDkpBidsFrame_DisplayTooltip(self, Message)
 --
 -- Displays the AddOn's tooltip window
 ---------------------------------------------------------------------
-function PLDkpBidsFrame_DisplayTooltip( Message)
-	PLDkpBids_Tooltip:SetOwner(PLDkpBidsFrame, "ANCHOR_BOTTOMLEFT");
-	--PLDkpBids_Tooltip:SetOwner(this, "ANCHOR_BOTTOMLEFT");
+function PLDkpBidsFrame_DisplayTooltip(self,  Message)
+	PLDkpBids_Tooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
+	--PLDkpBids_Tooltip:SetOwner(this, "ANCHOR_BOTTOMRIGHT");
 	PLDkpBids_Tooltip:ClearLines();
 	PLDkpBids_Tooltip:SetText(Message);
 	PLDkpBids_Tooltip:Show();
@@ -2005,14 +2005,14 @@ function PLDkpBidsFrame_SetVisible(visible)
 end
 
 ---------------------------------------------------------------------
--- function PLDKP_ShowCurrentItemToolTip()
+-- function PLDKP_ShowCurrentItemToolTip(self)
 --
 -- Shows an item-tooltip for the current auction item
 ---------------------------------------------------------------------
-function PLDKP_ShowCurrentItemToolTip()
+function PLDKP_ShowCurrentItemToolTip(self)
 	
 	if ( (_pldkp_currentItem ~= nil) and (_pldkp_currentItem ~= "") ) then
-		PLDkpBids_Tooltip:SetOwner(PLDkpBidsFrame, "ANCHOR_BOTTOMRIGHT");
+		PLDkpBids_Tooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
 		--PLDkpBids_Tooltip:SetOwner(this, "ANCHOR_BOTTOMRIGHT");
 		PLDkpBids_Tooltip:ClearLines();
 		PLDkpBids_Tooltip:SetHyperlink(PLDKP_GetItemID(_pldkp_currentItem));
@@ -2021,18 +2021,18 @@ function PLDKP_ShowCurrentItemToolTip()
 end
 
 ---------------------------------------------------------------------
--- function PLDKP_ShowLastWinnerstItemToolTip(buttonID)
+-- function PLDKP_ShowLastWinnerstItemToolTip(self, buttonID)
 --
 -- Shows an item-tooltip for the current last-winner item
 ---------------------------------------------------------------------
-function PLDKP_ShowLastWinnerstItemToolTip(buttonID)
+function PLDKP_ShowLastWinnerstItemToolTip(self, buttonID)
 	
 	local index = buttonID + FauxScrollFrame_GetOffset(LastWinnersListFrame);
 	local sDate = PLDkpBidsFrame_GetLastWinnerByIndex(index);
 	if ( sDate ~= nil ) then
 		
 		if ( (PLDKP_LastWinners[sDate]["ItemLink"] ~= nil) and (PLDKP_LastWinners[sDate]["ItemLink"] ~= "") ) then
-			PLDkpBids_Tooltip:SetOwner(PLDkpBidsFrame, "ANCHOR_BOTTOMRIGHT");
+			PLDkpBids_Tooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
 			--PLDkpBids_Tooltip:SetOwner(this, "ANCHOR_BOTTOMRIGHT");
 			PLDkpBids_Tooltip:ClearLines();
 			PLDkpBids_Tooltip:SetHyperlink(PLDKP_GetItemID(PLDKP_LastWinners[sDate]["ItemLink"]));
@@ -3089,6 +3089,7 @@ function PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(playerName, itemLink, ite
 	PLDKP_debug("Searching winner info for item: " .. (itemLink or "n/a") .. " and player: " .. (playerName or "n/a"))
 	PLDKP_debug("Using current raidId: " .. (PLDKP_CurrentRaidID or "n/a"))
 	local nCount=0;
+	local checkName, checkRealm, checkServerName = PLDKPBids:CharaterNameTranslation(playerName)
 	
 	if ( PLDKP_LastWinners ~= nil ) then
 		-- desc sorting with PLDKPBids_compareDesc()
@@ -3096,7 +3097,6 @@ function PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(playerName, itemLink, ite
 			local winnerData = PLDKP_LastWinners[sRaidId]
 
 			if winnerData then
-				local checkName, checkRealm, checkServerName = PLDKPBids:CharaterNameTranslation(playerName)
 				local winnerName, winnerRealm, winnerServerName = PLDKPBids:CharaterNameTranslation(winnerData["MainCharName"] or winnerData["Name"])
 
 				if checkServerName == winnerServerName and itemLink ==  winnerData["ItemLink"] and winnerData["RaidID"] == PLDKP_CurrentRaidID then

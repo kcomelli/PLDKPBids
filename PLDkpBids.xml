@@ -792,7 +792,7 @@
 						
 					</OnClick>
 					<OnEnter>
-						PLDKP_ShowLastWinnerstItemToolTip(self:GetParent():GetID());
+						PLDKP_ShowLastWinnerstItemToolTip(self, self:GetParent():GetID());
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -819,7 +819,7 @@
 						PLDkpBids_OnSetWinnerNote(self:GetParent():GetID());	
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_WINNERNOTE_TP);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_WINNERNOTE_TP);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -846,7 +846,7 @@
 						PLDkpBids_OnDelWinner(self:GetParent():GetID());	
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_DELWINNER_TP);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_DELWINNER_TP);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -943,7 +943,7 @@
 						PLDkpBidsFrame_SetVisible(false);
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_TOOLTIP_CLOSE);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_TOOLTIP_CLOSE);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -979,7 +979,7 @@
 						PLDkpBidsFrame_SaveVariables();
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_TOOLTIP_SAVE);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_TOOLTIP_SAVE);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -1040,7 +1040,7 @@
 						PLDkpBidsFrame_ShowOptions();
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_TOOLTIP_OPTIONS);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_TOOLTIP_OPTIONS);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -1385,7 +1385,7 @@
 						
 					</OnClick>
 					<OnEnter>
-						PLDKP_ShowCurrentItemToolTip();
+						PLDKP_ShowCurrentItemToolTip(self);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -1476,7 +1476,7 @@
 						PLDkpBidsFrame_ShowAcceptTimeEdit();
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_TOOLTIP_TIMEBTN);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_TOOLTIP_TIMEBTN);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -1670,7 +1670,7 @@
 						PLDkpBidsFrame_AllowTwinkBids();
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_TOOLTIP_TWINKCHK_TP);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_TOOLTIP_TWINKCHK_TP);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -1767,7 +1767,7 @@
 						PLDkpBidsFrame_ShowMinDKPEdit();
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_TOOLTIP_MINDKPBTN);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_TOOLTIP_MINDKPBTN);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -1957,7 +1957,7 @@
 						PLDkpBidsFrame_ToggleStartStopAuction();
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(PLDKP_TOOLTIP_STARTSTOPAUCTION);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_TOOLTIP_STARTSTOPAUCTION);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
