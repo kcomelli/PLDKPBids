@@ -240,6 +240,7 @@ PLDKP_OPTIONS_DEBUG_MODE_TP = "Click here to turn debug mode on or off.";
 PLDKP_BUILD_OUTOFDATE = "PLDKP: Your version of PLDkp Bids is out-of-date! Please update to latest version!"
 PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Received new DKP data from: %s from player %s"
 PLDKP_RECEIVED_WINNER_INFO = "PLDKP: Received auction winner information: %s from player %s"
+PLDKP_RECEIVED_MRT_LOOT_INFO = "PLDKP: Received MRT loot notification: %s from player %s"
 
 -------------------------------------------------------------------------------
 -- German localization
