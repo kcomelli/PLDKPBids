@@ -456,10 +456,10 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 
 		if PLDKPBids:PlayerHasDkpData(PLDKPBids.myName) then
 			PLDKPFormMyNameLabel:SetText(PLDKPBids.myName)
-			PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(PLDKPBids.myName)) .. " DKP")
+			PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(PLDKPBids.myName)) .. " DKP (" .. (PLDKP_DkpInfo.date or "na") .. ")")
 		elseif PLDKPBids:PlayerHasDkpData(main) then
 			PLDKPFormMyNameLabel:SetText(main)
-			PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(main)) .. " DKP")
+			PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(main)) .. " DKP (" .. (PLDKP_DkpInfo.date or "na") .. ")")
 		else
 			PLDKPFormMyName:Hide()
 			PLDKPFormMyDkp:Hide()
@@ -3199,8 +3199,8 @@ function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 	end
 
 	if(PLDKPBids.dkp_info and PLDKPBids.dkp_info.date) then
-		pointUpdateDateInfo = string.format(PLDKP_DKPINFO_LASTUPDATE, DKPInfo.date)
-	end  
+		pointUpdateDateInfo = string.format(PLDKP_DKPINFO_LASTUPDATE, PLDKP_DkpInfo.date)
+	end 
  
     if ( PLDKPBids:PlayerHasDkpData(incName) ) then
         local charDkp = PLDKPBids:PlayerGetDkpData(incName) 

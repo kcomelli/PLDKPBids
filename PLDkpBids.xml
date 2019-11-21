@@ -1088,18 +1088,18 @@
 
 			<Frame name="$parentMyName">
 				<Size>
-					<AbsDimension x="80" y="52" />
+					<AbsDimension x="120" y="52" />
 				</Size>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT">
 						<Offset>
-							<AbsDimension x="0" y="15" />
+							<AbsDimension x="0" y="12" />
 						</Offset>
 					</Anchor>
 				</Anchors>
 				<Layers>
 					<Layer>
-						<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="MyName" justifyH="RIGHT">
+						<FontString name="$parentLabel" inherits="GameFontHighlightSmall" text="MyName" justifyH="RIGHT">
 							<Anchors>
 								<Anchor point="TOPLEFT" />
 								<Anchor point="BOTTOMRIGHT" />
@@ -1121,18 +1121,18 @@
 
 			<Frame name="$parentMyDkp">
 				<Size>
-					<AbsDimension x="80" y="52" />
+					<AbsDimension x="280" y="52" />
 				</Size>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT">
 						<Offset>
-							<AbsDimension x="90" y="15" />
+							<AbsDimension x="130" y="12" />
 						</Offset>
 					</Anchor>
 				</Anchors>
 				<Layers>
 					<Layer>
-						<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="80 DKP" justifyH="LEFT">
+						<FontString name="$parentLabel" inherits="GameFontHighlightSmall" text="80 DKP" justifyH="LEFT">
 							<Anchors>
 								<Anchor point="TOPLEFT" />
 								<Anchor point="BOTTOMRIGHT" />
