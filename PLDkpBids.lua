@@ -3090,16 +3090,20 @@ function PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(playerName, itemLink, ite
 	PLDKP_debug("Using current raidId: " .. (PLDKP_CurrentRaidID or "n/a"))
 	local nCount=0;
 	local checkName, checkRealm, checkServerName = PLDKPBids:CharaterNameTranslation(playerName)
-	
+	local searchItemId = PLDKPBids:GetItemIdFromLink(itemLink)
+
 	if ( PLDKP_LastWinners ~= nil ) then
 		-- desc sorting with PLDKPBids_compareDesc()
-		for sRaidID in PLDKPBids:pairsByKeys(PLDKP_LastWinners, PLDKPBids_compareDesc) do 
-			local winnerData = PLDKP_LastWinners[sRaidId]
+		for sIndex in PLDKPBids:pairsByKeys(PLDKP_LastWinners, PLDKPBids_compareDesc) do 
+			local winnerData = PLDKP_LastWinners[sIndex]
 
 			if winnerData then
 				local winnerName, winnerRealm, winnerServerName = PLDKPBids:CharaterNameTranslation(winnerData["MainCharName"] or winnerData["Name"])
+				local winnerItemId = PLDKPBids:GetItemIdFromLink(winnerData["ItemLink"])
 
-				if checkServerName == winnerServerName and itemLink ==  winnerData["ItemLink"] and winnerData["RaidID"] == PLDKP_CurrentRaidID then
+				-- compare itemIds instead of item links due to localization 
+				if checkServerName == winnerServerName and searchItemId == winnerItemId and winnerData["RaidID"] == PLDKP_CurrentRaidID then
+					PLDKP_debug("FOUND winner data!")
 					return winnerData
 				end
 			end
@@ -3108,6 +3112,7 @@ function PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(playerName, itemLink, ite
 		PLDKP_debug("Cannot get winner info - last winner table is nil")
 	end
 	
+	PLDKP_debug("Cannot get winner info - no matching entry")
 	return nil
 end
 

@@ -94,6 +94,12 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
         decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
         local success, deserialized = LibAceSerializer:Deserialize(decoded);
         if success then
+            if PLDKP_CurrentRaidID ~= deserialized.data["RaidID"] then
+                -- activiate raid id
+                -- important if MRT asks for prize
+                PLDKP_CurrentRaidID = deserialized.data["RaidID"]
+            end
+
             PLDKP_LastWinners[deserialized.raidId] = deserialized.data
             PLDKP_screen(string.format(PLDKP_RECEIVED_WINNER_INFO, (deserialized.data["Name"] or "na") .. " - " .. (deserialized.data["ItemLink"] or "na") .. " - " .. (deserialized.data["Price"] or "na") .. "DKP"), sender)
         else
@@ -106,7 +112,7 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
 
             PLDKP_screen(string.format(PLDKP_RECEIVED_MRT_LOOT_INFO, (deserialized.data["itemInfo"].ItemName or "na") .. " - " .. (deserialized.data["itemInfo"].ItemLink or "na") .. " - " .. (deserialized.data["itemInfo"].DKPValue or "na") .. "DKP"), sender)
             if(PLDKPBids.MrtReceivedLootNotification) then
-                PLDKPBids:MrtReceivedLootNotification(sender, deserialized.data["itemInfo"], tonumber(deserialized.data["callType"] or "0"), tonumber(deserialized.data["raidNumber"] or "-1"), tonumber(deserialized.data["lootNumber"] or "-1"), deserialized.data["oldItemInfo"])
+                PLDKPBids:MrtReceivedLootNotification(sender, deserialized.data["raidInfo"], deserialized.data["itemInfo"], tonumber(deserialized.data["callType"] or "0"), tonumber(deserialized.data["raidNumber"] or "-1"), tonumber(deserialized.data["lootNumber"] or "-1"), deserialized.data["oldItemInfo"])
             end
         else
             print(deserialized)  -- error reporting if string doesn't get deserialized correctly
