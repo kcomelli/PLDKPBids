@@ -7,7 +7,7 @@ PLDKPBids.dkp_info = {
 	["total_players"] = 58,
 	["total_items"] = 1760,
 	["total_points"] = 30822.00,
-}
+} 
 
 PLDKPBids.dkp_data = {
 	["players"] = {

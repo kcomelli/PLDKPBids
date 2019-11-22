@@ -66,20 +66,8 @@ function PLDKPBids_MrtQueryItemCost(notifierInfo)
     --    ["DKPValue"] = dkpValue,
     --    ["Time"] = MRT_GetCurrentTime(),
     --};
-
-    --PLDKP_LastWinners[sDate] = {};
-    --PLDKP_LastWinners[sDate]["Name"] = pName; 
-    --PLDKP_LastWinners[sDate]["MainCharName"] = PLDkpBidsFrame_GetMainCharOfTwink(pName);
-    --PLDKP_LastWinners[sDate]["RaidID"] = PLDKP_CurrentRaidID;
-    --PLDKP_LastWinners[sDate]["Price"] = nPrice;
-    --PLDKP_LastWinners[sDate]["Note"] = "";
-    --PLDKP_LastWinners[sDate]["Date"] = date();
-    --PLDKP_LastWinners[sDate]["ItemName"] = name;
-    --PLDKP_LastWinners[sDate]["ItemLink"] = _pldkp_currentItem;
-    --PLDKP_LastWinners[sDate]["ItemTexture"] = _pldkp_currentItemTexture;
-    
+   
     PLDKP_debug("MRT querying item price for: " ..  notifierInfo["ItemLink"] .. ", looted by " .. notifierInfo["Looter"])
-
     local queryData = PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(notifierInfo["Looter"], notifierInfo["ItemLink"], notifierInfo["ItemCount"], notifierInfo["Time"])
 
     if queryData then 
@@ -124,12 +112,23 @@ function PLDKPBids_MrtLootNotify(itemInfo, callType, raidNumber, lootNumber, old
         mrtLootData.raidInfo["Realm"] = MRT_RaidLog[raidNumber]["Realm"]
         mrtLootData.raidInfo["StartTime"] = MRT_RaidLog[raidNumber]["StartTime"]
 
+        PLDKP_debug("Sending MRT loot notification data...")
         PLDKPBids.Sync:SendData("PLMRTItemLoot", mrtLootData)
     else
         PLDKP_debug("MRT_RaidLog is not present or does not contain a raid with the given id " .. tostring(raidNumber))
     end
 end
 
+-- --------------------------------------------------------------------------
+-- MRT specific comms receiving functions
+-- --------------------------------------------------------------------------
+
+-- --------------------------------------------------------------------------
+-- FindLocalMrtRaid
+-- 
+-- Takes raid info sent by comms message and tries to find a matching local raid
+-- in order to modify loots
+-- --------------------------------------------------------------------------
 function PLDKPBids:FindLocalMrtRaid(raidInfo)
     if not raidInfo then
         return nil

@@ -20,14 +20,16 @@ function PLDKPBids.Sync:OnEnable()
 end
 
 function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
+    PLDKP_debug("Receiving comms with prefix '" .. (prefix or "nil") .. "' from player '" .. (sender or "nil") .. "' ...")
     if (prefix) then
         if prefix == "PLDKPBuildCheck" and sender ~= UnitName("player") then
 			local LastVerCheck = time() - PLDKPBids.LastVerCheck;
 
 			if LastVerCheck > 1800 then   					-- limits the Out of Date message from firing more than every 30 minutes 
-				PLDKPBids.LastVerCheck = time();
+                PLDKPBids.LastVerCheck = time();
+                PLDKP_debug("Buildnumber received is: " .. message .. ", local buildnumber is: " .. tostring(PLDKP_BUILD_NUMBER))
 				if tonumber(message) > PLDKP_BUILD_NUMBER then
-					PLDKP_screen(PLDKP_BUILD_OUTOFDATE)
+					PLDKP_println(PLDKP_BUILD_OUTOFDATE)
 				end
 			end
 
@@ -35,87 +37,98 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
 				PLDKPBids.Sync:SendData("PLDKPBuildCheck", tostring(PLDKP_BUILD_NUMBER))
 			end
 			return;
-        end
-    elseif prefix == "PLDKPDkpVersion" and sender ~= UnitName("player") then
-        -- save sender data
-        PLDKPBids.KnownVersions[sender] = tonumber(message)
-        if PLDKPBids:IsDkpDataLoaded() then
-            if tonumber(PLDKPBids.dkp_info.timestamp) > tonumber(message) then
-                -- I have a newer version of DKP data
-                -- broadcast my version
-                PLDKPBids.Sync:SendData("PLDKPDkpVersion", PLDKPBids.dkp_info.timestamp)
-            elseif tonumber(PLDKPBids.dkp_info.timestamp) < tonumber(message) then
-                -- I have an older version
-                -- send DKP request
+        elseif prefix == "PLDKPDkpVersion" and sender ~= UnitName("player") then
+            -- save sender data
+            PLDKPBids.KnownVersions[sender] = tonumber(message)
+            PLDKP_debug("Received DKP version is " .. message)
+            if PLDKPBids:IsDkpDataLoaded() then
+                if tonumber(PLDKPBids.dkp_info.timestamp) > tonumber(message) then
+                    -- I have a newer version of DKP data
+                    -- broadcast my version
+                    PLDKPBids.Sync:SendData("PLDKPDkpVersion", PLDKPBids.dkp_info.timestamp)
+                elseif tonumber(PLDKPBids.dkp_info.timestamp) < tonumber(message) then
+                    -- I have an older version
+                    -- send DKP request
+                    PLDKPBids.Sync:VerifyAndRequestVersion(tonumber(message))
+                end
+            else
+                -- I do not have any DKP data yet
+                -- send DKP request for the version currently catched
                 PLDKPBids.Sync:VerifyAndRequestVersion(tonumber(message))
             end
-        else
-            -- I do not have any DKP data yet
-            -- send DKP request for the version currently catched
-            PLDKPBids.Sync:VerifyAndRequestVersion(tonumber(message))
-        end
-    elseif prefix == "PLDKPDkpVRequest" and sender ~= UnitName("player") then
-        if PLDKPBids:IsDkpDataLoaded() then
-            if tonumber(PLDKPBids.dkp_info.timestamp) >= tonumber(message) then
-                -- 2 seconds delay before sending actual DKP data (see PLDkpBidsFrame_OnUpdate)
-                -- this will allow addOn sync if multiple versions are installed
-                -- to detect the highest version
-                PLDKPBids.TriggerSentDkpData = time() + 2 
+        elseif prefix == "PLDKPDkpVRequest" and sender ~= UnitName("player") then
+            if PLDKPBids:IsDkpDataLoaded() then
+                if tonumber(PLDKPBids.dkp_info.timestamp) >= tonumber(message) then
+                    -- 2 seconds delay before sending actual DKP data (see PLDkpBidsFrame_OnUpdate)
+                    -- this will allow addOn sync if multiple versions are installed
+                    -- to detect the highest version
+                    PLDKPBids.TriggerSentDkpData = time() + 2 
+                else
+                    -- reset send timer - we do not have or own the version requests
+                    -- typically if someone else will send the latest data and we will receive it
+                    PLDKPBids.TriggerSentDkpData = 0 
+                end
+            end
+        elseif prefix == "PLDKPDkpSync" and sender ~= UnitName("player") then
+            PLDKPBids.TriggerSentDkpData = 0
+            decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
+            local success, deserialized = LibAceSerializer:Deserialize(decoded);
+            if success then
+                PLDKPBids.dkp_info = deserialized.dkp_info
+                PLDKPBids.dkp_data= deserialized.dkp_data
+                -- saved variables override
+
+                PLDKP_DkpInfo = PLDKPBids.dkp_info
+                PLDKP_DkpData = PLDKPBids.dkp_data   
+
+                PLDKPBids.MostRecentDkpVersion = tonumber(PLDKPBids.dkp_info.timestamp)
+
+                PLDKP_println(string.format(PLDKP_RECEIVED_NEW_DKPDATA, PLDKPBids.dkp_info.date, sender))
+                -- update help table since DKP data is available
+                PLDKPBids:CreateHelpTable()
+                PLDKPBids:UpdateMyDkpStanding()
+
+                -- resend version in order to update known versions of other clients
+                PLDKPBids.Sync:SendData("PLDKPDkpVersion", PLDKPBids.dkp_info.timestamp)
             else
-                -- reset send timer - we do not have or own the version requests
-                -- typically if someone else will send the latest data and we will receive it
-                PLDKPBids.TriggerSentDkpData = 0 
+                print(deserialized)  -- error reporting if string doesn't get deserialized correctly
             end
-        end
-    elseif prefix == "PLDKPDkpSync" and sender ~= UnitName("player") then
-        PLDKPBids.TriggerSentDkpData = 0
-        decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
-        local success, deserialized = LibAceSerializer:Deserialize(decoded);
-        if success then
-            PLDKPBids.dkp_info = deserialized.dkp_info
-            PLDKPBids.dkp_data= deserialized.dkp_data
-            -- saved variables override
+        elseif prefix == "PLDKPDkpWinner" and sender ~= UnitName("player") then
+            decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
+            local success, deserialized = LibAceSerializer:Deserialize(decoded);
+            if success then
+                if PLDKP_CurrentRaidID ~= deserialized.data["RaidID"] then
+                    -- activiate raid id
+                    -- important if MRT asks for prize
+                    PLDKP_CurrentRaidID = deserialized.data["RaidID"]
+                end
 
-            PLDKP_DkpInfo = PLDKPBids.dkp_info
-            PLDKP_DkpData = PLDKPBids.dkp_data   
+                -- fix if not receiving texture informations
+                if not deserialized.data["ItemTexture"] and deserialized.data["ItemLink"] then
+                    local itemId = PLDKPBids:GetItemIdFromLink(deserialized.data["ItemLink"])
+                    local gitemName, gitemLink, gitemRarity, gitemLevel, gitemMinLevel, gitemType, gitemSubType, gitemStackCount, gitemEquipLoc, gitemTexture = GetItemInfo(itemId);
+                    deserialized.data["ItemTexture"] = gitemTexture
+                end
 
-            PLDKPBids.MostRecentDkpVersion = tonumber(PLDKPBids.dkp_info.timestamp)
-
-            PLDKP_screen(string.format(PLDKP_RECEIVED_NEW_DKPDATA, PLDKPBids.dkp_info.date, sender))
-            -- update help table since DKP data is available
-            PLDKPBids:CreateHelpTable()
-
-            -- resend version in order to update known versions of other clients
-            PLDKPBids.Sync:SendData("PLDKPDkpVersion", PLDKPBids.dkp_info.timestamp)
-        else
-            print(deserialized)  -- error reporting if string doesn't get deserialized correctly
-        end
-    elseif prefix == "PLDKPDkpWinner" and sender ~= UnitName("player") then
-        decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
-        local success, deserialized = LibAceSerializer:Deserialize(decoded);
-        if success then
-            if PLDKP_CurrentRaidID ~= deserialized.data["RaidID"] then
-                -- activiate raid id
-                -- important if MRT asks for prize
-                PLDKP_CurrentRaidID = deserialized.data["RaidID"]
+                PLDKP_LastWinners[deserialized.raidId] = deserialized.data
+                PLDKP_println(string.format(PLDKP_RECEIVED_WINNER_INFO, ((deserialized.data["Name"] or "na") .. " - " .. (deserialized.data["ItemLink"] or "na") .. " - " .. (deserialized.data["Price"] or "na") .. "DKP"), sender))
+            else
+                print(deserialized)  -- error reporting if string doesn't get deserialized correctly
             end
+        elseif prefix == "PLMRTItemLoot" and sender ~= UnitName("player") then
+            decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
+            local success, deserialized = LibAceSerializer:Deserialize(decoded);
+            if success then
 
-            PLDKP_LastWinners[deserialized.raidId] = deserialized.data
-            PLDKP_screen(string.format(PLDKP_RECEIVED_WINNER_INFO, (deserialized.data["Name"] or "na") .. " - " .. (deserialized.data["ItemLink"] or "na") .. " - " .. (deserialized.data["Price"] or "na") .. "DKP"), sender)
-        else
-            print(deserialized)  -- error reporting if string doesn't get deserialized correctly
-        end
-    elseif prefix == "PLMRTItemLoot" and sender ~= UnitName("player") then
-        decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
-        local success, deserialized = LibAceSerializer:Deserialize(decoded);
-        if success then
-
-            PLDKP_screen(string.format(PLDKP_RECEIVED_MRT_LOOT_INFO, (deserialized.data["itemInfo"].ItemName or "na") .. " - " .. (deserialized.data["itemInfo"].ItemLink or "na") .. " - " .. (deserialized.data["itemInfo"].DKPValue or "na") .. "DKP"), sender)
-            if(PLDKPBids.MrtReceivedLootNotification) then
-                PLDKPBids:MrtReceivedLootNotification(sender, deserialized.data["raidInfo"], deserialized.data["itemInfo"], tonumber(deserialized.data["callType"] or "0"), tonumber(deserialized.data["raidNumber"] or "-1"), tonumber(deserialized.data["lootNumber"] or "-1"), deserialized.data["oldItemInfo"])
+                PLDKP_println(string.format(PLDKP_RECEIVED_MRT_LOOT_INFO, ((deserialized["itemInfo"].ItemName or "na") .. " - " .. (deserialized["itemInfo"].ItemLink or "na") .. " - looted by " .. (deserialized["itemInfo"].Looter or "na") .. " for " .. (deserialized["itemInfo"].DKPValue or "na") .. "DKP"), sender))
+                if(PLDKPBids.MrtReceivedLootNotification) then
+                    PLDKPBids:MrtReceivedLootNotification(sender, deserialized["raidInfo"], deserialized["itemInfo"], tonumber(deserialized["callType"] or "0"), tonumber(deserialized["raidNumber"] or "-1"), tonumber(deserialized["lootNumber"] or "-1"), deserialized["oldItemInfo"])
+                end
+            else
+                PLDKP_debug("Error deserializing: " .. deserialized)
+                print(deserialized)  -- error reporting if string doesn't get deserialized correctly
+                
             end
-        else
-            print(deserialized)  -- error reporting if string doesn't get deserialized correctly
         end
     end
 end
@@ -239,7 +252,18 @@ function PLDKPBids.Sync:SendData(prefix, data)
 		print("Huffman: ", strlen(huffmanCompressed))
 		print("LZQ: ", strlen(lzwCompressed)) --]]
 
-		PLDKPBids.Sync:SendCommMessage(prefix, packet, "GUILD")
+        local channel = "GUILD"
+
+        if prefix == "PLDKPDkpWinner" or prefix == "PLMRTItemLoot" then
+            if UnitInRaid("player") then
+                channel = "RAID"
+            elseif UnitInParty("player") then
+                channel = "PARTY"
+            end
+        end
+
+        PLDKP_debug("Sending packet using prefix '" .. prefix .. "' in channel '" ..  channel .. "' ...")
+		PLDKPBids.Sync:SendCommMessage(prefix, packet, channel)
 
 		--[[if prefix == "PLDKPBidsDataSync" then
 			if core.UpToDate == true then

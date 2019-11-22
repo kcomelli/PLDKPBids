@@ -329,7 +329,7 @@ function PLDKP_LootFrameItem_OnClick(self, button)
 			end
 	
 			LootFrame:Hide();
-			
+
 			_pldkp_currentItem = itemlink;
 			_pldkp_currentItemTexture = texture;
 			-- get min bid based on item
@@ -452,18 +452,7 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 
 
 		PLDkpBidsFrame_GenerateTwinktranslationTable()
-		local main = PLDkpBidsFrame_GetMainCharOfTwink(PLDKPBids.myName)
-
-		if PLDKPBids:PlayerHasDkpData(PLDKPBids.myName) then
-			PLDKPFormMyNameLabel:SetText(PLDKPBids.myName)
-			PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(PLDKPBids.myName)) .. " DKP (" .. (PLDKP_DkpInfo.date or "na") .. ")")
-		elseif PLDKPBids:PlayerHasDkpData(main) then
-			PLDKPFormMyNameLabel:SetText(main)
-			PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(main)) .. " DKP (" .. (PLDKP_DkpInfo.date or "na") .. ")")
-		else
-			PLDKPFormMyName:Hide()
-			PLDKPFormMyDkp:Hide()
-		end
+		PLDKPBids:UpdateMyDkpStanding()
 	end
 
 	if (event == "VARIABLES_LOADED") then
@@ -493,6 +482,21 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 				break;
 			end
 		end
+	end
+end
+
+function PLDKPBids:UpdateMyDkpStanding()
+	local main = PLDkpBidsFrame_GetMainCharOfTwink(PLDKPBids.myName)
+
+	if PLDKPBids:PlayerHasDkpData(PLDKPBids.myName) then
+		PLDKPFormMyNameLabel:SetText(PLDKPBids.myName)
+		PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(PLDKPBids.myName)) .. " DKP (" .. (PLDKP_DkpInfo.date or "na") .. ")")
+	elseif PLDKPBids:PlayerHasDkpData(main) then
+		PLDKPFormMyNameLabel:SetText(main)
+		PLDKPFormMyDkpLabel:SetText(tostring(PLDKPBids:PlayerGetDkpData(main)) .. " DKP (" .. (PLDKP_DkpInfo.date or "na") .. ")")
+	else
+		PLDKPFormMyName:Hide()
+		PLDKPFormMyDkp:Hide()
 	end
 end
 
@@ -870,6 +874,28 @@ function PLDkpBidsFrame_OnCommand(msg)
 		elseif (command == "test" ) then
 			PLDKP_println("PLDKP: test command ...");
 			PLDkpBidsFrame_GenerateTwinktranslationTable();
+		elseif (command == "mrtloottest") then
+			PLDKP_println("PLDKP: mrtloottest command ...");
+
+			local itemInfo = {
+					["ItemLink"] = "|cffa335ee|Hitem:18822::::::::60:::::::|h[Obsidian Edged Blade]|h|r",
+					["ItemString"] = "item:18822::::::::60:::::::",
+					["ItemId"] = 18822,
+					["ItemName"] = "Obsidian Edged Blade 2",
+					["ItemColor"] = "ffa335ee",
+					["ItemCount"] = 1,
+					["BossNumber"] = 1,
+					["Looter"] = "Roldhak",
+					["DKPValue"] = 90,
+					["Note"] = "note",
+					["Time"] = time(),
+					};
+
+			local callType = MRT_NOTIFYSOURCE_DELETE_GUI
+			local raidNumber = 1
+			local lootNumber = 1
+
+			PLDKPBids_MrtLootNotify(itemInfo, callType, raidNumber, lootNumber, nil)
 		end
 	end
 
