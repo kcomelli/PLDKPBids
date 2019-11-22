@@ -239,6 +239,7 @@ PLDKP_OPTIONS_DEBUG_MODE_TP = "Click here to turn debug mode on or off.";
 
 PLDKP_BUILD_OUTOFDATE = "PLDKP: Your version of PLDkp Bids is out-of-date! Please update to latest version!"
 PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Received new DKP data from: %s from player %s"
+PLDKP_RECEIVED_DEL_WINNER = "PLDKP: Remove winner info for %s from player %s"
 PLDKP_RECEIVED_WINNER_INFO = "PLDKP: Received auction winner information: %s from player %s"
 PLDKP_RECEIVED_MRT_LOOT_INFO = "PLDKP: Received MRT loot notification: %s from player %s"
 
@@ -451,3 +452,5 @@ end
 	PLDKP_BUILD_OUTOFDATE = "PLDKP: Deine Version von PLDkp Bids ist veraltet! Bitte update auf die neuerste Version!"
 	PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Neue DKP Daten erhalten. Stand: %s von %s"
 	PLDKP_RECEIVED_WINNER_INFO = "PLDKP: Neue Gewinnerinformationen erhalten: %s von %s"
+	PLDKP_RECEIVED_DEL_WINNER = "PLDKP: Gewinnerinfo für %s geloescht von Spieler %s"
+	PLDKP_RECEIVED_MRT_LOOT_INFO = "PLDKP: MRT Lootinfo empfangen: %s von Spieler %s"

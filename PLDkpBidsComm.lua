@@ -17,6 +17,8 @@ function PLDKPBids.Sync:OnEnable()
     PLDKPBids.Sync:RegisterComm("PLDKPDkpSync", PLDKPBids.Sync:OnCommReceived())	        -- DKP data sync
     PLDKPBids.Sync:RegisterComm("PLDKPDkpWinner", PLDKPBids.Sync:OnCommReceived())	        -- A new winner data was sent after an auction
     PLDKPBids.Sync:RegisterComm("PLMRTItemLoot", PLDKPBids.Sync:OnCommReceived())	        -- A new item loot info from another raidtracker has been received
+    PLDKPBids.Sync:RegisterComm("PLDKPDelWinner", PLDKPBids.Sync:OnCommReceived())	        -- Delete a winner info
+    PLDKPBids.Sync:RegisterComm("PLDKPEdtWinner", PLDKPBids.Sync:OnCommReceived())	        -- Edit a winner info
 end
 
 function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
@@ -93,15 +95,17 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
             else
                 print(deserialized)  -- error reporting if string doesn't get deserialized correctly
             end
-        elseif prefix == "PLDKPDkpWinner" and sender ~= UnitName("player") then
+        elseif (prefix == "PLDKPDkpWinner" or prefix == "PLDKPEdtWinner") and sender ~= UnitName("player") then
             decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
             local success, deserialized = LibAceSerializer:Deserialize(decoded);
             if success then
-                if PLDKP_CurrentRaidID ~= deserialized.data["RaidID"] then
-                    -- activiate raid id
-                    -- important if MRT asks for prize
-                    PLDKP_CurrentRaidID = deserialized.data["RaidID"]
-                end
+                if prefix == "PLDKPDkpWinner" then
+                    if PLDKP_CurrentRaidID ~= deserialized.data["RaidID"] then
+                        -- activiate raid id
+                        -- important if MRT asks for prize
+                        PLDKP_CurrentRaidID = deserialized.data["RaidID"]
+                    end
+                end 
 
                 -- fix if not receiving texture informations
                 if not deserialized.data["ItemTexture"] and deserialized.data["ItemLink"] then
@@ -112,6 +116,17 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
 
                 PLDKP_LastWinners[deserialized.raidId] = deserialized.data
                 PLDKP_println(string.format(PLDKP_RECEIVED_WINNER_INFO, ((deserialized.data["Name"] or "na") .. " - " .. (deserialized.data["ItemLink"] or "na") .. " - " .. (deserialized.data["Price"] or "na") .. "DKP"), sender))
+            else
+                print(deserialized)  -- error reporting if string doesn't get deserialized correctly
+            end
+        elseif prefix == "PLDKPDelWinner" and sender ~= UnitName("player") then
+            decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
+            local success, deserialized = LibAceSerializer:Deserialize(decoded);
+            if success then
+                if PLDKP_LastWinners[deserialized.raidId] then
+                    PLDKP_LastWinners[deserialized.raidId] = nil
+                    PLDKP_println(string.format(PLDKP_RECEIVED_DEL_WINNER, ((deserialized.data["Name"] or "na") .. " - " .. (deserialized.data["ItemLink"] or "na") .. " - " .. (deserialized.data["Price"] or "na") .. "DKP"), sender))
+                end
             else
                 print(deserialized)  -- error reporting if string doesn't get deserialized correctly
             end
@@ -186,13 +201,30 @@ function PLDKPBids.Sync:VerifyAndRequestVersion(versionInfoReceived)
 end
 
 function PLDKPBids.Sync:BroadCastLastWinnerData(raidId, winnerInfo)
-    -- if I have a version higher than the requested
     local winnerData = {}
     winnerData.raidId = raidId
     winnerData.data = winnerInfo
 
     -- send data
     PLDKPBids.Sync:SendData("PLDKPDkpWinner", winnerData)
+end
+
+function PLDKPBids.Sync:BroadCastEditLastWinnerData(raidId, winnerInfo)
+    local winnerData = {}
+    winnerData.raidId = raidId
+    winnerData.data = winnerInfo
+
+    -- send data
+    PLDKPBids.Sync:SendData("PLDKPEdtWinner", winnerData)
+end
+
+function PLDKPBids.Sync:BroadCastDeleteLastWinnerData(raidId, winnerInfo)
+    local winnerData = {}
+    winnerData.raidId = raidId
+    winnerData.data = winnerInfo
+
+    -- send data
+    PLDKPBids.Sync:SendData("PLDKPDelWinner", winnerData)
 end
 
 function PLDKPBids.Sync:SendData(prefix, data)
@@ -254,7 +286,7 @@ function PLDKPBids.Sync:SendData(prefix, data)
 
         local channel = "GUILD"
 
-        if prefix == "PLDKPDkpWinner" or prefix == "PLMRTItemLoot" then
+        if prefix == "PLDKPDkpWinner" or prefix == "PLDKPDelWinner" or prefix == "PLDKPEdtWinner" or prefix == "PLMRTItemLoot" then
             if UnitInRaid("player") then
                 channel = "RAID"
             elseif UnitInParty("player") then

@@ -62,7 +62,7 @@ function PLDkpBidsNoteFrame_NoteEditENTER()
 		PLDKP_println(string.format(PLDKP_NOTE_SAVED,PLDKP_WinnerNote));
 
 		-- send winner data to other addons
-		PLDKPBids.Sync:BroadCastLastWinnerData(PLDKP_WinnerNoteKey, PLDKP_LastWinners[PLDKP_WinnerNoteKey])
+		PLDKPBids.Sync:BroadCastEditLastWinnerData(PLDKP_WinnerNoteKey, PLDKP_LastWinners[PLDKP_WinnerNoteKey])
 	else
 		PLDKP_println(PLDKP_NOTE_NOTSAVED);
 	end

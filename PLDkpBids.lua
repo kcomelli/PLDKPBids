@@ -2079,6 +2079,7 @@ function PLDkpBids_OnDelWinner(buttonID)
 	if ( sDate ~= nil ) then
 		
 		if ( (PLDKP_LastWinners[sDate] ~= nil) ) then
+			PLDKPBids.Sync:BroadCastDeleteLastWinnerData(sDate, PLDKP_LastWinners[sDate])
 			PLDKP_LastWinners[sDate] = nil;
 		end
 	end
@@ -3057,6 +3058,8 @@ function PLDkpBidsFrame_FillLastWinners()
 				getglobal("LastWinnersListButton"..i.."Item"):SetDisabledTexture(PLDKP_LastWinners[sDate]["ItemTexture"]);
 
 				getglobal("LastWinnersListButton"..i):Show();
+			else
+				getglobal("LastWinnersListButton"..i):Hide();
 			end
 		end
 	end
