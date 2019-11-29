@@ -450,7 +450,6 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 			return;
 		end
 
-
 		PLDkpBidsFrame_GenerateTwinktranslationTable()
 		PLDKPBids:UpdateMyDkpStanding()
 	end

@@ -142,7 +142,6 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
             else
                 PLDKP_debug("Error deserializing: " .. deserialized)
                 print(deserialized)  -- error reporting if string doesn't get deserialized correctly
-                
             end
         end
     end
