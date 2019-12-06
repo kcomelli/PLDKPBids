@@ -53,6 +53,9 @@ end
 -- lootAction = MRT_LOOTACTION_DISENCHANT
 -- lootAction = MRT_LOOTACTION_DELETE
 
+-- -----------------------------------------------------------------------------
+-- MRT item price query hook
+--
 function PLDKPBids_MrtQueryItemCost(notifierInfo)
 
     --local notifierInfo = {
@@ -80,6 +83,9 @@ function PLDKPBids_MrtQueryItemCost(notifierInfo)
     end
 end
 
+-- -----------------------------------------------------------------------------
+-- MRT loot info hook
+--
 function PLDKPBids_MrtLootNotify(itemInfo, callType, raidNumber, lootNumber, oldItemInfo)
     --local itemInfo = {
     --    ["ItemLink"] = itemLink,
@@ -124,6 +130,54 @@ end
 -- --------------------------------------------------------------------------
 -- MRT specific comms receiving functions
 -- --------------------------------------------------------------------------
+
+-- -----------------------------------------------------------------------------
+-- Will be called if receiving loot info via comms
+--
+function PLDKPBids:MrtReceivedLootNotification(sender, raidInfo, itemInfo, callType, raidNumber, lootNumber, oldItemInfo)
+    local localRaidNum = PLDKPBids:FindLocalMrtRaid(raidInfo)
+
+    if localRaidNum then
+        local existingItemOfCurrentRaid, existingItemLootNum = PLDKPBids:ExistingLootForRaid(localRaidNum, itemInfo)
+
+        if callType == MRT_NOTIFYSOURCE_EDIT_GUI and oldItemInfo then
+            -- in case of an edit - search using the old item info
+            existingItemOfCurrentRaid, existingItemLootNum = PLDKPBids:ExistingLootForRaid(localRaidNum, oldItemInfo)
+        end
+
+        if existingItemOfCurrentRaid and existingItemLootNum then
+            if callType == MRT_NOTIFYSOURCE_DELETE_GUI then
+                -- removing existing item
+                PLDKP_debug("Removing item from raidlog: Looter: " .. (existingItemOfCurrentRaid["Looter"] or "n/a") .. ", ItemLink: " .. (existingItemOfCurrentRaid["ItemLink"] or "n/a") .. ", Price: " .. tostring(existingItemOfCurrentRaid["DKPValue"] or 0))
+                -- removing loot from local table
+                tremove(MRT_RaidLog[localRaidNum]["Loot"], existingItemLootNum);
+
+            elseif callType == MRT_NOTIFYSOURCE_EDIT_GUI then
+                PLDKP_debug("Modifying item in raidlog: Looter: " .. (existingItemOfCurrentRaid["Looter"] or "n/a") .. ", ItemLink: " .. (existingItemOfCurrentRaid["ItemLink"] or "n/a").. ", Price: " .. tostring(existingItemOfCurrentRaid["DKPValue"] or 0))
+                -- hange item info
+                MRT_RaidLog[localRaidNum]["Loot"][existingItemLootNum] = itemInfo
+            else
+                -- check DKP Value
+                if not existingItemOfCurrentRaid["DKPValue"] or existingItemOfCurrentRaid["DKPValue"] <= 0 and itemInfo["DKPValue"] then
+                    PLDKP_debug("Update DKP value of already logged in raidlog. Looter: " .. (itemInfo["Looter"] or "n/a") .. ", ItemLink: " .. (itemInfo["ItemLink"] or "n/a").. ", Price: " .. tostring(itemInfo["DKPValue"] or 0))
+                    existingItemOfCurrentRaid["DKPValue"] = itemInfo["DKPValue"]
+                else
+                    PLDKP_debug("Item already logged in raidlog - skipping. Looter: " .. (itemInfo["Looter"] or "n/a") .. ", ItemLink: " .. (itemInfo["ItemLink"] or "n/a").. ", Price: " .. tostring(itemInfo["DKPValue"] or 0))
+                end
+            end
+        else
+            if callType == MRT_NOTIFYSOURCE_ADD_POPUP or callType == MRT_NOTIFYSOURCE_ADD_SILENT or callType == MRT_NOTIFYSOURCE_ADD_GUI then
+                PLDKP_debug("Inserting new item in raidlog: Looter: " .. (itemInfo["Looter"] or "n/a") .. ", ItemLink: " .. (itemInfo["ItemLink"] or "n/a").. ", Price: " .. tostring(itemInfo["DKPValue"] or 0))
+                tinsert(MRT_RaidLog[localRaidNum]["Loot"], itemInfo);
+            else
+                PLDKP_debug("Do not add new loot item because of callType was not ADD")
+            end
+        end
+    else
+        PLDKP_debug("Error transforming incoming raidinformation to local raid index")
+    end
+end
+
 
 -- --------------------------------------------------------------------------
 -- FindLocalMrtRaid
@@ -184,6 +238,9 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
     return nil
 end
 
+-- -----------------------------------------------------------------------------
+-- Check if the loot info of an item has already been recorded
+--
 function PLDKPBids:ExistingLootForRaid(raidNumber, itemInfo)
     
     if MRT_RaidLog[raidNumber]["Loot"] then
@@ -199,46 +256,3 @@ function PLDKPBids:ExistingLootForRaid(raidNumber, itemInfo)
     return nil, nil
 end
 
-function PLDKPBids:MrtReceivedLootNotification(sender, raidInfo, itemInfo, callType, raidNumber, lootNumber, oldItemInfo)
-    local localRaidNum = PLDKPBids:FindLocalMrtRaid(raidInfo)
-
-    if localRaidNum then
-        local existingItemOfCurrentRaid, existingItemLootNum = PLDKPBids:ExistingLootForRaid(localRaidNum, itemInfo)
-
-        if callType == MRT_NOTIFYSOURCE_EDIT_GUI and oldItemInfo then
-            -- in case of an edit - search using the old item info
-            existingItemOfCurrentRaid, existingItemLootNum = PLDKPBids:ExistingLootForRaid(localRaidNum, oldItemInfo)
-        end
-
-        if existingItemOfCurrentRaid and existingItemLootNum then
-            if callType == MRT_NOTIFYSOURCE_DELETE_GUI then
-                -- removing existing item
-                PLDKP_debug("Removing item from raidlog: Looter: " .. (existingItemOfCurrentRaid["Looter"] or "n/a") .. ", ItemLink: " .. (existingItemOfCurrentRaid["ItemLink"] or "n/a") .. ", Price: " .. tostring(existingItemOfCurrentRaid["DKPValue"] or 0))
-                -- removing loot from local table
-                tremove(MRT_RaidLog[localRaidNum]["Loot"], existingItemLootNum);
-
-            elseif callType == MRT_NOTIFYSOURCE_EDIT_GUI then
-                PLDKP_debug("Modifying item in raidlog: Looter: " .. (existingItemOfCurrentRaid["Looter"] or "n/a") .. ", ItemLink: " .. (existingItemOfCurrentRaid["ItemLink"] or "n/a").. ", Price: " .. tostring(existingItemOfCurrentRaid["DKPValue"] or 0))
-                -- hange item info
-                MRT_RaidLog[localRaidNum]["Loot"][existingItemLootNum] = itemInfo
-            else
-                -- check DKP Value
-                if not existingItemOfCurrentRaid["DKPValue"] or existingItemOfCurrentRaid["DKPValue"] <= 0 and itemInfo["DKPValue"] then
-                    PLDKP_debug("Update DKP value of already logged in raidlog. Looter: " .. (itemInfo["Looter"] or "n/a") .. ", ItemLink: " .. (itemInfo["ItemLink"] or "n/a").. ", Price: " .. tostring(itemInfo["DKPValue"] or 0))
-                    existingItemOfCurrentRaid["DKPValue"] = itemInfo["DKPValue"]
-                else
-                    PLDKP_debug("Item already logged in raidlog - skipping. Looter: " .. (itemInfo["Looter"] or "n/a") .. ", ItemLink: " .. (itemInfo["ItemLink"] or "n/a").. ", Price: " .. tostring(itemInfo["DKPValue"] or 0))
-                end
-            end
-        else
-            if callType == MRT_NOTIFYSOURCE_ADD_POPUP or callType == MRT_NOTIFYSOURCE_ADD_SILENT or callType == MRT_NOTIFYSOURCE_ADD_GUI then
-                PLDKP_debug("Inserting new item in raidlog: Looter: " .. (itemInfo["Looter"] or "n/a") .. ", ItemLink: " .. (itemInfo["ItemLink"] or "n/a").. ", Price: " .. tostring(itemInfo["DKPValue"] or 0))
-                tinsert(MRT_RaidLog[localRaidNum]["Loot"], itemInfo);
-            else
-                PLDKP_debug("Do not add new loot item because of callType was not ADD")
-            end
-        end
-    else
-        PLDKP_debug("Error transforming incoming raidinformation to local raid index")
-    end
-end
