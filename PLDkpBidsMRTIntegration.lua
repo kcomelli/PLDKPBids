@@ -111,8 +111,10 @@ function PLDKPBids_MrtLootNotify(itemInfo, callType, raidNumber, lootNumber, old
         mrtLootData.raidInfo["RaidSize"] = MRT_RaidLog[raidNumber]["RaidSize"]
         mrtLootData.raidInfo["Realm"] = MRT_RaidLog[raidNumber]["Realm"]
         mrtLootData.raidInfo["StartTime"] = MRT_RaidLog[raidNumber]["StartTime"]
+        mrtLootData.raidInfo["MostRecentRaid"] = (raidNumber == #MRT_RaidLog)
 
         PLDKP_debug("Sending MRT loot notification data...")
+        -- send this raid info via AddonComs in RAID channel !
         PLDKPBids.Sync:SendData("PLMRTItemLoot", mrtLootData)
     else
         PLDKP_debug("MRT_RaidLog is not present or does not contain a raid with the given id " .. tostring(raidNumber))
@@ -135,6 +137,11 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
     end
 
     if MRT_RaidLog then
+        if raidInfo["MostRecentRaid"] == true then
+            PLDKP_debug("raidInfo to check is the most recent raid - returning '" .. tostring(#MRT_RaidLog) .. "' as the translated id")
+            return #MRT_RaidLog
+        end
+
         for i = 1, #MRT_RaidLog do
             local compareRaid = MRT_RaidLog[i]
 
