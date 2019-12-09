@@ -192,8 +192,29 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
 
     if MRT_RaidLog then
         if raidInfo["MostRecentRaid"] == true then
-            PLDKP_debug("raidInfo to check is the most recent raid - returning '" .. tostring(#MRT_RaidLog) .. "' as the translated id")
-            return #MRT_RaidLog
+
+            local compareRaid = MRT_RaidLog[#MRT_RaidLog]
+
+            if compareRaid["RaidZone"] == raidInfo["RaidZone"] and 
+                compareRaid["RaidSize"] == raidInfo["RaidSize"] and 
+                compareRaid["Realm"] == raidInfo["Realm"] and
+                compareRaid["DiffID"] == raidInfo["DiffID"] then
+
+                    local diff = (compareRaid["StartTime"] or 0) - (raidInfo["StartTime"] or 0)
+
+                    if diff < 0 then
+                        diff = diff * -1
+                    end
+
+                    if diff <= maxRaidTimeDiff then
+                        PLDKP_debug("raidInfo to check is the most recent raid - returning '" .. tostring(#MRT_RaidLog) .. "' as the translated id")
+                        return #MRT_RaidLog
+                    else
+                        PLDKP_errln("Latest raid matches but is older or newer than the current one (at least 1 day), searching matching raid")
+                    end
+            else
+                PLDKP_errln("Latest raid not matching incoming query, searching matching raid")
+            end
         end
 
         for i = 1, #MRT_RaidLog do
@@ -221,12 +242,19 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
                             for b=1, #compareRaid["Bosskills"] do
                                 bossesEquals = bossesEquals and ((compareRaid["Bosskills"][b]["BossId"] and raidInfo["Bosskills"][b]["BossId"] and compareRaid["Bosskills"][b]["BossId"] == raidInfo["Bosskills"][b]["BossId"] and compareRaid["Bosskills"][b]["Difficulty"] == raidInfo["Bosskills"][b]["Difficulty"]) 
                                                                  or ( compareRaid["Bosskills"][b]["Difficulty"] == raidInfo["Bosskills"][b]["Difficulty"] and compareRaid["Bosskills"][b]["Name"] == raidInfo["Bosskills"][b]["Name"]))
+
+                                if bossesEquals == false then
+                                    PLDKP_errln("Boss nr: " .. tostring(b) .. " did not match! Id: " .. tostring(raidInfo["Bosskills"][b]["BossId"] or "na") .. "/" .. tostring(compareRaid["Bosskills"][b]["BossId"] or "na") .. ", Diff: " .. tostring(raidInfo["Bosskills"][b]["Difficulty"] or "na") .. "/" .. tostring(compareRaid["Bosskills"][b]["Difficulty"] or "na"))
+                                    b = #compareRaid["Bosskills"]
+                                end
                             end
 
                             if bossesEquals then
                                 return i
                             end
                         end
+                    else
+                        PLDKP_errln("Found match at '" .. tostring(i) .. "' but is older or newer than the current one (at least 1 day), searching matching raid")
                     end
             end
         end
