@@ -1087,6 +1087,7 @@ function PLDKP_ResetBid(args)
 	_pldkp_bidRunning = false;
 	_pldkp_acceptBids = false;
 	_pldkp_timeEnd=nil;
+	_elapsed = 0;
 	
 	PLDkpBidsFrame_UnSchedule("PLDKP_Warnings");
 	
