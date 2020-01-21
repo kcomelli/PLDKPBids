@@ -82,7 +82,9 @@ PLDKP_CurrentRaidMode = "N"; -- N ... normal, H ... heroic
 PLDKP_CurrentRaidID = "";
 
 PLDKP_AllowTwinkBids = true;
+PLDKP_AllowTwinkBids_Saved = true;
 PLDKP_CurItemIsSetToken = false;
+PLDKP_MainOverTwinks = true;
 
 PLDKP_WinnerNote = "";
 PLDKP_WinnerNoteKey = "";
@@ -237,9 +239,12 @@ function PLDKP_ItemLinkClick(chatframe, linktype, data, button)
 		
 		PLDKPBidsFrame_CheckIfItemIsSetToken(data);
 		if( PLDKP_CurItemIsSetToken ) then
+			if(PLDKP_AllowTwinkBids == true) then
+				PLDKP_AllowTwinkBids_Saved = true
+			end
 			PLDKP_AllowTwinkBids = false;
 		else
-			PLDKP_AllowTwinkBids = true;
+			PLDKP_AllowTwinkBids = PLDKP_AllowTwinkBids_Saved;
 		end
 		
 		_pldkp_currentItem = data;
@@ -323,9 +328,12 @@ function PLDKP_LootFrameItem_OnClick(self, button)
 	
 			PLDKPBidsFrame_CheckIfItemIsSetToken(itemlink);
 			if( PLDKP_CurItemIsSetToken ) then
+				if(PLDKP_AllowTwinkBids == true) then
+					PLDKP_AllowTwinkBids_Saved = true
+				end
 				PLDKP_AllowTwinkBids = false;
 			else
-				PLDKP_AllowTwinkBids = true;
+				PLDKP_AllowTwinkBids = PLDKP_AllowTwinkBids_Saved;
 			end
 	
 			LootFrame:Hide();
@@ -742,8 +750,6 @@ function PLDkpBidsFrame_GenerateID()
 	
 end
 
-
-
 ---------------------------------------------------------------------
 -- function PLDkpBidsFrame_OnUpdate(self, elapsed)
 --
@@ -995,6 +1001,7 @@ end
 ---------------------------------------------------------------------
 function PLDKP_StartAuction(itemLink, itemTexture, minPrice, sec)
 	local playerName = PLDKPBids:GetPlayerName("player");
+	local mainInfo = "";
 
 	-- always recreate this table before start an auction
 	PLDKP_TwinktranslationTable = {}
@@ -1013,11 +1020,17 @@ function PLDKP_StartAuction(itemLink, itemTexture, minPrice, sec)
 	_pldkp_currentItem = itemLink;
 	_pldkp_currentItemTexture = itemTexture;
 
+	PLDKP_ScheduledActions = {}
+
 	SendChatMessage(PLDKP_BID_OPENING1, PLDKP_GetAnnounceChannel());
 	SendChatMessage(string.format(PLDKP_BID_OPENING2, _pldkp_currentBidTime), PLDKP_GetAnnounceChannel());
 	
 	if(PLDKP_AllowTwinkBids) then
-		SendChatMessage(PLDKP_BID_OPENING5, PLDKP_GetAnnounceChannel());
+		if(PLDKP_MainOverTwinks) then
+			mainInfo = PLDKP_BID_MAINOVERTWINK
+		end
+
+		SendChatMessage(string.format(PLDKP_BID_OPENING5, mainInfo), PLDKP_GetAnnounceChannel());
 	else
 		SendChatMessage(PLDKP_BID_OPENING6, PLDKP_GetAnnounceChannel());
 	end
@@ -1116,7 +1129,11 @@ function PLDKP_ResetMod()
 	
 	_pldkp_bidRunning = false;
 	_pldkp_acceptBids = false;
+	_elapsed = 0;
 	PLDKP_CurrentBids = {};
+	PLDKP_InBuffer = {};
+	PLDKP_OutBuffer = {};
+
 	_pldkp_currentItem = "";
 end
 
@@ -1173,6 +1190,7 @@ function PLDKP_EndOfBids()
 	
 	local winners = nil;
 	local biggestBid = 0;
+	local ignoredTwinkBids = false;
 	local price = _pldkp_currentMinBid;
 	local nCount = PLDKP_CountBids();
 	local nCountWinners = 0;
@@ -1182,7 +1200,7 @@ function PLDKP_EndOfBids()
 	_pldkp_lastWinner = "";
 	
 	if ( nCount > 0 ) then
-		biggestBid = PLDKP_BiggestBid();
+		biggestBid, ignoredTwinkBids = PLDKP_BiggestBid();
 		winners = PLDKP_GetBidWinner(biggestBid);
 		price = PLDKP_Price(biggestBid) + PLDkpBidsOptions["PriceAddVal"];
 		
@@ -1255,6 +1273,10 @@ function PLDKP_EndOfBids()
 					SendChatMessage(string.format(PLDKP_BID_WINNER4, sWinners, price), PLDKP_GetAnnounceChannel());
 					_pldkp_lastWinner = string.gsub(string.format(PLDKP_BID_WINNER2, sWinners, price), "*** ", "");
 				end
+
+				if (ignoredTwinkBids) then
+					SendChatMessage(PLDKP_BID_WINNER9, PLDKP_GetAnnounceChannel());
+				end
 				
 				PLDKP_AddLastWinner(sWinners, price);
 
@@ -1263,9 +1285,15 @@ function PLDKP_EndOfBids()
 				SendChatMessage(string.format(PLDKP_BID_WINNER3, sWinners, price), PLDKP_GetAnnounceChannel());
 				_pldkp_lastWinner = string.gsub(string.format(PLDKP_BID_WINNER3, sWinners, price), "*** ", "");
 				
+				if (ignoredTwinkBids) then
+					SendChatMessage(PLDKP_BID_WINNER9, PLDKP_GetAnnounceChannel());
+				end
+
 				PLDKP_AddLastWinner(sWinners, price);
 			end
 		else
+			nCount = PLDKP_CountRelevantBids()
+
 			if ( (nCount == 1) and (nCountWinners == 1) ) then
 				
 				gamerInfo = winners[1];
@@ -1280,6 +1308,10 @@ function PLDKP_EndOfBids()
 				SendChatMessage(string.format(PLDKP_BID_WINNER2, gamerInfo, price), PLDKP_GetAnnounceChannel());
 				_pldkp_lastWinner = string.gsub(string.format(PLDKP_BID_WINNER2, gamerInfo, price), "*** ", "");
 				
+				if (ignoredTwinkBids) then
+					SendChatMessage(PLDKP_BID_WINNER9, PLDKP_GetAnnounceChannel());
+				end
+
 				PLDKP_AddLastWinner(winners[1], price);
 			else
 				--price = _pldkp_currentMinBid + PLDkpBidsOptions["PriceAddVal"];
@@ -1294,6 +1326,10 @@ function PLDKP_EndOfBids()
 				SendChatMessage(string.format(PLDKP_BID_WINNER2, gamerInfo, price), PLDKP_GetAnnounceChannel());
 				_pldkp_lastWinner = string.gsub(string.format(PLDKP_BID_WINNER2, gamerInfo, price), "*** ", "");
 				
+				if (ignoredTwinkBids) then
+					SendChatMessage(PLDKP_BID_WINNER9, PLDKP_GetAnnounceChannel());
+				end
+
 				PLDKP_AddLastWinner(winners[1], price);
 			end
 		end
@@ -1499,20 +1535,76 @@ function PLDKP_CountBids()
 end
 
 ---------------------------------------------------------------------
--- function PLDKP_BiggestBid()
+-- function PLDKP_CountRelevantBids()
 --
--- gets the biggest bid
+-- counts the relevant number of recorded bids for getting the bid price
 ---------------------------------------------------------------------
-function PLDKP_BiggestBid()
-	local bid = 0;
+function PLDKP_CountRelevantBids()
+	local cnt = 0;
+	local mixedBids = PLDKP_HasMixedBids();
 
 	for plName in pairs(PLDKP_CurrentBids) do
-		if ( PLDKP_CurrentBids[plName] and (PLDKP_CurrentBids[plName] > bid) ) then
-			bid = PLDKP_CurrentBids[plName];
+		if ( plName ) then
+			if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)) then
+				cnt = cnt
+			else
+				cnt = cnt+1;
+			end
 		end
 	end	
 	
-	return bid;
+	return cnt;
+end
+
+---------------------------------------------------------------------
+-- function PLDKP_BiggestBid()
+--
+-- gets the biggest bid and a flag if twink bids had been ignored due to 
+-- existing main 
+---------------------------------------------------------------------
+function PLDKP_BiggestBid()
+	local bid = 0;
+	local ignoredTwinkBidsBecauseExistingMains = false;
+	local mixedBids = PLDKP_HasMixedBids();
+	
+	for plName in pairs(PLDKP_CurrentBids) do
+		if ( PLDKP_CurrentBids[plName] and (PLDKP_CurrentBids[plName] > bid) ) then
+			-- if main over twink is set, we have mixed bid table and the current name is a twink
+			-- ignore the bid and set the flag for displaying the info
+			if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)) then
+				ignoredTwinkBidsBecauseExistingMains = true
+			else
+				bid = PLDKP_CurrentBids[plName];
+			end
+		end
+	end	
+	
+	return bid, ignoredTwinkBidsBecauseExistingMains;
+end
+
+---------------------------------------------------------------------
+-- function PLDKP_HasMixedBids()
+--
+-- returns true if the current bid table contains main chars AND twinks
+---------------------------------------------------------------------
+function PLDKP_HasMixedBids()
+	local mixedBids = false
+
+	local nCount = PLDKP_CountBids();
+
+	if(nCount > 0) then
+		for plName in pairs(PLDKP_CurrentBids) do
+			-- plName is a main char
+			foundMains = foundMains or ( PLDkpBidsFrame_GetMainCharOfTwink(plName) == plName)
+			-- plName is a twink
+			foundTwinks = foundTwinks or ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)
+		end
+
+		-- true if we have a 
+		mixedBids = foundMains and foundTwinks;
+	end
+
+	return mixedBids
 end
 
 ---------------------------------------------------------------------
@@ -1523,6 +1615,7 @@ end
 function PLDKP_GetBidWinner(biggestBid)
 	local bid = 0;
 	local winnerNames = {};
+	local mixedBids = PLDKP_HasMixedBids();
 
 	local nCount = PLDKP_CountBids();
 	
@@ -1532,7 +1625,12 @@ function PLDKP_GetBidWinner(biggestBid)
 			table.insert(winnerNames, plName);
 		else
 			if ( PLDKP_CurrentBids[plName] == biggestBid ) then
-				table.insert(winnerNames, plName);
+				if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)) then
+					-- ignore because this is a twink which will be filtered due to the main > twink rule
+					bid = bid
+				else
+					table.insert(winnerNames, plName);
+				end
 			end
 		end
 	end	
@@ -1550,6 +1648,7 @@ function PLDKP_Price(biggestBid)
 
 	local nCount = PLDKP_CountBids();
 	local biggesBidCount = 0;
+	local mixedBids = PLDKP_HasMixedBids();
 	
 	if ( nCount == 1) then
 		bid = _pldkp_currentMinBid;
@@ -1557,12 +1656,17 @@ function PLDKP_Price(biggestBid)
 	
 	if ( nCount > 1) then
 		for plName in pairs(PLDKP_CurrentBids) do
-			if ( PLDKP_CurrentBids[plName] and (PLDKP_CurrentBids[plName] > bid) and (PLDKP_CurrentBids[plName] < biggestBid) ) then
-				bid = PLDKP_CurrentBids[plName];
-			end
-			
-			if ( PLDKP_CurrentBids[plName] and PLDKP_CurrentBids[plName] == biggestBid) then
-				biggesBidCount = biggesBidCount + 1;
+
+			if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)) then
+				bid = bid
+			else
+				if ( PLDKP_CurrentBids[plName] and (PLDKP_CurrentBids[plName] > bid) and (PLDKP_CurrentBids[plName] < biggestBid) ) then
+					bid = PLDKP_CurrentBids[plName];
+				end
+				
+				if ( PLDKP_CurrentBids[plName] and PLDKP_CurrentBids[plName] == biggestBid) then
+					biggesBidCount = biggesBidCount + 1;
+				end
 			end
 		end
 	else
@@ -2024,6 +2128,7 @@ function PLDkpBidsFrame_SetVisible(visible)
 	if (visible) then
 		ShowUIPanel(PLDKPForm);
 		PLDKPFormAllowTwinkBidsCheck:SetChecked(PLDKP_AllowTwinkBids);
+		PLDKPFormMainOverTwinkCheck:SetChecked(PLDKP_MainOverTwinks);
 	else
 		HideUIPanel(PLDKPForm);
 		PLDKP_println(PLDKP_ClosedMessage);
@@ -2250,6 +2355,7 @@ function PLDKPForm_InitUI()
 	PLDKPFormAuctionWinnerLabel:Hide();
 	
 	PLDKPFormAllowTwinkBidsLabel:SetText(PLDKP_TOOLTIP_TWINKCHK);
+	PLDKPFormMainOverTwinkLabel:SetText(PLDKP_TOOLTIP_MAINOVERTWINK);
 	
 	PLDkpBidsFrame_ClickTab(1);
 	
@@ -2289,6 +2395,7 @@ function PLDkpBidsFrame_ToggleStartStopAuction()
 		PLDKPFormStartStopAuction:SetText(PLDKP_BUTTON_STARTAUCTION);
 		
 		PLDKPFormAllowTwinkBidsCheck:Enable();
+		PLDKPFormMainOverTwinkCheck:Enable();
 
 	else
 		
@@ -2338,6 +2445,7 @@ function PLDkpBidsFrame_ToggleStartStopAuction()
 		PLDKPFormAuctionWinnerLabel:Hide();
 		
 		PLDKPFormAllowTwinkBidsCheck:Disable();
+		PLDKPFormMainOverTwinkCheck:Disable();
 	end
 end
 
@@ -2370,6 +2478,8 @@ function PLDKPForm_ShowAuctionInfo()
 		
 		PLDKPFormAllowTwinkBids:Hide();
 		PLDKPFormAllowTwinkBidsCheck:Hide();
+		PLDKPFormMainOverTwink:Hide();
+		PLDKPFormMainOverTwinkCheck:Hide();
 	else
 		PLDKPForm_SetUIVisibility(false);
 		PLDKPFormAuctionItemLabel:Show();
@@ -2379,8 +2489,11 @@ function PLDKPForm_ShowAuctionInfo()
 		
 		PLDKPFormAllowTwinkBids:Show();
 		PLDKPFormAllowTwinkBidsCheck:Show();
+		PLDKPFormMainOverTwink:Show();
+		PLDKPFormMainOverTwinkCheck:Show();
 		
 		PLDKPFormAllowTwinkBidsCheck:SetChecked(PLDKP_AllowTwinkBids);
+		PLDKPFormMainOverTwinkCheck:SetChecked(PLDKP_MainOverTwinks);
 		
 		if ( _pldkp_bidRunning == false ) then
 			PLDKPFormAuctionAcceptTimeEdit:Hide();
@@ -2393,6 +2506,7 @@ function PLDKPForm_ShowAuctionInfo()
 			PLDKPFormAuctionTimeRemainingNRLabel:Hide();
 			
 			PLDKPFormAllowTwinkBidsCheck:Enable();
+			PLDKPFormMainOverTwinkCheck:Enable();
 		else
 			PLDKPFormAuctionAcceptTimeEdit:Hide();
 			PLDKPFormAuctionMinDKPEdit:Hide();
@@ -2404,6 +2518,7 @@ function PLDKPForm_ShowAuctionInfo()
 			PLDKPFormAuctionTimeRemainingNRLabel:Show();
 			
 			PLDKPFormAllowTwinkBidsCheck:Disable();
+			PLDKPFormMainOverTwinkCheck:Disable();
 		end
 		
 		PLDKPFormAuctionAcceptTimeUnitLabel:Show();
@@ -2529,6 +2644,21 @@ function PLDkpBidsFrame_AllowTwinkBids()
 	else
 		PLDKP_AllowTwinkBids = true;
 	end
+	PLDKP_AllowTwinkBids_Saved = PLDKP_AllowTwinkBids
+end
+
+---------------------------------------------------------------------
+-- function PLDkpBidsFrame_MainOverTwinks()
+--
+-- Button clicked for setting main over twink results
+--
+---------------------------------------------------------------------
+function PLDkpBidsFrame_MainOverTwinks()
+	if( PLDKP_MainOverTwinks) then
+		PLDKP_MainOverTwinks = false;
+	else
+		PLDKP_MainOverTwinks = true;
+	end
 end
 
 ---------------------------------------------------------------------
@@ -2597,6 +2727,7 @@ function PLDkpBidsFrame_ClickTab(tabID)
 			
 			--PLDKPFormAllowTwinkBids:Hide();
 			PLDKPFormAllowTwinkBidsCheck:Disable();
+			PLDKPFormMainOverTwinkCheck:Disable();
 		else
 			PLDKPFormAuctionTimeRemainingLabel:Hide();
 			PLDKPFormAuctionTimeRemainingNRLabel:Hide();
@@ -2609,6 +2740,7 @@ function PLDkpBidsFrame_ClickTab(tabID)
 			
 			--PLDKPFormAllowTwinkBids:Show();
 			PLDKPFormAllowTwinkBidsCheck:Enable();
+			PLDKPFormMainOverTwinkCheck:Enable();
 			
 			PLDKPFormAuctionWinner:Show();
 		end
@@ -2643,6 +2775,8 @@ function PLDkpBidsFrame_ClickTab(tabID)
 		
 		PLDKPFormAllowTwinkBids:Hide();
 		PLDKPFormAllowTwinkBidsCheck:Hide();
+		PLDKPFormMainOverTwink:Hide();
+		PLDKPFormMainOverTwinkCheck:Hide();
 		
 		
 		CurBidsNameButton:Show();
@@ -2704,6 +2838,8 @@ function PLDkpBidsFrame_ClickTab(tabID)
 		
 		PLDKPFormAllowTwinkBids:Hide();
 		PLDKPFormAllowTwinkBidsCheck:Hide();
+		PLDKPFormMainOverTwink:Hide();
+		PLDKPFormMainOverTwinkCheck:Hide();
 		
 		CurBidsNameButton:Hide();
 		CurBidsClassButton:Hide();
@@ -2764,6 +2900,8 @@ function PLDkpBidsFrame_ClickTab(tabID)
 		
 		PLDKPFormAllowTwinkBids:Hide();
 		PLDKPFormAllowTwinkBidsCheck:Hide();
+		PLDKPFormMainOverTwink:Hide();
+		PLDKPFormMainOverTwinkCheck:Hide();
 		
 		CurBidsNameButton:Hide();
 		CurBidsClassButton:Hide();

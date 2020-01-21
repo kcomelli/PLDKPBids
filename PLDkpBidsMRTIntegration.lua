@@ -2,6 +2,11 @@
 
 local _, PLDKPBids = ...
 
+local LBB = LibStub("LibBabble-Boss-3.0");
+local LBZ = LibStub("LibBabble-Zone-3.0");
+local LBZR = LBZ:GetReverseLookupTable();
+local LBBR = LBB:GetReverseLookupTable();
+
 local maxRaidTimeDiff = 60*60*24 -- 1 day in seconds
 
 function PLDKPBids:PLDKP_RegisterWithMRT()
@@ -112,7 +117,8 @@ function PLDKPBids_MrtLootNotify(itemInfo, callType, raidNumber, lootNumber, old
 
         mrtLootData.raidInfo = {}
         mrtLootData.raidInfo["Bosskills"] = MRT_RaidLog[raidNumber]["Bosskills"]
-        mrtLootData.raidInfo["RaidZone"] = MRT_RaidLog[raidNumber]["RaidZone"]
+        -- send english zone name if available
+        mrtLootData.raidInfo["RaidZone"] = (LBZR[MRT_RaidLog[raidNumber]["RaidZone"]] or MRT_RaidLog[raidNumber]["RaidZone"])
         mrtLootData.raidInfo["DiffID"] = MRT_RaidLog[raidNumber]["DiffID"]
         mrtLootData.raidInfo["RaidSize"] = MRT_RaidLog[raidNumber]["RaidSize"]
         mrtLootData.raidInfo["Realm"] = MRT_RaidLog[raidNumber]["Realm"]
@@ -195,7 +201,7 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
 
             local compareRaid = MRT_RaidLog[#MRT_RaidLog]
 
-            if compareRaid["RaidZone"] == raidInfo["RaidZone"] and 
+            if PLDKPBids:IsSameZone(compareRaid["RaidZone"], raidInfo["RaidZone"]) and 
                 compareRaid["RaidSize"] == raidInfo["RaidSize"] and 
                 compareRaid["Realm"] == raidInfo["Realm"] and
                 compareRaid["DiffID"] == raidInfo["DiffID"] then
@@ -220,7 +226,7 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
         for i = 1, #MRT_RaidLog do
             local compareRaid = MRT_RaidLog[i]
 
-            if compareRaid["RaidZone"] == raidInfo["RaidZone"] and 
+            if PLDKPBids:IsSameZone(compareRaid["RaidZone"], raidInfo["RaidZone"]) and 
                 compareRaid["RaidSize"] == raidInfo["RaidSize"] and 
                 compareRaid["Realm"] == raidInfo["Realm"] and
                 compareRaid["DiffID"] == raidInfo["DiffID"] then
@@ -241,7 +247,7 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
                             -- check if the same bosses had been tracked
                             for b=1, #compareRaid["Bosskills"] do
                                 bossesEquals = bossesEquals and ((compareRaid["Bosskills"][b]["BossId"] and raidInfo["Bosskills"][b]["BossId"] and compareRaid["Bosskills"][b]["BossId"] == raidInfo["Bosskills"][b]["BossId"] and compareRaid["Bosskills"][b]["Difficulty"] == raidInfo["Bosskills"][b]["Difficulty"]) 
-                                                                 or ( compareRaid["Bosskills"][b]["Difficulty"] == raidInfo["Bosskills"][b]["Difficulty"] and compareRaid["Bosskills"][b]["Name"] == raidInfo["Bosskills"][b]["Name"]))
+                                                                 or ( compareRaid["Bosskills"][b]["Difficulty"] == raidInfo["Bosskills"][b]["Difficulty"] and PLDKPBids:IsSameBoss(compareRaid["Bosskills"][b]["Name"], raidInfo["Bosskills"][b]["Name"])))
 
                                 if bossesEquals == false then
                                     PLDKP_errln("Boss nr: " .. tostring(b) .. " did not match! Id: " .. tostring(raidInfo["Bosskills"][b]["BossId"] or "na") .. "/" .. tostring(compareRaid["Bosskills"][b]["BossId"] or "na") .. ", Diff: " .. tostring(raidInfo["Bosskills"][b]["Difficulty"] or "na") .. "/" .. tostring(compareRaid["Bosskills"][b]["Difficulty"] or "na"))
@@ -271,7 +277,7 @@ end
 --
 function PLDKPBids:ExistingLootForRaid(raidNumber, itemInfo)
     
-    if MRT_RaidLog[raidNumber]["Loot"] then
+    if MRT_RaidLog[raidNumber] and MRT_RaidLog[raidNumber]["Loot"] then
         for i=1, #MRT_RaidLog[raidNumber]["Loot"] do
             local compareItem = MRT_RaidLog[raidNumber]["Loot"][i]
 
@@ -284,3 +290,24 @@ function PLDKPBids:ExistingLootForRaid(raidNumber, itemInfo)
     return nil, nil
 end
 
+function PLDKPBids:IsSameZone(zone1, zone2)
+    local ret = false;
+
+    if(zone1 and zone2) then
+        -- compare lcoale zone name and english version
+        ret = (LBZR[zone1] or zone1) == (LBZR[zone2] or zone2)
+    end
+
+    return ret;
+end
+
+function PLDKPBids:IsSameBoss(bossName1, bossName2)
+    local ret = false;
+
+    if(bossName1 and bossName2) then
+        -- compare lcoale boss name and english version
+        ret = (LBBR[bossName1] or bossName1) == (LBBR[zone2] or bossName2)
+    end
+
+    return ret;
+end

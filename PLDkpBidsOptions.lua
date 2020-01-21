@@ -8,6 +8,8 @@
 
 local _, PLDKPBids = ...
 
+local selectedMinDKPZoneName = "Default"
+
 ---------------------------------------------------------------------
 -- event handlersand hooks Options Frame
 ---------------------------------------------------------------------
@@ -67,22 +69,18 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 		PLDkpBidsOptionFrameMinDKPEquipLabel:SetText(PLDKP_OPTIONS_MINDKP_EQUIP);
 		PLDkpBidsOptionFrameMinDKPEquipUnitLabel:SetText(PLDKP_LABEL_DKP);
 		PLDkpBidsOptionFrameMinDKPEquipEdit:Hide();
-		PLDkpBidsOptionFrameMinDKPEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPEquip"]);
 
 		PLDkpBidsOptionFrameMinDKPSetEquipLabel:SetText(PLDKP_OPTIONS_MINDKP_SET);
 		PLDkpBidsOptionFrameMinDKPSetEquipUnitLabel:SetText(PLDKP_LABEL_DKP);
 		PLDkpBidsOptionFrameMinDKPSetEquipEdit:Hide();
-		PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
 
 		PLDkpBidsOptionFrameMinDKPOneHandLabel:SetText(PLDKP_OPTIONS_MINDKP_OH);
 		PLDkpBidsOptionFrameMinDKPOneHandUnitLabel:SetText(PLDKP_LABEL_DKP);
 		PLDkpBidsOptionFrameMinDKPOneHandEdit:Hide();
-		PLDkpBidsOptionFrameMinDKPOneHandEditBtn:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
 
 		PLDkpBidsOptionFrameMinDKPTwoHandLabel:SetText(PLDKP_OPTIONS_MINDKP_TH);
 		PLDkpBidsOptionFrameMinDKPTwoHandUnitLabel:SetText(PLDKP_LABEL_DKP);
 		PLDkpBidsOptionFrameMinDKPTwoHandEdit:Hide();
-		PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
 
 	
 		PLDkpBidsOptionFrameAllowMinBidLabel:SetText(PLDKP_OPTIONS_ALLOW_MINBID);
@@ -147,7 +145,28 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 			UIDropDownMenu_SetSelectedID(PLDkpBidsOptionFrameChannelDropDown, 5);
 			UIDropDownMenu_SetText(PLDkpBidsOptionFrameChannelDropDown, "SAY");
 		end
+
+		PLDkpBidsOptionFrameMinDKPZoneLabel:SetText(PLDKP_OPTIONS_ANNCHANNEL);
+		UIDropDownMenu_SetSelectedID(PLDkpBidsOptionFrameMinDKPZoneDropDown, 1);
+		UIDropDownMenu_SetText(PLDkpBidsOptionFrameMinDKPZoneDropDown, selectedMinDKPZoneName);
+
+		PLDkpBidsOptionsFrame_FillMinDkpOfZone(selectedMinDKPZoneName)
 	end
+end
+
+function PLDkpBidsOptionsFrame_FillMinDkpOfZone(zoneName)
+
+	if(PLDkpBidsOptions["MinDKPPerZone"][zoneName]) then
+		PLDkpBidsOptionFrameMinDKPEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPEquip"] or PLDkpBidsOptions["MinDKPEquip"]);
+		PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPSetEquip"] or PLDkpBidsOptions["MinDKPSetEquip"]);
+		PLDkpBidsOptionFrameMinDKPOneHandEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPOneHand"] or PLDkpBidsOptions["MinDKPOneHand"]);
+		PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPTwoHand"] or PLDkpBidsOptions["MinDKPTwoHand"]);
+	end
+    	PLDkpBidsOptionFrameMinDKPEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPEquip"]);
+		PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
+		PLDkpBidsOptionFrameMinDKPOneHandEditBtn:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
+		PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
+	else
 end
 
 function PLDkpBidsOptionsFrame_AcceptTimeEditESC()
@@ -342,85 +361,204 @@ end
 
 function PLDkpBidsOptionsFrame_MinDKPEquipESC()
 	PLDkpBidsOptionFrameMinDKPEquipEdit:Hide();
-	PLDkpBidsOptionFrameMinDKPEquipEdit:SetText(PLDkpBidsOptions["MinDKPEquip"]);
+	PLDkpBidsOptionFrameMinDKPEquipEdit:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPEquip"] or PLDkpBidsOptions["MinDKPEquip"]);
 	PLDkpBidsOptionFrameMinDKPEquipEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
 end
 function PLDkpBidsOptionsFrame_MinDKPEquipENTER()
 	PLDkpBidsOptionFrameMinDKPEquipEdit:Hide();
 	tmp = PLDkpBidsOptionFrameMinDKPEquipEdit:GetText();
 	if( tonumber(tmp) ~= nil ) then
-		PLDkpBidsOptions["MinDKPEquip"] = tonumber(tmp);
+		if (selectedMinDKPZoneName == "Default") then
+			PLDkpBidsOptions["MinDKPEquip"] = tonumber(tmp);
+		else
+			PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPEquip"] = tonumber(tmp);
+		end
+	else
+		if (selectedMinDKPZoneName ~= "Default") then
+			PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPEquip"] = nil -- remove entry
+		end
 	end
-	PLDkpBidsOptionFrameMinDKPEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPEquip"]);
+	PLDkpBidsOptionFrameMinDKPEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPEquip"] or PLDkpBidsOptions["MinDKPEquip"]);
 	PLDkpBidsOptionFrameMinDKPEquipEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
 end
 function PLDkpBidsOptionsFrame_ShowMinDKPEquipEdit()
-	PLDkpBidsOptionFrameMinDKPEquipEdit:SetText(PLDkpBidsOptions["MinDKPEquip"]);
+	PLDkpBidsOptionFrameMinDKPEquipEdit:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPEquip"] or PLDkpBidsOptions["MinDKPEquip"]);
 	PLDkpBidsOptionFrameMinDKPEquipEdit:Show();
 	PLDkpBidsOptionFrameMinDKPEquipEditBtn:Hide();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Disable();
 end
 
 function PLDkpBidsOptionsFrame_MinDKPSetEquipESC()
 	PLDkpBidsOptionFrameMinDKPSetEquipEdit:Hide();
-	PLDkpBidsOptionFrameMinDKPSetEquipEdit:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
+	PLDkpBidsOptionFrameMinDKPSetEquipEdit:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPSetEquip"] or PLDkpBidsOptions["MinDKPSetEquip"]);
 	PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
 end
 function PLDkpBidsOptionsFrame_MinDKPSetEquipENTER()
 	PLDkpBidsOptionFrameMinDKPSetEquipEdit:Hide();
 	tmp = PLDkpBidsOptionFrameMinDKPSetEquipEdit:GetText();
 	if( tonumber(tmp) ~= nil ) then
-		PLDkpBidsOptions["MinDKPSetEquip"] = tonumber(tmp);
+		if (selectedMinDKPZoneName == "Default") then
+			PLDkpBidsOptions["MinDKPSetEquip"] = tonumber(tmp);
+		else
+			PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPSetEquip"] = tonumber(tmp);
+		end
+	else
+		if (selectedMinDKPZoneName ~= "Default") then
+			PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPSetEquip"] = nil -- remove entry
+		end
 	end
 	PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
 	PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
 end
 function PLDkpBidsOptionsFrame_ShowMinDKPSetEquipEdit()
-	PLDkpBidsOptionFrameMinDKPSetEquipEdit:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
+	PLDkpBidsOptionFrameMinDKPSetEquipEdit:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPSetEquip"] or PLDkpBidsOptions["MinDKPSetEquip"]);
 	PLDkpBidsOptionFrameMinDKPSetEquipEdit:Show();
 	PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:Hide();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Disable();
 end
 
 
 function PLDkpBidsOptionsFrame_MinDKPOneHandESC()
 	PLDkpBidsOptionFrameMinDKPOneHandEdit:Hide();
-	PLDkpBidsOptionFrameMinDKPOneHandEdit:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
+	PLDkpBidsOptionFrameMinDKPOneHandEdit:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPOneHand"] or PLDkpBidsOptions["MinDKPOneHand"]);
 	PLDkpBidsOptionFrameMinDKPOneHandEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
 end
 function PLDkpBidsOptionsFrame_MinDKPOneHandENTER()
 	PLDkpBidsOptionFrameMinDKPOneHandEdit:Hide();
 	tmp = PLDkpBidsOptionFrameMinDKPOneHandEdit:GetText();
 	if( tonumber(tmp) ~= nil ) then
-		PLDkpBidsOptions["MinDKPOneHand"] = tonumber(tmp);
+		if (selectedMinDKPZoneName == "Default") then
+			PLDkpBidsOptions["MinDKPOneHand"] = tonumber(tmp);
+		else
+			PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPOneHand"] = tonumber(tmp);
+		end
+	else
+		if (selectedMinDKPZoneName ~= "Default") then
+			PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPOneHand"] = nil -- remove entry
+		end
 	end
 	PLDkpBidsOptionFrameMinDKPOneHandEditBtn:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
 	PLDkpBidsOptionFrameMinDKPOneHandEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
 end
 function PLDkpBidsOptionsFrame_ShowMinDKPOneHandEdit()
-	PLDkpBidsOptionFrameMinDKPOneHandEdit:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
+	PLDkpBidsOptionFrameMinDKPOneHandEdit:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPOneHand"] or PLDkpBidsOptions["MinDKPOneHand"]);
 	PLDkpBidsOptionFrameMinDKPOneHandEdit:Show();
 	PLDkpBidsOptionFrameMinDKPOneHandEditBtn:Hide();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Disable();
 end
 
 function PLDkpBidsOptionsFrame_MinDKPTwoHandESC()
 	PLDkpBidsOptionFrameMinDKPTwoHandEdit:Hide();
-	PLDkpBidsOptionFrameMinDKPTwoHandEdit:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
+	PLDkpBidsOptionFrameMinDKPTwoHandEdit:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPTwoHand"] or PLDkpBidsOptions["MinDKPTwoHand"]);
 	PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
 end
 function PLDkpBidsOptionsFrame_MinDKPTwoHandENTER()
 	PLDkpBidsOptionFrameMinDKPTwoHandEdit:Hide();
 	tmp = PLDkpBidsOptionFrameMinDKPTwoHandEdit:GetText();
 	if( tonumber(tmp) ~= nil ) then
-		PLDkpBidsOptions["MinDKPTwoHand"] = tonumber(tmp);
+		if (selectedMinDKPZoneName == "Default") then
+			PLDkpBidsOptions["MinDKPTwoHand"] = tonumber(tmp);
+		else
+			PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPTwoHand"] = tonumber(tmp);
+		end
+	else
+		if (selectedMinDKPZoneName ~= "Default") then
+			PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPTwoHand"] = nil -- remove entry
+		end
 	end
 	PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
 	PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
 end
 function PLDkpBidsOptionsFrame_ShowMinDKPTwoHandEdit()
-	PLDkpBidsOptionFrameMinDKPTwoHandEdit:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
+	PLDkpBidsOptionFrameMinDKPTwoHandEdit:SetText(PLDkpBidsOptions["MinDKPPerZone"][selectedMinDKPZoneName]["MinDKPTwoHand"] or PLDkpBidsOptions["MinDKPTwoHand"]);
 	PLDkpBidsOptionFrameMinDKPTwoHandEdit:Show();
 	PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:Hide();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Disable();
 end
 
 function PLDkpBidsOptionsFrame_ToggleDebugModeClick()
 	PLDkpBidsOptions["DebugMode"] = not PLDkpBidsOptions["DebugMode"];
+end
+
+function PLDkpBidsOptionMinDkpZoneDropDown_OnLoad()
+	UIDropDownMenu_Initialize(PLDkpBidsOptionFrameMinDKPZoneDropDown, PLDkpBidsOptionMinDKPZoneDropDown_Initialize);
+	UIDropDownMenu_SetSelectedID(PLDkpBidsOptionFrameMinDKPZoneDropDown, 1);
+	UIDropDownMenu_SetWidth(PLDkpBidsOptionFrameMinDKPZoneDropDown, 120);
+end
+
+function PLDkpBidsOptionMinDKPZoneDropDown_Initialize()
+	local info;
+
+	info = {
+		text = "Default";
+		func = PLDkpBidsOptionMinDKPZoneDropDown_OnClick;
+	};
+	UIDropDownMenu_AddButton(info);	
+	
+	info = {
+		text = "Onyxia's Lair";
+		func = PLDkpBidsOptionMinDKPZoneDropDown_OnClick;
+	};
+	UIDropDownMenu_AddButton(info);	
+	
+	info = {
+		text = "Molten Core";
+		func = PLDkpBidsOptionMinDKPZoneDropDown_OnClick;
+	};
+	UIDropDownMenu_AddButton(info);	
+	
+	info = {
+		text = "Blackwing Lair";
+		func = PLDkpBidsOptionMinDKPZoneDropDown_OnClick;
+	};
+	UIDropDownMenu_AddButton(info);	
+	
+	info = {
+		text = "Temple of Ahn'Qiraj";
+		func = PLDkpBidsOptionMinDKPZoneDropDown_OnClick;
+	};
+	UIDropDownMenu_AddButton(info);	
+
+	info = {
+		text = "Naxxramas";
+		func = PLDkpBidsOptionMinDKPZoneDropDown_OnClick;
+	};
+	UIDropDownMenu_AddButton(info);	
+end
+
+function PLDkpBidsOptionMinDKPZoneDropDown_OnClick(self)
+
+	local oldID = UIDropDownMenu_GetSelectedID(PLDkpBidsOptionFrameMinDKPZoneDropDown);
+	UIDropDownMenu_SetSelectedID(PLDkpBidsOptionFrameMinDKPZoneDropDown, self:GetID());
+	
+	if(oldID ~= self:GetID()) then
+		
+		if ( self:GetID() == 1 ) then
+			selectedMinDKPZoneName = "Default";
+		elseif ( self:GetID() == 2 ) then
+			selectedMinDKPZoneName = "Onyxia's Lair";
+		elseif ( self:GetID() == 3 ) then
+			selectedMinDKPZoneName = "Molten Core";
+		elseif ( self:GetID() == 4 ) then
+			selectedMinDKPZoneName = "Blackwing Lair";
+		elseif ( self:GetID() == 5 ) then
+			selectedMinDKPZoneName = "Temple of Ahn'Qiraj";
+		elseif ( self:GetID() == 6 ) then
+			selectedMinDKPZoneName = "Naxxramas";
+		end
+
+		PLDkpBidsOptionsFrame_FillMinDkpOfZone(selectedMinDKPZoneName)
+	end
+end
+
+function PLDkpBidsOptionFrame_SendDKPSettings()
+	PLDKPBids.Sync:BroadcastDkpSettings()
 end

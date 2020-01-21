@@ -1677,6 +1677,62 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
+
+			<Frame name="$parentMainOverTwink">
+				<Size>
+					<AbsDimension x="120" y="20" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="266" y="-120" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Main over Twink" justifyH="RIGHT">
+							<Anchors>
+								<Anchor point="TOPLEFT" />
+								<Anchor point="BOTTOMLEFT" />
+							</Anchors>
+							<FontHeight>
+								<AbsValue val="10" />
+							</FontHeight>
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Color r="0" g="0" b="0" />
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+							</Shadow>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<CheckButton name="$parentMainOverTwinkCheck" inherits="OptionsCheckButtonTemplate">
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="246" y="-122" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PLDkpBidsFrame_MainOverTwinks();
+					</OnClick>
+					<OnEnter>
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_TOOLTIP_MAINOVERTWINK_TP);
+					</OnEnter>
+					<OnLeave>
+						PLDkpBids_Tooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
 			
 			
 			

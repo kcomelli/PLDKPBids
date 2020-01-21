@@ -19,6 +19,7 @@ function PLDKPBids.Sync:OnEnable()
     PLDKPBids.Sync:RegisterComm("PLMRTItemLoot", PLDKPBids.Sync:OnCommReceived())	        -- A new item loot info from another raidtracker has been received
     PLDKPBids.Sync:RegisterComm("PLDKPDelWinner", PLDKPBids.Sync:OnCommReceived())	        -- Delete a winner info
     PLDKPBids.Sync:RegisterComm("PLDKPEdtWinner", PLDKPBids.Sync:OnCommReceived())	        -- Edit a winner info
+    PLDKPBids.Sync:RegisterComm("PLDKPSettings", PLDKPBids.Sync:OnCommReceived())	        -- Edit a winner info
 end
 
 function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
@@ -143,7 +144,54 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
                 PLDKP_debug("Error deserializing: " .. deserialized)
                 print(deserialized)  -- error reporting if string doesn't get deserialized correctly
             end
+        elseif prefix == "PLDKPSettings" and sender ~= UnitName("player") then
+            decoded = LibCompress:Decompress(LibCompressAddonEncodeTable:Decode(message))
+            local success, deserialized = LibAceSerializer:Deserialize(decoded);
+            if success then
+                -- copy relevant options from sender to local options
+                PLDkpBidsOptions["DefBidTSpan"] = deserialized["DefBidTSpan"] or PLDkpBidsOptions["DefBidTSpan"]
+                PLDkpBidsOptions["DefaultMinDKP"] = deserialized["DefaultMinDKP"] or PLDkpBidsOptions["DefaultMinDKP"]
+                PLDkpBidsOptions["PriceAddVal"] = deserialized["PriceAddVal"] or PLDkpBidsOptions["PriceAddVal"]
+                PLDkpBidsOptions["ValueStep"] = deserialized["ValueStep"] or PLDkpBidsOptions["ValueStep"]
+                PLDkpBidsOptions["UseDKPOnEqualBids"] = deserialized["UseDKPOnEqualBids"] or PLDkpBidsOptions["UseDKPOnEqualBids"]
+                PLDkpBidsOptions["IgnoreBidsOutsideGrp"] = deserialized["IgnoreBidsOutsideGrp"] or PLDkpBidsOptions["IgnoreBidsOutsideGrp"]
+                PLDkpBidsOptions["AllowBidsGreaterThanDKP"] = deserialized["AllowBidsGreaterThanDKP"] or PLDkpBidsOptions["AllowBidsGreaterThanDKP"]
+                PLDkpBidsOptions["MaxMinusDKP"] = deserialized["MaxMinusDKP"] or PLDkpBidsOptions["MaxMinusDKP"]
+                PLDkpBidsOptions["AllwaysAllowMinBid"] = deserialized["AllwaysAllowMinBid"] or PLDkpBidsOptions["AllwaysAllowMinBid"]
+                PLDkpBidsOptions["AllowHigherBidOverwrite"] = deserialized["AllowHigherBidOverwrite"] or PLDkpBidsOptions["AllowHigherBidOverwrite"]
+                PLDkpBidsOptions["MinDKPOneHand"] = deserialized["MinDKPOneHand"] or PLDkpBidsOptions["MinDKPOneHand"]
+                PLDkpBidsOptions["MinDKPTwoHand"] = deserialized["MinDKPTwoHand"] or PLDkpBidsOptions["MinDKPTwoHand"]
+                PLDkpBidsOptions["MinDKPSetEquip"] = deserialized["MinDKPSetEquip"] or PLDkpBidsOptions["MinDKPSetEquip"]
+                PLDkpBidsOptions["MinDKPEquip"] = deserialized["MinDKPEquip"] or PLDkpBidsOptions["MinDKPEquip"]
+
+                if(deserialized["MinDKPSpecial"]) then
+                    for itemId in pairs(deserialized["MinDKPSpecial"]) do
+                        PLDkpBidsOptions["MinDKPSpecial"][itemId] = deserialized["MinDKPSpecial"][itemId]
+                    end
+                end
+
+                if(deserialized["MinDKPPerZone"]) then
+                    for zoneName in pairs(deserialized["MinDKPPerZone"]) do
+                        PLDkpBidsOptions["MinDKPPerZone"][zoneName] = deserialized["MinDKPPerZone"][zoneName]
+                    end
+                end
+
+                PLDKP_println(string.Format(PLDKP_RECEIVED_OPTIONS, sender))
+            else
+                PLDKP_debug("Error deserializing: " .. deserialized)
+                print(deserialized)  -- error reporting if string doesn't get deserialized correctly
+            end
         end
+    end
+end
+
+fcuntion PLDKPBids.Sync:BroadcastDkpSettings()
+    if (PLDKPBids:CheckOfficer()) then
+        PLDKP_debug("Broadcasting DKP settings in guild AddOn channel")
+        -- send data
+        PLDKPBids.Sync:SendData("PLDKPSettings", PLDkpBidsOptions)
+    else
+        PLDKP_debug("Broadcasting DKP settings not available. You need to be an officer!")
     end
 end
 
