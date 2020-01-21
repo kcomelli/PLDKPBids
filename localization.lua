@@ -45,12 +45,13 @@ PLDKP_WelcomeMessage = PLDKP_VERSION_STRING .. " - type /pldkp  for help";
 PLDKP_LoadedMessage = PLDKP_VERSION_STRING .. " loaded !";
 
 -- Messages
+PLDKP_BID_MAINOVERTWINK = " (main over twink)";
 PLDKP_BID_OPENING1 = "*** Primal Legion Bidsystem ***";
 PLDKP_BID_OPENING2 = "*** MAKE YOUR BIDS NOW (Time accepting bids: %d seconds)";
 PLDKP_BID_OPENING3 = "*** Item to bid: %s";
 PLDKP_BID_OPENING4 = "*** Use: /w %s <value> (min value: %d)";
-PLDKP_BID_OPENING5 = "*** Bids of twinks are PERMITTED (main need before twink need)";
-PLDKP_BID_OPENING6 = "*** Bids of twinks are NOT PERMITTED";
+PLDKP_BID_OPENING5 = "*** Bids of twinks are ALLOWED %s";
+PLDKP_BID_OPENING6 = "*** Bids of twinks are NOT ALLOWED";
 
 PLDKP_BID_CLOSING_INFO = "*** Bidding open for %s seconds.";
 PLDKP_BID_CLOSING = "*** Bidding time is over. No more bids please.";
@@ -61,6 +62,7 @@ PLDKP_BID_WINNER1 = "*** Item-Winner for %s";
 PLDKP_BID_WINNER2 = "*** Player %s for %d DKP - grats !";
 PLDKP_BID_WINNER3 = "*** The players %s won for %d DKP (roll or use dkp-standings to choose a final winner).";
 PLDKP_BID_WINNER4 = "*** Player %s for %d DKP - grats ! (DKP standings used to find a final winner)";
+PLDKP_BID_WINNER9 = "*** Bids of twinks has been ignored due to the rule 'main over twink'!";
 
 PLDKP_BID_ABORTED = "*** Bidding aborted.";
 
@@ -156,6 +158,8 @@ PLDKP_TOOLTIP_MINDKPBTN = "Click here to type in minimum DKP.";
 PLDKP_TOOLTIP_TIMEBTN = "Click here to type in the timespan.";
 PLDKP_TOOLTIP_TWINKCHK = "Allow twink bids";
 PLDKP_TOOLTIP_TWINKCHK_TP = "Click here to accept twink bids.";
+PLDKP_TOOLTIP_MAINOVERTWINK = "Main over Twinks";
+PLDKP_TOOLTIP_MAINOVERTWINK_TP = "Click here to if Mains should have priority over Twinks.";
 
 PLDKP_TOOLTIP_STARTSTOPAUCTION = "Click here to start/stop the auction";
 
@@ -197,6 +201,7 @@ PLDKP_OPTIONS_VAL_STEP = "Bids step of";
 PLDKP_OPTIONS_VAL_STEP_TP = "Click here to change the step of bid values.";
 
 PLDKP_OPTIONS_ANNCHANNEL = "Announce channel";
+PLDKP_OPTIONS_MINDKPZONE = "Configure min DKP for zone:";
 
 PLDKP_OPTIONS_ALLOW_MINBID = "Always allow min bid";
 PLDKP_OPTIONS_ALLOW_MINBID_TP = "Check to allow all players to use the min bid always.";
@@ -242,6 +247,7 @@ PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Received new DKP data from: %s from player 
 PLDKP_RECEIVED_DEL_WINNER = "PLDKP: Remove winner info for %s from player %s"
 PLDKP_RECEIVED_WINNER_INFO = "PLDKP: Received auction winner information: %s from player %s"
 PLDKP_RECEIVED_MRT_LOOT_INFO = "PLDKP: Received MRT loot notification: %s from player %s"
+PLDKP_RECEIVED_OPTIONS = "PLDKP: Received and saved new settings from player %s"
 
 -------------------------------------------------------------------------------
 -- German localization
@@ -259,11 +265,12 @@ end
 	PLDKP_LoadedMessage = PLDKP_VERSION_STRING .. " geladen !";
 
 	-- Messages
+	PLDKP_BID_MAINOVERTWINK = " (Main vor Twink)";
 	PLDKP_BID_OPENING1 = "*** Primal Legion Bietsystem ***";
 	PLDKP_BID_OPENING2 = "*** MACHT EURE GEBOTE (Zeit: %d Sekunden)";
 	PLDKP_BID_OPENING3 = "*** Biete fuer Item: %s";
 	PLDKP_BID_OPENING4 = "*** Format: whisper %s DKP-Wert (Mindestwert: %d)";
-	PLDKP_BID_OPENING5 = "*** Twinkgebote sind ERLAUBT (main need vor twink need)";
+	PLDKP_BID_OPENING5 = "*** Twinkgebote sind ERLAUBT %s";
 	PLDKP_BID_OPENING6 = "*** Twinkgebote sind NICHT ERLAUBT";
 	
 	PLDKP_BID_CLOSING_INFO = "*** Akzeptiere Gebote fuer %s Sekunden.";
@@ -273,7 +280,8 @@ end
 	PLDKP_BID_WINNER2 = "*** Spieler %s hat gewonnen. Preis: %d DKP - grats !";
 	PLDKP_BID_WINNER3 = "*** Die Spieler %s haben gewonnen. Preis: %d DKP (Rollen od. den akt. DKP-Wert fuer die Verteilung unter den Gewinnern verwenden).";
 	PLDKP_BID_WINNER4 = "*** Spieler %s hat gewonnen. Preis: %d DKP - grats ! (DKP-Stand wurde verwendet um einen Gewinner zu ermitteln)";
-	
+	PLDKP_BID_WINNER9 = "*** Twinkgebote wurden aufgrund der Regel 'Main vor Twink' ignoriert";
+
 	PLDKP_BID_ABORTED = "*** Bietsystem abgebrochen.";
 	
 	PLDKP_BID_NOBIDS = "*** Keine Gebote fuer das aktuelle Item.";
@@ -369,6 +377,8 @@ end
 	PLDKP_TOOLTIP_TIMEBTN = "Hier klicken um die Zeitspanne einzugeben.";	
 	PLDKP_TOOLTIP_TWINKCHK = "Twinkgebote erlauben.";
 	PLDKP_TOOLTIP_TWINKCHK_TP = "Hier klicken um Twinkgebote zu erlauben.";
+	PLDKP_TOOLTIP_MAINOVERTWINK = "Mains vor Twinks";
+	PLDKP_TOOLTIP_MAINOVERTWINK_TP = "Hier klicken wenn Mains Vorrang vor Twinks haben.";
 
 	PLDKP_TOOLTIP_STARTSTOPAUCTION = "Hier klicken um die Auktion zu starten/stoppen !";
 
@@ -410,6 +420,7 @@ end
 	PLDKP_OPTIONS_VAL_STEP_TP = "Hier klicken um die Gebotsschritte zu aendern.";
 
 	PLDKP_OPTIONS_ANNCHANNEL = "Channel fuer die Auktion";
+	PLDKP_OPTIONS_MINDKPZONE = "Konfiguriere Min DKP fuer Zone:";
 
 	PLDKP_OPTIONS_ALLOW_MINBID = "Mindestgebot immer erlauben";
 	PLDKP_OPTIONS_ALLOW_MINBID_TP = "Hier klicken um Spielern immer zu erlauben das Mindestgebot zu bieten.";
@@ -454,3 +465,4 @@ end
 	PLDKP_RECEIVED_WINNER_INFO = "PLDKP: Neue Gewinnerinformationen erhalten: %s von %s"
 	PLDKP_RECEIVED_DEL_WINNER = "PLDKP: Gewinnerinfo für %s geloescht von Spieler %s"
 	PLDKP_RECEIVED_MRT_LOOT_INFO = "PLDKP: MRT Lootinfo empfangen: %s von Spieler %s"
+	PLDKP_RECEIVED_OPTIONS = "PLDKP: Einstellungen wurden empfangen und upgedated von Spieler %s"

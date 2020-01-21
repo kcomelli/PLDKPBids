@@ -1443,14 +1443,61 @@
 
 		<!-- COL 2-->
 
-		<Frame name="$parentMinDKPEquip">
+		<Frame name="$parentMinDKPZone">
 			<Size>
-				<AbsDimension x="190" y="20" />
+				<AbsDimension x="170" y="20" />
 			</Size>
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
 						<AbsDimension x="300" y="-25" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min DKP Zone:" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<Button name="$parentMinDKPZoneDropDown" inherits="UIDropDownMenuTemplate">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="470" y="-23" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnLoad>
+					PLDkpBidsOptionMinDkpZoneDropDown_OnLoad();
+				</OnLoad>
+			</Scripts>
+		</Button>
+
+		<Frame name="$parentMinDKPEquip">
+			<Size>
+				<AbsDimension x="190" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPZone" relativePoint="BOITTOMLEFT">
+					<Offset>
+						<AbsDimension x="0" y="20" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1475,46 +1522,14 @@
 				</Layer>
 			</Layers>
 		</Frame>
-		<Frame name="$parentMinDKPSetEquip">
-			<Size>
-				<AbsDimension x="190" y="20" />
-			</Size>
-			<Anchors>
-				<Anchor point="TOPLEFT">
-					<Offset>
-						<AbsDimension x="300" y="-45" />
-					</Offset>
-				</Anchor>
-			</Anchors>
-			<Layers>
-				<Layer>
-					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min price SETITEMS:" justifyH="RIGHT">
-						<Anchors>
-							<Anchor point="TOPLEFT" />
-							<Anchor point="BOTTOMRIGHT" />
-						</Anchors>
-						<FontHeight>
-							<AbsValue val="10" />
-						</FontHeight>
-						<Color r="1" g="0.8196079" b="0" />
-						<Shadow>
-							<Color r="0" g="0" b="0" />
-							<Offset>
-								<AbsDimension x="1" y="-1" />
-							</Offset>
-						</Shadow>
-					</FontString>
-				</Layer>
-			</Layers>
-		</Frame>
 		<EditBox name="$parentMinDKPEquipEdit" historyLines="0" letters="99999999">
 			<Size>
 				<AbsDimension x="50" y="16"/>
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPEquip" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="500" y="-25" />
+						<AbsDimension x="10" y="0" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1576,14 +1591,140 @@
 				</OnEnterPressed>
 			</Scripts>
 		</EditBox>
+		<Button name="$parentMinDKPEquipEditBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPEquip" relativePoint="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="10" y="1" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ShowMinDKPEquipEdit();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_EQUIP_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="0.8196079" b="0" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</NormalText>
+			<HighlightText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="1" b="1" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</HighlightText>
+			<DisabledText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</DisabledText>
+			<PushedTextOffset x="0" y="0" />
+		</Button>
+		<Frame name="$parentMinDKPEquipUnit">
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPEquip" relativePoint="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="70" y="0" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="DKP" justifyH="LEFT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+
+		<Frame name="$parentMinDKPSetEquip">
+			<Size>
+				<AbsDimension x="190" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPEquip" relativePoint="BOITTOMLEFT">
+					<Offset>
+						<AbsDimension x="0" y="20" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min price SETITEMS:" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
 		<EditBox name="$parentMinDKPSetEquipEdit" historyLines="0" letters="99999999">
 			<Size>
 				<AbsDimension x="50" y="16"/>
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetEquip" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="500" y="-45" />
+						<AbsDimension x="10" y="0" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1645,76 +1786,14 @@
 				</OnEnterPressed>
 			</Scripts>
 		</EditBox>
-
-
-		<Button name="$parentMinDKPEquipEditBtn" inherits="GameMenuButtonTemplate" text="0">
-			<Size>
-				<AbsDimension x="50" y="16"/>
-			</Size>
-			<Anchors>
-				<Anchor point="TOPLEFT">
-					<Offset>
-						<AbsDimension x="500" y="-26" />
-					</Offset>
-				</Anchor>
-			</Anchors>
-			<Scripts>
-				<OnClick>
-					PLDkpBidsOptionsFrame_ShowMinDKPEquipEdit();
-				</OnClick>
-				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_EQUIP_TP);
-				</OnEnter>
-				<OnLeave>
-					PLDkpBids_Tooltip:Hide();
-				</OnLeave>
-			</Scripts>
-			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
-				<FontHeight>
-					<AbsValue val="10" />
-				</FontHeight>
-				<Color r="1" g="0.8196079" b="0" />
-				<Shadow>
-					<Color r="0" g="0" b="0" />
-					<Offset>
-						<AbsDimension x="1" y="-1" />
-					</Offset>
-				</Shadow>
-			</NormalText>
-			<HighlightText font="Fonts\FRIZQT__.TTF">
-				<FontHeight>
-					<AbsValue val="10" />
-				</FontHeight>
-				<Color r="1" g="1" b="1" />
-				<Shadow>
-					<Color r="0" g="0" b="0" />
-					<Offset>
-						<AbsDimension x="1" y="-1" />
-					</Offset>
-				</Shadow>
-			</HighlightText>
-			<DisabledText font="Fonts\FRIZQT__.TTF">
-				<FontHeight>
-					<AbsValue val="10" />
-				</FontHeight>
-				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
-				<Shadow>
-					<Color r="0" g="0" b="0" />
-					<Offset>
-						<AbsDimension x="1" y="-1" />
-					</Offset>
-				</Shadow>
-			</DisabledText>
-			<PushedTextOffset x="0" y="0" />
-		</Button>
 		<Button name="$parentMinDKPSetEquipEditBtn" inherits="GameMenuButtonTemplate" text="0">
 			<Size>
 				<AbsDimension x="50" y="16"/>
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetEquip" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="500" y="-49" />
+						<AbsDimension x="10" y="1" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1767,46 +1846,14 @@
 			</DisabledText>
 			<PushedTextOffset x="0" y="0" />
 		</Button>
-		<Frame name="$parentMinDKPEquipUnit">
-			<Size>
-				<AbsDimension x="140" y="20" />
-			</Size>
-			<Anchors>
-				<Anchor point="TOPLEFT">
-					<Offset>
-						<AbsDimension x="560" y="-25" />
-					</Offset>
-				</Anchor>
-			</Anchors>
-			<Layers>
-				<Layer>
-					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="DKP" justifyH="LEFT">
-						<Anchors>
-							<Anchor point="TOPLEFT" />
-							<Anchor point="BOTTOMRIGHT" />
-						</Anchors>
-						<FontHeight>
-							<AbsValue val="10" />
-						</FontHeight>
-						<Color r="1" g="0.8196079" b="0" />
-						<Shadow>
-							<Color r="0" g="0" b="0" />
-							<Offset>
-								<AbsDimension x="1" y="-1" />
-							</Offset>
-						</Shadow>
-					</FontString>
-				</Layer>
-			</Layers>
-		</Frame>
 		<Frame name="$parentMinDKPSetEquipUnit">
 			<Size>
 				<AbsDimension x="140" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetEquip" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="560" y="-45" />
+						<AbsDimension x="70" y="0" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1838,9 +1885,9 @@
 				<AbsDimension x="190" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetEquip" relativePoint="BOITTOMLEFT">
 					<Offset>
-						<AbsDimension x="300" y="-68" />
+						<AbsDimension x="0" y="20" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1870,9 +1917,9 @@
 				<AbsDimension x="50" y="16"/>
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPOneHand" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="500" y="-70" />
+						<AbsDimension x="10" y="0" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1939,9 +1986,9 @@
 				<AbsDimension x="50" y="16"/>
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPOneHand" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="500" y="-71" />
+						<AbsDimension x="10" y="1" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1999,9 +2046,9 @@
 				<AbsDimension x="140" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPOneHand" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="560" y="-68" />
+						<AbsDimension x="70" y="0" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2032,9 +2079,9 @@
 				<AbsDimension x="190" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPOneHand" relativePoint="BOITTOMLEFT">
 					<Offset>
-						<AbsDimension x="300" y="-91" />
+						<AbsDimension x="0" y="20" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2064,9 +2111,9 @@
 				<AbsDimension x="50" y="16"/>
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHand" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="500" y="-95" />
+						<AbsDimension x="10" y="0" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2133,9 +2180,9 @@
 				<AbsDimension x="50" y="16"/>
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHand" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="500" y="-96" />
+						<AbsDimension x="10" y="1" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2193,9 +2240,9 @@
 				<AbsDimension x="140" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHand" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="560" y="-91" />
+						<AbsDimension x="70" y="0" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2227,9 +2274,9 @@
 				<AbsDimension x="200" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHand" relativePoint="BOITTOMLEFT">
 					<Offset>
-						<AbsDimension x="300" y="-153" />
+						<AbsDimension x="0" y="20" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2289,6 +2336,21 @@
 			<Scripts>
 				<OnClick>
 					HideUIPanel(PLDkpBidsOptionFrame);
+				</OnClick>
+			</Scripts>
+		</Button>
+
+		<Button name="$parentSyncDKPSettings" inherits="GameMenuButtonTemplate" text="Send DKP settings">
+			<Anchors>
+				<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+					<Offset>
+						<AbsDimension x="10" y="25"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionFrame_SendDKPSettings();
 				</OnClick>
 			</Scripts>
 		</Button>
