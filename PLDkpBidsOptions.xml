@@ -1497,7 +1497,7 @@
 			<Anchors>
 				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPZone" relativePoint="BOITTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="20" />
+						<AbsDimension x="0" y="-25" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1691,7 +1691,7 @@
 			<Anchors>
 				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPEquip" relativePoint="BOITTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="20" />
+						<AbsDimension x="0" y="-20" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1720,7 +1720,6 @@
 			<Size>
 				<AbsDimension x="50" y="16"/>
 			</Size>
-			<Anchors>
 			<Anchors>
 				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetEquip" relativePoint="TOPRIGHT">
 					<Offset>
@@ -1887,7 +1886,7 @@
 			<Anchors>
 				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetEquip" relativePoint="BOITTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="20" />
+						<AbsDimension x="0" y="-20" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2081,7 +2080,7 @@
 			<Anchors>
 				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPOneHand" relativePoint="BOITTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="20" />
+						<AbsDimension x="0" y="-20" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2268,6 +2267,67 @@
 			</Layers>
 		</Frame>
 
+		<Button name="$parentResetToDefaultsBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="150" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHandEditBtn" relativePoint="BOTTOMLEFT">
+					<Offset>
+						<AbsDimension x="-30" y="-5" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ResetZoneDKPToDefaults();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_TH_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="0.8196079" b="0" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</NormalText>
+			<HighlightText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="1" b="1" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</HighlightText>
+			<DisabledText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</DisabledText>
+			<PushedTextOffset x="0" y="0" />
+		</Button>
+
 
 		<Frame name="$parentEnableDebug">
 			<Size>
@@ -2276,7 +2336,7 @@
 			<Anchors>
 				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHand" relativePoint="BOITTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="20" />
+						<AbsDimension x="0" y="-40" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2306,9 +2366,9 @@
 				<AbsDimension x="20" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentEnableDebug" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="505" y="-153" />
+						<AbsDimension x="10" y="0" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2337,6 +2397,7 @@
 				<OnClick>
 					HideUIPanel(PLDkpBidsOptionFrame);
 				</OnClick>
+				
 			</Scripts>
 		</Button>
 
@@ -2344,7 +2405,7 @@
 			<Anchors>
 				<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
 					<Offset>
-						<AbsDimension x="10" y="25"/>
+						<AbsDimension x="-12" y="13"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2352,6 +2413,12 @@
 				<OnClick>
 					PLDkpBidsOptionFrame_SendDKPSettings();
 				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_SEND_DKP_SETTINGS_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
 			</Scripts>
 		</Button>
 		<!-- END OF Controls -->

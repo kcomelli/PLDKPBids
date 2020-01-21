@@ -185,8 +185,8 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
     end
 end
 
-fcuntion PLDKPBids.Sync:BroadcastDkpSettings()
-    if (PLDKPBids:CheckOfficer()) then
+function PLDKPBids.Sync:BroadcastDkpSettings()
+    if (PLDKPBids.IsOfficer) then
         PLDKP_debug("Broadcasting DKP settings in guild AddOn channel")
         -- send data
         PLDKPBids.Sync:SendData("PLDKPSettings", PLDkpBidsOptions)

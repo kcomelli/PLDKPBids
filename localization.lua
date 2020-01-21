@@ -241,6 +241,11 @@ PLDKP_OPTIONS_MINDKP_TH_TP = "Click here to change the minimum DKP for 2H Weapon
 PLDKP_OPTIONS_DEBUG_MODE = "Debug mode";
 PLDKP_OPTIONS_DEBUG_MODE_TP = "Click here to turn debug mode on or off.";
 
+PLDKP_OPTIONS_SEND_DKP_SETTINGS = "Send DKP settings"
+PLDKP_OPTIONS_SEND_DKP_SETTINGS_TP = "Click here to send relevant AddOn settings to your guild-mates"
+
+PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS = "Reset to defaults"
+PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS_TP = "Click here to reset the zone DKP settings to the default values"
 
 PLDKP_BUILD_OUTOFDATE = "PLDKP: Your version of PLDkp Bids is out-of-date! Please update to latest version!"
 PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Received new DKP data from: %s from player %s"
@@ -459,6 +464,12 @@ end
 
 	PLDKP_OPTIONS_DEBUG_MODE = "Debug mode";
 	PLDKP_OPTIONS_DEBUG_MODE_TP = "Hier klicken um den Debug Modus ein/aus zu schalten.";
+
+	PLDKP_OPTIONS_SEND_DKP_SETTINGS = "Sende DKP Konfig"
+	PLDKP_OPTIONS_SEND_DKP_SETTINGS_TP = "Hier klicken um die AddOn Einstellungen zu anderen Gildenmitgliedern zu senden"
+
+	PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS = "Zurücksetzen"
+    PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS_TP = "Hier klicken um die Min DKP der Zone auf die Standardwerte zu setzen"
 
 	PLDKP_BUILD_OUTOFDATE = "PLDKP: Deine Version von PLDkp Bids ist veraltet! Bitte update auf die neuerste Version!"
 	PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Neue DKP Daten erhalten. Stand: %s von %s"

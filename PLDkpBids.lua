@@ -449,6 +449,7 @@ function PLDkpBidsFrame_OnEvent(self, event, ...)
 		PLDKPBids.localRealm = GetRealmName()
 		PLDKPBids.myName, PLDKPBids.myRealm, PLDKPBids.myServerName = PLDKPBids:CharaterNameTranslation(UnitName("player"))
 
+		PLDKPBids:CheckOfficer()
 		-- initiate DKP version communication in order to
 		-- send or receive DKP data
 		PLDKPBids:InitiateDkpVersionComms()

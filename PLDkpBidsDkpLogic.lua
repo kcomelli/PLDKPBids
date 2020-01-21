@@ -128,6 +128,70 @@ function PLDKPBids:CountDKPEntries()
 end
 
 ---------------------------------------------------------------------
+-- function PLDKPBids:HasCustomizedZoneDKP(zoneName)
+--
+-- true if the zone has customized zone min dkp
+---------------------------------------------------------------------
+function PLDKPBids:HasCustomizedZoneDKP(zoneName)
+    if(not zoneName or zoneName == "Default") then
+        return false
+    end
+
+    return (PLDkpBidsOptions["MinDKPPerZone"] and PLDkpBidsOptions["MinDKPPerZone"][zoneName])
+end
+
+---------------------------------------------------------------------
+-- function   PLDKPBids:GetMinDkpOption(zoneName, dkpSetting)
+--
+-- gets the min dkp from the settings based on the zone or default as fallback
+---------------------------------------------------------------------
+function PLDKPBids:GetMinDkpOption(zoneName, dkpSetting)
+    return (PLDkpBidsOptions["MinDKPPerZone"] and PLDkpBidsOptions["MinDKPPerZone"][zoneName] and PLDkpBidsOptions["MinDKPPerZone"][zoneName][dkpSetting]) or PLDkpBidsOptions[dkpSetting] or PLDkpBidsOptions["DefaultMinDKP"]
+end
+
+---------------------------------------------------------------------
+-- function   PLDKPBids:SetMinDkpOption(zoneName, dkpSetting, minDkp)
+--
+-- sets the min dkp setting for a given zone or the default values
+---------------------------------------------------------------------
+function PLDKPBids:SetMinDkpOption(zoneName, dkpSetting, minDkp)
+    if minDkp ~= nil then
+        if(not zoneName or zoneName == "Default") then
+            PLDkpBidsOptions[dkpSetting] = minDkp
+        else
+            if not PLDkpBidsOptions["MinDKPPerZone"] then
+                PLDkpBidsOptions["MinDKPPerZone"] = {}
+            end
+            if not PLDkpBidsOptions["MinDKPPerZone"][zoneName] then
+                PLDkpBidsOptions["MinDKPPerZone"][zoneName] = {}
+            end
+
+            PLDkpBidsOptions["MinDKPPerZone"][zoneName][dkpSetting] = minDkp
+        end
+    else
+        if (zoneName and zoneName ~= "Default") then
+            if not PLDkpBidsOptions["MinDKPPerZone"] then
+                PLDkpBidsOptions["MinDKPPerZone"] = {}
+            end
+            if not PLDkpBidsOptions["MinDKPPerZone"][zoneName] then
+                PLDkpBidsOptions["MinDKPPerZone"][zoneName] = {}
+            end
+
+			PLDkpBidsOptions["MinDKPPerZone"][zoneName][dkpSetting] = nil -- remove entry
+		end
+    end
+end
+
+---------------------------------------------------------------------
+-- function PLDKPBids:ClearCustomizedZoneDKP(zoneName)
+--
+-- clear all zone related min dkp settings
+---------------------------------------------------------------------
+function PLDKPBids:ClearCustomizedZoneDKP(zoneName)
+    PLDkpBidsOptions["MinDKPPerZone"][zoneName] = nil;
+end
+
+---------------------------------------------------------------------
 -- function  PLDKPBids:CalculateMinBidPrice(itemLink)
 --
 -- extracts the minimum DKP of an item based on configuration
@@ -140,7 +204,7 @@ function PLDKPBids:CalculateMinBidPrice(itemLink)
     -- use english name for zone
     currentZone = LBZR[currentZone] or currentZone
     PLDKP_debug("Current zone is: " .. currentZone)
-    
+
     if itemLink ~= nil then
         local itemId = PLDKPBids:GetItemIdFromLink(itemLink)
         local itemName, itemLink, itemRarity, _, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, itemVendorPrice, classID = GetItemInfo (itemId);
@@ -151,36 +215,25 @@ function PLDKPBids:CalculateMinBidPrice(itemLink)
             return PLDkpBidsOptions["MinDKPSpecial"][itemId]
         end
 
-        if PLDKPBids:IsTwoHand(itemLink) and PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPTwoHand"] then
-            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as 2H Weapon with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPTwoHand"] .. " for zone '" .. currentZone .. "'"));
-            return PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPTwoHand"]
-        elseif PLDKPBids:IsTwoHand(itemLink) and PLDkpBidsOptions["MinDKPTwoHand"] then
-            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as 2H Weapon with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPTwoHand"]));
-            return PLDkpBidsOptions["MinDKPTwoHand"]
+        if PLDKPBids:IsTwoHand(itemLink) and PLDKPBids:GetMinDkpOption(currentZone, "MinDKPTwoHand") then
+            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as 2H Weapon with configured min-DKP of " .. tostring(PLDKPBids:GetMinDkpOption(currentZone, "MinDKPTwoHand") .. " for zone '" .. (currentZone or "Default") .. "'"));
+            return PLDKPBids:GetMinDkpOption(currentZone, "MinDKPTwoHand")
         end
 
-        if PLDKPBids:IsOneHand(itemLink) and PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPOneHand"] then
-            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as 1H Weapon/Shield/Offhand/Wand/Gun/Bow with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPOneHand"] .. " for zone '" .. currentZone .. "'"));
-            return PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPOneHand"]
-        elseif PLDKPBids:IsOneHand(itemLink) and PLDkpBidsOptions["MinDKPOneHand"] then
-            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as 1H Weapon/Shield/Offhand/Wand/Gun/Bow with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPOneHand"]));
-            return PLDkpBidsOptions["MinDKPOneHand"]
+        if PLDKPBids:IsOneHand(itemLink) and PLDKPBids:GetMinDkpOption(currentZone, "MinDKPOneHand") then
+            PLDKP_debug("Item id " .. tostring(itemId) .. " identified as 1H Weapon/Shield/Offhand/Wand/Gun/Bow with configured min-DKP of " .. tostring(PLDKPBids:GetMinDkpOption(currentZone, "MinDKPTwoHand") .. " for zone '" .. (currentZone or "Default") .. "'"));
+            return PLDKPBids:GetMinDkpOption(currentZone, "MinDKPOneHand")
         end
 
         if PLDKPBids:IsEquip(itemLink)  then
             PLDKP_debug("Item id " .. tostring(itemId) .. " identified as equipment ");
 
-            if PLDKPBids:IsSetItem(itemLink) and PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPSetEquip"] then
-                PLDKP_debug("Item id " .. tostring(itemId) .. " identified as SET with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPSetEquip"] .. " for zone '" .. currentZone .. "'"));
-                return PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPSetEquip"]
-            elseif PLDKPBids:IsSetItem(itemLink) and PLDkpBidsOptions["MinDKPSetEquip"] then
-                PLDKP_debug("Item id " .. tostring(itemId) .. " identified as SET with configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPSetEquip"]));
-                return PLDkpBidsOptions["MinDKPSetEquip"]
-            elseif PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPEquip"] then
-                PLDKP_debug("Item id " .. tostring(itemId) .. " identified as Equipment configured min-DKP of " .. tostring(PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPEquip"] .. " for zone '" .. currentZone .. "'"));
-                return PLDkpBidsOptions["MinDKPPerZone"][currentZone]["MinDKPEquip"]
-            elseif PLDkpBidsOptions["MinDKPEquip"] then
-                return PLDkpBidsOptions["MinDKPEquip"]
+            if PLDKPBids:IsSetItem(itemLink) and PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetEquip") then
+                PLDKP_debug("Item id " .. tostring(itemId) .. " identified as SET with configured min-DKP of " .. tostring(PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetEquip") .. " for zone '" .. (currentZone or "Default")  .. "'"));
+                return PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetEquip")
+            elseif PLDKPBids:GetMinDkpOption(currentZone, "MinDKPEquip") then
+                PLDKP_debug("Item id " .. tostring(itemId) .. " identified as Equipment configured min-DKP of " .. tostring( PLDKPBids:GetMinDkpOption(currentZone, "MinDKPEquip") .. " for zone '" .. (currentZone or "Default") .. "'"));
+                return  PLDKPBids:GetMinDkpOption(currentZone, "MinDKPEquip")
             end
         end
     end
