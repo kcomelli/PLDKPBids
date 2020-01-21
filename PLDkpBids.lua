@@ -2,7 +2,7 @@
 -- PL DKP Bids
 --
 -- Author: Fuddler/Gimmeurgold - Primal Legion @ Destromath-EU
--- Version: 3.1
+-- Version: 4.0
 -- 
 -------------------------------------------------------------------------------
 
