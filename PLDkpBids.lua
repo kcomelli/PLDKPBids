@@ -668,6 +668,21 @@ function PLDkpBidsFrame_GetMainCharOfTwink(characterName)
 end
 
 ---------------------------------------------------------------------
+-- function PLDkpBidsFrame_IsTwink(characterName)
+--
+-- Returns true if the given character name is a twink
+---------------------------------------------------------------------
+function PLDkpBidsFrame_IsTwink(characterName)
+	local mainOfTwink = PLDkpBidsFrame_GetMainCharOfTwink(characterName)
+	local translatedmainOfTwinkName, translatedmainOfTwinkRealm, translatedmainOfTwinkFullName = PLDKPBids:CharaterNameTranslation(mainOfTwink)
+	local translatedName, translatedRealm, translatedFullName = PLDKPBids:CharaterNameTranslation(characterName)
+
+	-- if the full name of the character and translated main char does not match
+	-- the prided character name is a twink 
+	return translatedFullName ~= translatedmainOfTwinkRealm
+end
+
+---------------------------------------------------------------------
 -- function PLDkpBidsFrame_GenerateID()
 --
 -- Generates a unique raid ID which includes
@@ -1546,7 +1561,7 @@ function PLDKP_CountRelevantBids()
 
 	for plName in pairs(PLDKP_CurrentBids) do
 		if ( plName ) then
-			if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)) then
+			if(mixedBids and PLDKP_MainOverTwinks and PLDkpBidsFrame_IsTwink(plName)) then
 				cnt = cnt
 			else
 				cnt = cnt+1;
@@ -1569,12 +1584,12 @@ function PLDKP_BiggestBid()
 	local mixedBids = PLDKP_HasMixedBids();
 	
 	for plName in pairs(PLDKP_CurrentBids) do
-		if ( PLDKP_CurrentBids[plName] and (PLDKP_CurrentBids[plName] > bid) ) then
+		if ( PLDKP_CurrentBids[plName] ) then
 			-- if main over twink is set, we have mixed bid table and the current name is a twink
 			-- ignore the bid and set the flag for displaying the info
-			if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)) then
+			if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_IsTwink(plName))) then
 				ignoredTwinkBidsBecauseExistingMains = true
-			else
+			elseif (PLDKP_CurrentBids[plName] > bid) then
 				bid = PLDKP_CurrentBids[plName];
 			end
 		end
@@ -1590,15 +1605,18 @@ end
 ---------------------------------------------------------------------
 function PLDKP_HasMixedBids()
 	local mixedBids = false
+	local foundMains = false
+	local foundTwinks = false
 
 	local nCount = PLDKP_CountBids();
 
 	if(nCount > 0) then
 		for plName in pairs(PLDKP_CurrentBids) do
+			local isTwink = PLDkpBidsFrame_IsTwink(plName)
 			-- plName is a main char
-			foundMains = foundMains or ( PLDkpBidsFrame_GetMainCharOfTwink(plName) == plName)
+			foundMains = foundMains or (not isTwink)
 			-- plName is a twink
-			foundTwinks = foundTwinks or ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)
+			foundTwinks = foundTwinks or isTwink
 		end
 
 		-- true if we have a 
@@ -1626,7 +1644,7 @@ function PLDKP_GetBidWinner(biggestBid)
 			table.insert(winnerNames, plName);
 		else
 			if ( PLDKP_CurrentBids[plName] == biggestBid ) then
-				if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)) then
+				if(mixedBids and PLDKP_MainOverTwinks and PLDkpBidsFrame_IsTwink(plName)) then
 					-- ignore because this is a twink which will be filtered due to the main > twink rule
 					bid = bid
 				else
@@ -1648,17 +1666,18 @@ function PLDKP_Price(biggestBid)
 	local bid = 0;
 
 	local nCount = PLDKP_CountBids();
+	local nCountRel = PLDKP_CountRelevantBids();
 	local biggesBidCount = 0;
 	local mixedBids = PLDKP_HasMixedBids();
 	
-	if ( nCount == 1) then
+	-- if mixed bids and Main>Twink is set, the count may not be one here
+	-- need to count the rel
+	if ( nCount == 1 or nCountRel == 1) then
 		bid = _pldkp_currentMinBid;
-	end
-	
-	if ( nCount > 1) then
+	elseif ( nCountRel > 1) then
 		for plName in pairs(PLDKP_CurrentBids) do
 
-			if(mixedBids and PLDKP_MainOverTwinks and ( PLDkpBidsFrame_GetMainCharOfTwink(plName) ~= plName)) then
+			if(mixedBids and PLDKP_MainOverTwinks and PLDkpBidsFrame_IsTwink(plName)) then
 				bid = bid
 			else
 				if ( PLDKP_CurrentBids[plName] and (PLDKP_CurrentBids[plName] > bid) and (PLDKP_CurrentBids[plName] < biggestBid) ) then
@@ -1674,15 +1693,15 @@ function PLDKP_Price(biggestBid)
 		bid = biggestBid;
 	end
 
-	if ( ( nCount > 1) and (biggestBid > _pldkp_currentMinBid) and (bid == 0) ) then
+	if ( ( nCountRel > 1) and (biggestBid > _pldkp_currentMinBid) and (bid == 0) ) then
 		bid = biggestBid;
 	end
 	
-	if ( ( nCount > 1) and (bid == 0) ) then
+	if ( ( nCountRel > 1) and (bid == 0) ) then
 		bid = _pldkp_currentMinBid;
 	end
 	
-	if ( ( nCount > 1 ) and ( biggesBidCount > 1 ) ) then
+	if ( ( nCountRel > 1 ) and ( biggesBidCount > 1 ) ) then
 		bid = biggestBid;
 	end
 	

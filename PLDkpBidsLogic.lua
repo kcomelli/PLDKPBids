@@ -75,8 +75,6 @@ function PLDKPBids:CharaterNameTranslation(characterName)
 	return nameOnly, realmName, serverName
 end
 
-
-
 function PLDKPBids:GetItemIdFromName(itemName)
 	if itemName then
 		local itemName, itemLink, itemRarity, _, itemMinLevel, itemType, _, _, _, _, itemVendorPrice, classID = GetItemInfo (itemName);

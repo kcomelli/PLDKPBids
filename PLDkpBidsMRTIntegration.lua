@@ -201,6 +201,11 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
 
             local compareRaid = MRT_RaidLog[#MRT_RaidLog]
 
+            -- PLDKP_errln("Checking zone (" .. tostring(i) .. "):  - " .. (tostring(compareRaid["RaidZone"]) or "na") .. " vs " .. (tostring(raidInfo["RaidZone"]) or "na"))
+            -- PLDKP_errln("Checking size (" .. tostring(i) .. "):  - ".. (tostring(compareRaid["RaidSize"]) or "na") .. " vs " .. (tostring(raidInfo["RaidSize"]) or "na"))
+            -- PLDKP_errln("Checking realm (" .. tostring(i) .. "):  - ".. (tostring(compareRaid["Realm"]) or "na") .. " vs " .. (tostring(raidInfo["Realm"]) or "na"))
+            -- PLDKP_errln("Checking diff (" .. tostring(i) .. "):  - ".. (tostring(compareRaid["DiffID"]) or "na") .. " vs " .. (tostring(raidInfo["DiffID"]) or "na"))
+
             if PLDKPBids:IsSameZone(compareRaid["RaidZone"], raidInfo["RaidZone"]) and 
                 compareRaid["RaidSize"] == raidInfo["RaidSize"] and 
                 compareRaid["Realm"] == raidInfo["Realm"] and
@@ -217,14 +222,19 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
                         return #MRT_RaidLog
                     else
                         PLDKP_errln("Latest raid matches but is older or newer than the current one (at least 1 day), searching matching raid")
+                        --PLDKP_errln("Compare Start: " .. (compareRaid["StartTime"] or 0) .. " - Raidinfo start: " .. (raidInfo["StartTime"] or 0))
                     end
             else
                 PLDKP_errln("Latest raid not matching incoming query, searching matching raid")
             end
         end
 
-        for i = 1, #MRT_RaidLog do
+        for i = #MRT_RaidLog, 1, -1 do
             local compareRaid = MRT_RaidLog[i]
+            -- PLDKP_errln("Checking zone (" .. tostring(i) .. "):  - " .. (tostring(compareRaid["RaidZone"]) or "na") .. " vs " .. (tostring(raidInfo["RaidZone"]) or "na"))
+            -- PLDKP_errln("Checking size (" .. tostring(i) .. "):  - ".. (tostring(compareRaid["RaidSize"]) or "na") .. " vs " .. (tostring(raidInfo["RaidSize"]) or "na"))
+            -- PLDKP_errln("Checking realm (" .. tostring(i) .. "):  - ".. (tostring(compareRaid["Realm"]) or "na") .. " vs " .. (tostring(raidInfo["Realm"]) or "na"))
+            -- PLDKP_errln("Checking diff (" .. tostring(i) .. "):  - ".. (tostring(compareRaid["DiffID"]) or "na") .. " vs " .. (tostring(raidInfo["DiffID"]) or "na"))
 
             if PLDKPBids:IsSameZone(compareRaid["RaidZone"], raidInfo["RaidZone"]) and 
                 compareRaid["RaidSize"] == raidInfo["RaidSize"] and 
@@ -261,6 +271,7 @@ function PLDKPBids:FindLocalMrtRaid(raidInfo)
                         end
                     else
                         PLDKP_errln("Found match at '" .. tostring(i) .. "' but is older or newer than the current one (at least 1 day), searching matching raid")
+                        --PLDKP_errln("Compare Start: " .. (compareRaid["StartTime"] or 0) .. " - Raidinfo start: " .. (raidInfo["StartTime"] or 0))
                     end
             end
         end
