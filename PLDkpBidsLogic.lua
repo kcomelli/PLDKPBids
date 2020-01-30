@@ -248,3 +248,7 @@ function PLDKPBids:CheckOfficer()      -- checks if user is an officer IF core.I
 	  end
 	end
   end
+
+  function PLDKPBids:GetTimestamp()
+	return time()
+end

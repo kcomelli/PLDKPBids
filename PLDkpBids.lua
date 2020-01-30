@@ -20,6 +20,8 @@ local _pldkp_timeEnd = nil;
 local _selectedTab = 1;
 local _elapsed = 0;
 local _whisperingMyself = false;
+local _last_dkp_whisper = 0;
+local _last_dkp_whisper_name = nil;
 
 -- after player entering world, the realm name will be set
 PLDKPBids.localRealm = PLDKPBids.localRealm or ""
@@ -1840,6 +1842,7 @@ function PLDKP_processWhisper(name, message)
 		local dkpIndex = string.find(lmsg, "dkp", 1, true)
 		if ( dkpIndex == 1 ) then
 
+
 			local whisperArgs = PLDKP_ParseArguments(lmsg)
 
 			if #whisperArgs > 1 then
@@ -3384,6 +3387,15 @@ function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 	if whisperTarget == nil then
 		whisperTarget = name
 	end
+
+	local currentTime = PLDKPBids:GetTimestamp()
+
+	if ( _last_dkp_whisper >= (currentTime - 800) and _last_dkp_whisper_name == whisperTarget)  then
+		return
+	end
+
+	_last_dkp_whisper = currentTime
+	_last_dkp_whisper_name = whisperTarget
 
 	if(PLDKPBids.dkp_info and PLDKPBids.dkp_info.date) then
 		pointUpdateDateInfo = string.format(PLDKP_DKPINFO_LASTUPDATE, PLDKP_DkpInfo.date)
