@@ -3390,7 +3390,7 @@ function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 
 	local currentTime = PLDKPBids:GetTimestamp()
 
-	if ( _last_dkp_whisper >= (currentTime - 800) and _last_dkp_whisper_name == whisperTarget)  then
+	if ( _last_dkp_whisper >= (currentTime - 600) and _last_dkp_whisper_name == whisperTarget)  then
 		return
 	end
 
