@@ -600,10 +600,10 @@ function PLDkpBidsFrame_GenerateTwinktranslationTable()
 			
 			if( (nrank == "Twink") or (nrank == "Orga Twink") or (nrank == "Orga-Twink") ) then
 				bIsTwink = true;
-			else
-				if( string.find(nnote, "aka") ~= nil) then
-					bIsTwink = true;
-				end
+			--else
+				--if( string.find(nnote, "aka") ~= nil) then
+				--	bIsTwink = true;
+				--end
 			end
 			
 			mainName = nname;
@@ -681,7 +681,7 @@ function PLDkpBidsFrame_IsTwink(characterName)
 
 	-- if the full name of the character and translated main char does not match
 	-- the prided character name is a twink 
-	return translatedFullName ~= translatedmainOfTwinkRealm
+	return translatedFullName ~= translatedmainOfTwinkFullName
 end
 
 ---------------------------------------------------------------------
