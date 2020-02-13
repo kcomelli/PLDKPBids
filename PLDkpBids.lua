@@ -3288,7 +3288,7 @@ function PLDkpBidsFrame_GetLastWinnerDataOfCurrentRaid(playerName, itemLink, ite
 			local winnerData = PLDKP_LastWinners[sIndex]
 
 			if winnerData then
-				local winnerName, winnerRealm, winnerServerName = PLDKPBids:CharaterNameTranslation(winnerData["MainCharName"] or winnerData["Name"])
+				local winnerName, winnerRealm, winnerServerName = PLDKPBids:CharaterNameTranslation(winnerData["Name"] or winnerData["MainCharName"])
 				local winnerItemId = PLDKPBids:GetItemIdFromLink(winnerData["ItemLink"])
 
 				-- compare itemIds instead of item links due to localization 
