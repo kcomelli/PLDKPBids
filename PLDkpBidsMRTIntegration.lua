@@ -9,6 +9,8 @@ local LBBR = LBB:GetReverseLookupTable();
 
 local maxRaidTimeDiff = 60*60*24 -- 1 day in seconds
 
+PLDKPBids.MrtLootCommsProcessing = {}
+
 function PLDKPBids:PLDKP_RegisterWithMRT()
     local bRet = false
     -- register item cost handler
@@ -141,7 +143,54 @@ end
 -- Will be called if receiving loot info via comms
 --
 function PLDKPBids:MrtReceivedLootNotification(sender, raidInfo, itemInfo, callType, raidNumber, lootNumber, oldItemInfo)
+    
+    local mrtData = {}
+    mrtData.sender = sender
+    mrtData.raidInfo = raidInfo
+    mrtData.itemInfo = itemInfo
+    mrtData.callType = callType
+    mrtData.raidNumber = raidNumber
+    mrtData.lootNumber = lootNumber
+    mrtData.oldItemInfo = oldItemInfo
+
+    -- schedule loot notification processing received via comms in order to avoid double entries
+    -- loot info from comms may be faster than from 
+    PLDkpBidsFrame_Schedule("PLDKPBids_MrtLootNotify_DelayProcessing", 2, mrtData)
+end
+
+function PLDKPBids_MrtLootNotify_Comms_DelayProcessing(mrtData)
+
+    if PLDKPBids.MrtLootCommsProcessing.callType == callType and
+        (PLDKPBids.MrtLootCommsProcessing.zone == raidInfo["RaidZone"] or PLDKPBids:IsSameZone((PLDKPBids.MrtLootCommsProcessing.zone or ""), raidInfo["RaidZone"])) and
+        PLDKPBids.MrtLootCommsProcessing.size == raidInfo["RaidSize"] and 
+        PLDKPBids.MrtLootCommsProcessing.realm == raidInfo["Realm"] and
+        PLDKPBids.MrtLootCommsProcessing.itemId == itemInfo["ItemId"] and
+        PLDKPBids.MrtLootCommsProcessing.looter == itemInfo["Looter"] and
+        PLDKPBids.MrtLootCommsProcessing.itemCount == itemInfo["ItemCount"] then
+
+        PLDKP_debug("Skip MRT loot notification processing because it is already being processed")
+        return
+    end
+
+    local sender = mrtData.sender
+    local raidInfo = mrtData.raidInfo
+    local itemInfo = mrtData.itemInfo
+    local callType = mrtData.callType
+    local raidNumber = mrtData.raidNumber
+    local lootNumber = mrtData.lootNumber
+    local oldItemInfo = mrtData.oldItemInfo
+
     local localRaidNum = PLDKPBids:FindLocalMrtRaid(raidInfo)
+
+    -- set currently processing info
+    -- this should protect processing the same item modification twice if sent from multiple players
+    PLDKPBids.MrtLootCommsProcessing.callType = callType
+    PLDKPBids.MrtLootCommsProcessing.zone = raidInfo["RaidZone"]
+    PLDKPBids.MrtLootCommsProcessing.size = raidInfo["RaidSize"]
+    PLDKPBids.MrtLootCommsProcessing.realm = raidInfo["Realm"]
+    PLDKPBids.MrtLootCommsProcessing.itemId = itemInfo["ItemId"]
+    PLDKPBids.MrtLootCommsProcessing.looter = itemInfo["Looter"]
+    PLDKPBids.MrtLootCommsProcessing.itemCount = itemInfo["ItemCount"]
 
     if localRaidNum then
         local existingItemOfCurrentRaid, existingItemLootNum = PLDKPBids:ExistingLootForRaid(localRaidNum, itemInfo)
@@ -182,8 +231,10 @@ function PLDKPBids:MrtReceivedLootNotification(sender, raidInfo, itemInfo, callT
     else
         PLDKP_debug("Error transforming incoming raidinformation to local raid index")
     end
-end
 
+    -- reset processing info
+    PLDKPBids.MrtLootCommsProcessing = {}
+end
 
 -- --------------------------------------------------------------------------
 -- FindLocalMrtRaid

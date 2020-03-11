@@ -176,7 +176,7 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
                     end
                 end
 
-                PLDKP_println(string.Format(PLDKP_RECEIVED_OPTIONS, sender))
+                PLDKP_println(string.format(PLDKP_RECEIVED_OPTIONS, sender))
             else
                 PLDKP_debug("Error deserializing: " .. deserialized)
                 print(deserialized)  -- error reporting if string doesn't get deserialized correctly
