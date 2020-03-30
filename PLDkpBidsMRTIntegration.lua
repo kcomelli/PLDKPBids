@@ -155,7 +155,7 @@ function PLDKPBids:MrtReceivedLootNotification(sender, raidInfo, itemInfo, callT
 
     -- schedule loot notification processing received via comms in order to avoid double entries
     -- loot info from comms may be faster than from 
-    PLDkpBidsFrame_Schedule("PLDKPBids_MrtLootNotify_DelayProcessing", 2, mrtData)
+    PLDkpBidsFrame_Schedule("PLDKPBids_MrtLootNotify_Comms_DelayProcessing", 2, mrtData)
 end
 
 function PLDKPBids_MrtLootNotify_Comms_DelayProcessing(mrtData)
