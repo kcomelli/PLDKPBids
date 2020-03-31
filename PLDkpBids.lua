@@ -1846,8 +1846,13 @@ function PLDKP_processWhisper(name, message)
 			local whisperArgs = PLDKP_ParseArguments(lmsg)
 
 			if #whisperArgs > 1 then
-				-- argument 2 is name of the player
-				PLDKP_FindAndAnswerPlayerDkp(whisperArgs[2], name)
+				if(whisperArgs[2].tolower() == "class" or whisperArgs[2].tolower() == "klasse") then
+					-- argument 2 is class query
+					PLDKP_FindAndAnswerClassDkp(name)
+				else
+					-- argument 2 is name of the player
+					PLDKP_FindAndAnswerPlayerDkp(whisperArgs[2], name)
+				end
 			else
 				PLDKP_FindAndAnswerPlayerDkp(name)
 			end
@@ -3356,6 +3361,20 @@ function PLDkpBidsFrame_GetDKPPlayerByIndex(index)
     end
 	
 	return playerName;
+end
+
+function PLDKP_FindAndAnswerClassDkp(whisperTarget)
+	if(PLDKPBids:IsDkpDataLoaded() == false) then
+		-- send no DKP data laoded
+		return
+    end
+
+	PLDkpBidsFrame_GenerateTwinktranslationTable()
+	local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(name)
+
+	-- get class of player whispering
+	-- if player is in raid: get raid members of same class
+	-- if player is not in raid: report top 10 players of class
 end
 
 ---------------------------------------------------------------------
