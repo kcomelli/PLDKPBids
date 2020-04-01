@@ -382,6 +382,7 @@ function PLDKP_ChatFrame_OnWhisperIncoming(chatFrame, event, arg1, arg2)
 		-- we are processing a whisper message we recently sended
 		-- via this addon's PLDKP_sendWhisper() function to our own character
 		_whisperingMyself = false;
+		PLDKP_debug("ignoring whisper to self - skip processing once ");
 		return false;
 	end
 
@@ -423,8 +424,9 @@ function PLDKP_ChatFrame_OnWhisperOutgoing(chatFrame, event, arg1, arg2)
 			--PLDKP_debug("out-msg: " .. arg1);
 			--PLDKP_debug("out-player: " .. arg2);
 	
-			
-			if (string.find(arg1,"^** PLDKP: ")) then
+			name, realm, serverName = PLDKPBids:CharaterNameTranslation(UnitName("player"))
+
+			if (string.find(arg1,"^** PLDKP: ") and (name ~= arg2) and (serverName ~= arg2)) then
 				PLDKP_OutBuffer[arg2] = arg1;
 				PLDKP_debug("filter outgoing whisper...");
 				return true;
@@ -1843,12 +1845,19 @@ function PLDKP_processWhisper(name, message)
 		if ( dkpIndex == 1 ) then
 
 
-			local whisperArgs = PLDKP_ParseArguments(lmsg)
+			local whisperArgs = PLDKP_ParseArguments(message)
 
 			if #whisperArgs > 1 then
-				if(whisperArgs[2].tolower() == "class" or whisperArgs[2].tolower() == "klasse") then
+				if(string.lower(whisperArgs[2]) == "class" or string.lower(whisperArgs[2]) == "klasse" or string.lower(whisperArgs[2]) == "class+" or string.lower(whisperArgs[2]) == "klasse+") then
+
+					local withTwinks = (string.lower(whisperArgs[2]) == "class+" or string.lower(whisperArgs[2]) == "klasse+")
+
+					if #whisperArgs > 2 then
+						withTwinks = (string.lower(whisperArgs[3]) == "+" or string.lower(whisperArgs[3]) == "true" or string.lower(whisperArgs[3]) == "t" or string.lower(whisperArgs[3]) == "yes" or string.lower(whisperArgs[3]) == "y" or string.lower(whisperArgs[3]) == "twink" or string.lower(whisperArgs[3]) == "twinks")
+					end
+
 					-- argument 2 is class query
-					PLDKP_FindAndAnswerClassDkp(name)
+					PLDKP_FindAndAnswerClassDkp(name, withTwinks)
 				else
 					-- argument 2 is name of the player
 					PLDKP_FindAndAnswerPlayerDkp(whisperArgs[2], name)
@@ -1858,6 +1867,8 @@ function PLDKP_processWhisper(name, message)
 			end
 
 			return false;
+		else
+			PLDKP_debug("Could not find dkp in whsiper string");
 		end
 
 		return false;  
@@ -2069,6 +2080,7 @@ end
 -- sends a whisper to a player
 ---------------------------------------------------------------------
 function PLDKP_sendWhisper(name, message)
+	PLDKP_debug("sending whisper to " ..  name .. ": " .. message)
 	if(name == PLDKPBids.myServerName) then
 		_whisperingMyself = true
 	end
@@ -3363,18 +3375,112 @@ function PLDkpBidsFrame_GetDKPPlayerByIndex(index)
 	return playerName;
 end
 
-function PLDKP_FindAndAnswerClassDkp(whisperTarget)
+function PLDKP_FindAndAnswerClassDkp(whisperTarget, withTwinks)
 	if(PLDKPBids:IsDkpDataLoaded() == false) then
 		-- send no DKP data laoded
 		return
     end
 
 	PLDkpBidsFrame_GenerateTwinktranslationTable()
-	local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(name)
+	local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(whisperTarget)
+
+	local whisperMainChar = PLDkpBidsFrame_GetMainCharOfTwink(whisperTarget)
+	if( whisperMainChar ~= incName and whisperMainChar ~= incFullName and withTwinks == false) then
+		--withTwinks = true
+		PLDKP_debug("Activating whsiperTwink because a twink is requesting class report")
+	end
 
 	-- get class of player whispering
 	-- if player is in raid: get raid members of same class
 	-- if player is not in raid: report top 10 players of class
+	local myGrpStatus = PLDKP_GetMyGroupStatus()
+	local playerIsInMyGroup = PLDKP_GetPlayerGroupStatus(incFullName)
+	local playerInMyGuild = PLDKPBids:GetGuildRosterIndex(incName)
+
+	local sendText = {}
+
+	if(PLDKPBids.dkp_info and PLDKPBids.dkp_info.date) then
+		pointUpdateDateInfo = string.format(PLDKP_DKPINFO_LASTUPDATE, PLDKP_DkpInfo.date)
+	end 
+
+	local whisperTargetIsInSameGroup = (myGrpStatus ~= "N" and myGrpStatus == playerIsInMyGroup)
+	-- if the player has the same group status that i have (is in same party or raid)
+	if ( whisperTargetIsInSameGroup or (playerInMyGuild and myGrpStatus == "N")) then
+		local targetClass = nil
+		local playersOfClass = nil
+		if (whisperTargetIsInSameGroup) then
+			-- process and report classes of the current raid/party
+			targetClass = PLDKPBids:GetClassOfPlayerInMyGroup(incName)
+			playersOfClass = PLDKPBids:GetPartyPlayersOfClass(targetClass, myGrpStatus)
+
+			table.insert(sendText, string.format(PLDKP_DKPINFO_REPORTCLASS_GRP, targetClass, pointUpdateDateInfo))	
+
+		else
+			targetClass = PLDKPBids:GetClassOfPlayerInMyGuild(playerInMyGuild)
+			playersOfClass = PLDKPBids:GetGuildPlayersOfClass(targetClass, 9999)
+
+			table.insert(sendText, string.format(PLDKP_DKPINFO_REPORTCLASS_GUILD, targetClass, pointUpdateDateInfo))	
+		end
+
+		-- need to create a sorted list of classes
+		if(targetClass ~= nil and playersOfClass ~= nil) then
+			for k,v in pairs(playersOfClass) do
+				local vName, vRealm, vFullName = PLDKPBids:CharaterNameTranslation(v)
+				local mainChar = PLDkpBidsFrame_GetMainCharOfTwink(v)
+
+				if( mainChar ~= vName and mainChar ~= vFullName) then
+					if ( withTwinks and PLDKPBids:PlayerHasDkpData(mainChar) ) then
+						local charDkp = PLDKPBids:PlayerGetDkpData(mainChar)
+		
+						local rank = PLDKPBids:GetGuildRank(mainChar)
+
+						-- TODO: make rank configurable
+						if (rank ~= "Inaktiv" and charDkp > 0) then
+							-- a twink is requesting dkp
+							table.insert(sendText, string.format(PLDKP_DKPINFO_SENDTWINK_MAIN, vFullName, mainChar, charDkp))	
+						end
+					end
+				else
+					if ( PLDKPBids:PlayerHasDkpData(v) ~= nil ) then
+						local charDkp = PLDKPBids:PlayerGetDkpData(v)
+		
+						local rank = PLDKPBids:GetGuildRank(mainChar)
+
+						if (rank ~= "Inaktiv" and charDkp > 0) then
+							-- a main is requesting dkp
+							table.insert(sendText, string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp))	
+						end
+					end
+				end
+
+			end
+		end
+	else
+		table.insert(sendText, PLDKP_DKPINFO_TARGETNOTVALID)
+	end
+
+	local currentTime = PLDKPBids:GetTimestamp()
+
+	if ( _last_dkp_whisper >= (currentTime - 2) and _last_dkp_whisper_name == whisperTarget)  then
+		_last_dkp_whisper = currentTime -- update last whisper try
+		return
+	end
+
+	_last_dkp_whisper = currentTime
+	_last_dkp_whisper_name = whisperTarget
+
+	-- send messages
+	-- max to 20 entries
+	-- todo - use chat-throttle lib
+	local cnt=0
+	for k,v in pairs(sendText) do
+		if cnt < 20 then
+			PLDKP_sendWhisper(whisperTarget, v)	
+			cnt = cnt+1
+		end
+	end
+
+	PLDKP_sendWhisper(whisperTarget, PLDKP_DKPINFO_REPORTCLASS_END)
 end
 
 ---------------------------------------------------------------------
@@ -3390,6 +3496,8 @@ function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 		-- send no DKP data laoded
 		return
     end
+
+	PLDKP_debug("Findinx player DKP of " ..  name);
 
 	PLDkpBidsFrame_GenerateTwinktranslationTable()
 
@@ -3409,7 +3517,9 @@ function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 
 	local currentTime = PLDKPBids:GetTimestamp()
 
-	if ( _last_dkp_whisper >= (currentTime - 600) and _last_dkp_whisper_name == whisperTarget)  then
+	if ( _last_dkp_whisper >= (currentTime - 2) and _last_dkp_whisper_name == whisperTarget)  then
+		_last_dkp_whisper = currentTime -- update last whisper try
+		PLDKP_debug("Ignoring whisper because the last data was sent a few seconds ago")
 		return
 	end
 
@@ -3420,33 +3530,32 @@ function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 		pointUpdateDateInfo = string.format(PLDKP_DKPINFO_LASTUPDATE, PLDKP_DkpInfo.date)
 	end 
  
-    if ( PLDKPBids:PlayerHasDkpData(incName) ) then
-        local charDkp = PLDKPBids:PlayerGetDkpData(incName) 
+    if( mainChar ~= incName and incFullName ~= mainChar) then
+		if ( PLDKPBids:PlayerHasDkpData(mainChar) ) then
+			local charDkp = PLDKPBids:PlayerGetDkpData(mainChar)
 
-		-- a main is requesting dkp
-		PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SEND, charDkp, pointUpdateDateInfo))
-		return
-	else
-
-		if( mainChar ~= incName) then
-            if ( PLDKPBids:PlayerHasDkpData(mainChar) ) then
-                local charDkp = PLDKPBids:PlayerGetDkpData(mainChar)
-
-				-- a twink is requesting dkp
-				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_TWINKDETECT, mainChar))	
-				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp, pointUpdateDateInfo))	
-				return
+			-- a twink is requesting dkp
+			if(name == whisperTarget) then
+				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp) .. " (" .. pointUpdateDateInfo .. ")")	
+			else
+				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SENDTWINK_MAIN, name, mainChar, charDkp) .. " (" .. pointUpdateDateInfo .. ")")	
 			end
-		else
-            if ( PLDKPBids:PlayerHasDkpData(incName) ~= nil ) then
-                local charDkp = PLDKPBids:PlayerGetDkpData(incName)
 
-				-- a main is requesting dkp
-				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SEND, charDkp, pointUpdateDateInfo))	
-				return
-			end
+			return
 		end
-		
+	else
+		if ( PLDKPBids:PlayerHasDkpData(incName) ~= nil ) then
+			local charDkp = PLDKPBids:PlayerGetDkpData(incName)
+
+			-- a main is requesting dkp
+			if(name == whisperTarget) then
+				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SEND, charDkp) .. " (" .. pointUpdateDateInfo .. ")")	
+			else
+				PLDKP_sendWhisper(whisperTarget, string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp) .. " (" .. pointUpdateDateInfo .. ")")	
+			end
+
+			return
+		end
 	end
 
 	-- unkown player or no dkp

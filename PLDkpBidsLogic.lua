@@ -214,6 +214,134 @@ function PLDKPBids:GetGuildRank(player)
 	end
   end
 
+  function PLDKPBids:GetGuildRosterIndex(player)
+	local guildSize,_,_ = GetNumGuildMembers();
+  
+	if IsInGuild() then
+	  for i=1, tonumber(guildSize) do
+		name,_,rank = GetGuildRosterInfo(i)
+		name = strsub(name, 1, string.find(name, "-")-1)  -- required to remove server name from player (can remove in classic if this is not an issue)
+		if name == player then
+		  return i;
+		end
+	  end
+	  return false;
+	end
+  end
+
+  function PLDKPBids:GetClassOfPlayerInMyGuild(playerIndex)
+	if (playerIndex == false) then
+		return nil
+	end
+
+	local name, rank, rankIndex, level, class, zone, note, 
+  			officernote, online, status, classFileName, 
+			  achievementPoints, achievementRank, isMobile, isSoREligible, standingID = GetGuildRosterInfo(playerIndex)
+			  
+	return class
+  end
+
+  function PLDKPBids:GetClassOfPlayerInMyGroup(playerName, groupStatus)
+	if (playerName == nil) then
+		return nil
+	end
+
+	local checkName, checkRealm, checkServerName = PLDKPBids:CharaterNameTranslation(playerName)
+	
+	if( groupStatus == "R" ) then
+		nMemberCnt = GetNumGroupMembers();
+		
+		for nCounter = 1, nMemberCnt do
+			name, rank, subgroup, level, class, filename, zone, online, isdead = GetRaidRosterInfo(nCounter);
+			
+			if (name ~= nil) then
+				if( name == checkName or name == checkServerName) then
+					localizedClass, englishClass, classIndex = UnitClass("raid"..nCounter)
+					return localizedClass;
+				end
+			end
+		end
+	end
+
+	if( groupStatus == "P" ) then
+		nMemberCnt = GetNumGroupMembers();
+
+		for nCounter = 1, nMemberCnt do
+			name = PLDKPBids:GetPlayerName("party"..nCounter);
+			if (name ~= nil) then
+				--PLDKP_debug( "cnt" .. nCounter .. " name=" .. name);
+				
+				if( name == checkName or name == checkServerName) then
+					localizedClass, englishClass, classIndex = UnitClass("party"..nCounter)
+					return localizedClass;
+				end
+			end
+		end
+
+	end
+	
+	return nil
+  end
+
+  function PLDKPBids:GetPartyPlayersOfClass(className, groupStatus)
+	local players = {}
+
+	if( groupStatus == "R" ) then
+		nMemberCnt = GetNumGroupMembers();
+		
+		for nCounter = 1, nMemberCnt do
+			name, rank, subgroup, level, class, filename, zone, online, isdead = GetRaidRosterInfo(nCounter);
+			
+			if (name ~= nil) then
+				localizedClass, englishClass, classIndex = UnitClass("raid"..nCounter)
+				if (localizedClass == className) then
+					table.insert(players, name)
+				end
+			end
+		end
+	end
+
+	if( groupStatus == "P" ) then
+		nMemberCnt = GetNumGroupMembers();
+
+		for nCounter = 1, nMemberCnt do
+			name = PLDKPBids:GetPlayerName("party"..nCounter);
+			if (name ~= nil) then
+				localizedClass, englishClass, classIndex = UnitClass("party"..nCounter)
+				if (localizedClass == className) then
+					table.insert(players, name)
+				end
+			end
+		end
+	end
+
+	return players
+  end
+
+  function PLDKPBids:GetGuildPlayersOfClass(className, top)
+	local players = {}
+	local count=0
+	local guildSize,_,_ = GetNumGuildMembers();
+  
+	if IsInGuild() then
+	  for i=1, tonumber(guildSize) do
+		local name, rank, rankIndex, level, class, zone, note, officernote, online, status, classFileName, 
+			  achievementPoints, achievementRank, isMobile, isSoREligible, standingID = GetGuildRosterInfo(i)
+
+		if class == className then
+			table.insert(players, name)
+			count = count + 1
+			if (count >= top) then
+				return players
+			end
+
+		end
+	  end
+	end
+
+	return players
+  end
+
   function PLDKPBids:IsGuildPlayerOnline(player)
 	local name, rank, rankIndex;
 	local guildSize;

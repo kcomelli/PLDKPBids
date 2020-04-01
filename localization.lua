@@ -101,13 +101,17 @@ PLDKP_NOTE_SAVED = "** PLDKP: Note '%s' saved.";
 PLDKP_NOTE_NOTSAVED = "** PLDKP: Note '%s' NOT saved.";
 
 PLDKP_DKPINFO_PLAYERUNKNOWN = "** PLDKP: You do not have earned any DKP yet or your player name has not been added to the DKP system!";
-PLDKP_DKPINFO_SEND = "** PLDKP: You have %d DKP (%s)";
+PLDKP_DKPINFO_SEND = "** PLDKP: You have %d DKP";
 PLDKP_DKPINFO_TWINKDETECT = "** PLDKP: Detected your character is a twink of %s";
-PLDKP_DKPINFO_SENDTWINK = "** PLDKP: %s has %d DKP (%s)";
+PLDKP_DKPINFO_SENDTWINK = "** PLDKP: %s has %d DKP";
+PLDKP_DKPINFO_SENDTWINK_MAIN = "** PLDKP: %s (Twink of %s) has %d DKP";
 PLDKP_DKPINFO_BEGINOFRAID = "begin of raid";
 PLDKP_DKPINFO_LASTUPDATE = "updated: %s";
 
-PLDKP_INFO_TWINKOF = "TWINK of";
+PLDKP_DKPINFO_REPORTCLASS_GRP = "** PLDKP: Reporting DKP for class '%s' of current raid or party (%s)";
+PLDKP_DKPINFO_REPORTCLASS_GUILD = "** PLDKP: Reporting DKP for class '%s' of current guild (%s)";
+PLDKP_DKPINFO_TARGETNOTVALID = "** PLDKP: You are not in my group or in my guild! DKP info will not be shared with you!";
+PLDKP_DKPINFO_REPORTCLASS_END = "** PLDKP: End of Report **";
 
 PLDKP_TWINKINFO_MAINCHAR = "PLDKP Character '%s' is a main character.";
 PLDKP_TWINKINFO_TWINKOF = "PLDKP Character '%s' is a twink of '%s'.";
@@ -326,11 +330,17 @@ end
 	PLDKP_NOTE_NOTSAVED = "** PLDKP: Notiz '%s' NICHT gespeichert.";
 
 	PLDKP_DKPINFO_PLAYERUNKNOWN = "** PLDKP: Du hast noch keine DKP gesammelt oder dein Character ist im DKP System nicht bekannt!";
-	PLDKP_DKPINFO_SEND = "** PLDKP: Du hast %d DKP (%s)";
+	PLDKP_DKPINFO_SEND = "** PLDKP: Du hast %d DKP";
 	PLDKP_DKPINFO_TWINKDETECT = "** PLDKP: Du bist ein Twink von %s";
-	PLDKP_DKPINFO_SENDTWINK = "** PLDKP: %s hat %d DKP (%s)";
+	PLDKP_DKPINFO_SENDTWINK = "** PLDKP: %s hat %d DKP";
+	PLDKP_DKPINFO_SENDTWINK_MAIN = "** PLDKP: %s (Twink von %s) hat %d DKP";
 	PLDKP_DKPINFO_BEGINOFRAID = "Begin des Raids";
 	PLDKP_DKPINFO_LASTUPDATE = "Stand: %s";
+
+	PLDKP_DKPINFO_REPORTCLASS_GRP = "** PLDKP: DKP-Stand der Klasse '%s' der aktuellen Gruppe (%s)";
+	PLDKP_DKPINFO_REPORTCLASS_GUILD = "** PLDKP: DKP-Stand der Klasse '%s' Deiner Gilde (%s)";
+	PLDKP_DKPINFO_TARGETNOTVALID = "** PLDKP: Du bist nicht in meiner Gruppe oder Gilde! DKP-Konten werden nicht extern geteilt!";
+	PLDKP_DKPINFO_REPORTCLASS_END = "** PLDKP: Report-Ende **";
 	
 	PLDKP_INFO_TWINKOF = "TWINK von";
 	PLDKP_TWINKINFO_MAINCHAR = "PLDKP Character '%s' ist ein Maincharacter.";
