@@ -32,7 +32,11 @@ function PLDKPBids:EnsureDkpData()
 
         -- store my current DKP version as most recent one
         PLDKPBids.MostRecentDkpVersion = tonumber(PLDKPBids.dkp_info.timestamp)
+
+        return true
     end
+
+    return false
 end
 
 function PLDKPBids:InitiateDkpVersionComms() 

@@ -528,7 +528,11 @@ function PLDKPBids:CreateHelpTable()
 	table.insert(PLDKP_HelpTable, PLDKP_Help_Text10);
 	
 	-- dkp plugin
-	PLDKPBids:EnsureDkpData()
+	local hasDkp = PLDKPBids:EnsureDkpData()
+
+	if(hasDkp) then
+		table.insert(PLDKP_HelpTable, PLDKP_Help_Text11);
+	end
 
 	if PLDkpBidsOptions["EnableMRTIntegration"] then
 		-- check MRT integration
@@ -895,32 +899,8 @@ function PLDkpBidsFrame_OnCommand(msg)
 			else
 				PLDKP_println(PLDKP_TWINKINFO_ERRORNAME);
 			end
-			
-		elseif (command == "test" ) then
-			PLDKP_println("PLDKP: test command ...");
-			PLDkpBidsFrame_GenerateTwinktranslationTable();
-		elseif (command == "mrtloottest") then
-			PLDKP_println("PLDKP: mrtloottest command ...");
-
-			local itemInfo = {
-					["ItemLink"] = "|cffa335ee|Hitem:18822::::::::60:::::::|h[Obsidian Edged Blade]|h|r",
-					["ItemString"] = "item:18822::::::::60:::::::",
-					["ItemId"] = 18822,
-					["ItemName"] = "Obsidian Edged Blade 2",
-					["ItemColor"] = "ffa335ee",
-					["ItemCount"] = 1,
-					["BossNumber"] = 1,
-					["Looter"] = "Roldhak",
-					["DKPValue"] = 90,
-					["Note"] = "note",
-					["Time"] = time(),
-					};
-
-			local callType = MRT_NOTIFYSOURCE_DELETE_GUI
-			local raidNumber = 1
-			local lootNumber = 1
-
-			PLDKPBids_MrtLootNotify(itemInfo, callType, raidNumber, lootNumber, nil)
+		elseif (command == PLDKP_Command_Report) then
+			PLDKP_ReportDkpQueryInfo()
 		end
 	end
 
@@ -3576,6 +3556,35 @@ end
 -- printing functions
 -------------------------------------------------------------------------------
 
+function PLDKP_ReportDkpQueryInfo()
+	local channel = PLDKP_GetAnnounceChannel();
+	local myVersion = tonumber(PLDKPBids.dkp_info.timestamp)
+	local playersToQuery = {}
+
+	table.insert(playersToQuery, PLDKPBids.myName)
+
+	for key, value in pairs(PLDKPBids.KnownVersions) do
+		if(value >= myVersion)
+			local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(key)
+
+			if(incName ~= PLDKPBids.myName) then
+				table.insert(playersToQuery, incName)
+			end
+		end
+	end
+
+	SendChatMessage(PLDKP_Help_Text0, channel)
+
+	SendChatMessage(PLDKP_Report_DkpQuery0, channel)
+	SendChatMessage(PLDKP_Report_DkpQuery1, channel)
+	SendChatMessage(string.format(" > %s", table.concat(playersToQuery, ", ")), channel)
+	SendChatMessage(string.format(PLDKP_Report_DkpQuery2, PLDKPBids.myName) channel)
+	SendChatMessage(string.format(PLDKP_Report_DkpQuery3, PLDKPBids.myName), channel)
+	SendChatMessage(string.format(PLDKP_Report_DkpQuery4, PLDKPBids.myName), channel)
+	SendChatMessage(PLDKP_Report_DkpQuery5, channel)
+
+	SendChatMessage(PLDKP_Help_TextEND, channel)
+end
 
 -------------------------------------------------------------------------------
 -- function PLDKP_debug( Message)

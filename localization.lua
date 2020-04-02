@@ -31,13 +31,14 @@ PLDKP_Command_Show = "show";
 PLDKP_Command_Hide = "hide";
 PLDKP_Command_ClearWinners = "clearwinners";
 PLDKP_Command_GetMain = "getmain";
+PLDKP_Command_Report = "report";
 
 -------------------------------------------------------------------------------
 -- English localization (Default)
 -------------------------------------------------------------------------------
 
-PLDKP_VERSION_STRING = "Primal Legion DKP-Bids 4.0";
-PLDKP_BUILD_NUMBER = "4000004"
+PLDKP_VERSION_STRING = "Primal Legion DKP-Bids 4.0.5";
+PLDKP_BUILD_NUMBER = "4000006"
 
 PLDKP_ClosedMessage = "PL DKP-Bids window closed.  Type \"/pldkp show\" to make it visible again."
 
@@ -179,9 +180,18 @@ PLDKP_Help_Text7 = PLDKP_CHAT_GREEN..PLDKP_Command_Set.." <option>=<value> " ..P
 PLDKP_Help_Text8 = PLDKP_CHAT_GREEN..PLDKP_Command_Reset..PLDKP_CHAT_WHITE.." Reset Mod.";
 PLDKP_Help_Text9 = PLDKP_CHAT_GREEN..PLDKP_Command_ClearWinners..PLDKP_CHAT_WHITE.." Clears the last winners table.";
 PLDKP_Help_Text10 = PLDKP_CHAT_GREEN..PLDKP_Command_GetMain .. " <playername> " ..PLDKP_CHAT_WHITE.." Prints the name of the main character for the player.";
+PLDKP_Help_Text11 = PLDKP_CHAT_GREEN..PLDKP_Command_Report .. PLDKP_CHAT_WHITE.." Prints infos to players on how to query their dkp data.";
 PLDKP_Help_TextEND = "*** END OF " .. PLDKP_VERSION_STRING .. " help";
 
-PLDKP_Help_GetDKP = PLDKP_CHAT_WHITE.."GetDKP AddOn found. Using it to determine DKP-values for max. bids.";
+PLDKP_Help_GetDKP = PLDKP_CHAT_WHITE.."DKP AddOn found. Using it to determine DKP-values for max. bids.";
+
+-- Report
+PLDKP_Report_DkpQuery0 = "Instructions on how to query DKP values."
+PLDKP_Report_DkpQuery1 = "You can send these queries to the following player(s):"
+PLDKP_Report_DkpQuery2 = "Query YOUR current DKP-standing: ./w %s dkp"
+PLDKP_Report_DkpQuery3 = "Query a character's DKP-standing: ./w %s dkp <characterName>"
+PLDKP_Report_DkpQuery4 = "Query YOUR class DKP-standing: ./w %s dkp class [+]"
+PLDKP_Report_DkpQuery5 = "   optional + will include Twinks in report. Twink reporting is auto-enabled for Twinks querying dkp values."
 
 -- Note frame
 PLDKP_NOTE_UI_HEADER = "Enter note";
@@ -409,9 +419,18 @@ end
 	PLDKP_Help_Text8 = PLDKP_CHAT_GREEN..PLDKP_Command_Reset..PLDKP_CHAT_WHITE.." Setzt das Bietsystem zurueck.";
 	PLDKP_Help_Text9 = PLDKP_CHAT_GREEN..PLDKP_Command_ClearWinners..PLDKP_CHAT_WHITE.." Loescht die Liste der letzten Gewinner.";
 	PLDKP_Help_Text10 = PLDKP_CHAT_GREEN..PLDKP_Command_GetMain .. " <spielername> " ..PLDKP_CHAT_WHITE.." Zeigt den Namen des Mainchars von <spielername>.";
+    PLDKP_Help_Text11 = PLDKP_CHAT_GREEN..PLDKP_Command_Report .. PLDKP_CHAT_WHITE.." Zeigt Infos wie die Spieler ihre DKP Daten abfragen koennen.";
 	PLDKP_Help_TextEND = "*** END OF " .. PLDKP_VERSION_STRING .. " help";
 	
 	PLDKP_Help_GetDKP = PLDKP_CHAT_WHITE.."GetDKP AddOn gefunden. Maximalwerte fuer Gebote werden von GetDKP entnommen.";
+
+	-- Report
+	PLDKP_Report_DkpQuery0 = "Anleitung zum Abrufen von DKP-Staenden."
+	PLDKP_Report_DkpQuery1 = "Sende Dein whisper an folgende Spieler:"
+	PLDKP_Report_DkpQuery2 = "Dein DKP Stand: ./w %s dkp"
+	PLDKP_Report_DkpQuery3 = "Den DKP Stand eines anderen Charakter: ./w %s dkp <characterName>"
+	PLDKP_Report_DkpQuery4 = "DKP Stand Deiner Klasse: ./w %s dkp class [+]"
+	PLDKP_Report_DkpQuery5 = "   Optional + reported auch ueber Twinks. Twinks werden automatisch reported wenn die Abfrage von einem Twink kommt."
 
 	-- Note frame
 	PLDKP_NOTE_UI_HEADER = "Notiz eingeben";
