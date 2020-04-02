@@ -22,6 +22,8 @@ local _elapsed = 0;
 local _whisperingMyself = false;
 local _last_dkp_whisper = 0;
 local _last_dkp_whisper_name = nil;
+local _last_dkp_class_whisper = 0;
+local _last_dkp_class_whisper_name = nil;
 
 -- after player entering world, the realm name will be set
 PLDKPBids.localRealm = PLDKPBids.localRealm or ""
@@ -3361,6 +3363,17 @@ function PLDKP_FindAndAnswerClassDkp(whisperTarget, withTwinks)
 		return
     end
 
+	if ( _last_dkp_class_whisper >= (currentTime - 10)) then --and _last_dkp_class_whisper_name ~= whisperTarget)  then
+		-- we will only serve one class report query per 10 seconds (chat flood protection)
+		-- if the timeout is not over, send an info to the player telling him to wait
+		-- or forward the query to other players in the list
+		local playersToQuery = PLDKPBids:PlayersWithAccurateDkpStandings(false)
+		local playerList = table.concat(playersToQuery, ", ")
+		local msg = string.format(PLDKP_DKPINFO_REPORTCLASS_TIMEOUT, (10-currentTime-_last_dkp_class_whisper), playerList)
+		PLDKP_sendWhisper(whisperTarget, msg)	
+		return
+	end
+
 	PLDkpBidsFrame_GenerateTwinktranslationTable()
 	local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(whisperTarget)
 
@@ -3457,6 +3470,8 @@ function PLDKP_FindAndAnswerClassDkp(whisperTarget, withTwinks)
 
 	_last_dkp_whisper = currentTime
 	_last_dkp_whisper_name = whisperTarget
+	_last_dkp_class_whisper = currentTime
+	_last_dkp_class_whisper_name = whisperTarget
 
 	-- send messages
 	-- max to 20 entries
@@ -3557,33 +3572,23 @@ end
 -------------------------------------------------------------------------------
 
 function PLDKP_ReportDkpQueryInfo()
-	local channel = PLDKP_GetAnnounceChannel();
-	local myVersion = tonumber(PLDKPBids.dkp_info.timestamp)
-	local playersToQuery = {}
+	if(PLDKPBids:IsDkpDataLoaded()) then 
+		local channel = PLDKP_GetAnnounceChannel();
+		local playersToQuery = PLDKPBids:PlayersWithAccurateDkpStandings(true)
+		local playerList = table.concat(playersToQuery, ", ")
 
-	table.insert(playersToQuery, PLDKPBids.myName)
+		SendChatMessage(PLDKP_Help_Text0, channel)
 
-	for key, value in pairs(PLDKPBids.KnownVersions) do
-		if(value >= myVersion)
-			local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(key)
+		SendChatMessage(PLDKP_Report_DkpQuery0, channel)
+		SendChatMessage(PLDKP_Report_DkpQuery1, channel)
+		SendChatMessage(string.format(" > %s", playerList), channel)
+		SendChatMessage(string.format(PLDKP_Report_DkpQuery2, PLDKPBids.myName), channel)
+		SendChatMessage(string.format(PLDKP_Report_DkpQuery3, PLDKPBids.myName), channel)
+		SendChatMessage(string.format(PLDKP_Report_DkpQuery4, PLDKPBids.myName), channel)
+		SendChatMessage(PLDKP_Report_DkpQuery5, channel)
 
-			if(incName ~= PLDKPBids.myName) then
-				table.insert(playersToQuery, incName)
-			end
-		end
+		SendChatMessage(PLDKP_Help_TextEND, channel)
 	end
-
-	SendChatMessage(PLDKP_Help_Text0, channel)
-
-	SendChatMessage(PLDKP_Report_DkpQuery0, channel)
-	SendChatMessage(PLDKP_Report_DkpQuery1, channel)
-	SendChatMessage(string.format(" > %s", table.concat(playersToQuery, ", ")), channel)
-	SendChatMessage(string.format(PLDKP_Report_DkpQuery2, PLDKPBids.myName) channel)
-	SendChatMessage(string.format(PLDKP_Report_DkpQuery3, PLDKPBids.myName), channel)
-	SendChatMessage(string.format(PLDKP_Report_DkpQuery4, PLDKPBids.myName), channel)
-	SendChatMessage(PLDKP_Report_DkpQuery5, channel)
-
-	SendChatMessage(PLDKP_Help_TextEND, channel)
 end
 
 -------------------------------------------------------------------------------

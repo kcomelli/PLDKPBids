@@ -60,6 +60,34 @@ function PLDKPBids:IsDkpDataLoaded()
 end
 
 ---------------------------------------------------------------------
+-- function PLDKPBids:PlayersWithAccurateDkpStandings(includeMyName)
+--
+-- Get a list of players which can be queried for dkp standings
+---------------------------------------------------------------------
+function PLDKPBids:PlayersWithAccurateDkpStandings(includeMyName)
+    
+	local playersToQuery = {}
+
+    if (PLDKPBids:IsDkpDataLoaded()) then
+        local myVersion = tonumber(PLDKPBids.dkp_info.timestamp)
+        if(includeMyName) then
+            table.insert(playersToQuery, PLDKPBids.myName)
+        end
+
+        for key, value in pairs(PLDKPBids.KnownVersions) do
+            if(value >= myVersion) then
+                local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(key)
+
+                if(incName ~= PLDKPBids.myName) then
+                    table.insert(playersToQuery, incName)
+                end
+            end
+        end
+    end
+    
+    return playersToQuery
+end
+---------------------------------------------------------------------
 -- function PLDKPBids:PlayerHasDkpData(name)
 --
 -- Check if a character has dkp data

@@ -69,7 +69,9 @@ function PLDKPBids:CharaterNameTranslation(characterName)
 	local realmName
 	local serverName
 
-	nameOnly = characterName
+	-- make sure first Character is upper case
+	nameOnly = characterName:sub(1,1):upper()..characterName:sub(2)
+	characterName = nameOnly
 
 	local dashIndex = string.find(characterName, "-", 1, true)
 

@@ -114,6 +114,8 @@ PLDKP_DKPINFO_REPORTCLASS_GUILD = "** PLDKP: Reporting DKP for class '%s' of cur
 PLDKP_DKPINFO_TARGETNOTVALID = "** PLDKP: You are not in my group or in my guild! DKP info will not be shared with you!";
 PLDKP_DKPINFO_REPORTCLASS_END = "** PLDKP: End of Report **";
 
+PLDKP_DKPINFO_REPORTCLASS_TIMEOUT = "** PLDKP: Too many class queries. Wait for %d seconds or send the query to the player(s): %s"
+
 PLDKP_TWINKINFO_MAINCHAR = "PLDKP Character '%s' is a main character.";
 PLDKP_TWINKINFO_TWINKOF = "PLDKP Character '%s' is a twink of '%s'.";
 PLDKP_TWINKINFO_NOTFOUND = "PLDKP Character '%s' not found in guild list.";
@@ -346,6 +348,8 @@ end
 	PLDKP_DKPINFO_SENDTWINK_MAIN = "** PLDKP: %s (Twink von %s) hat %d DKP";
 	PLDKP_DKPINFO_BEGINOFRAID = "Begin des Raids";
 	PLDKP_DKPINFO_LASTUPDATE = "Stand: %s";
+
+	PLDKP_DKPINFO_REPORTCLASS_TIMEOUT = "** PLDKP: Zu viele Anfragen. Bitte %d Sek warten oder Anfrage an folgende Spieler senden: %s"
 
 	PLDKP_DKPINFO_REPORTCLASS_GRP = "** PLDKP: DKP-Stand der Klasse '%s' der aktuellen Gruppe (%s)";
 	PLDKP_DKPINFO_REPORTCLASS_GUILD = "** PLDKP: DKP-Stand der Klasse '%s' Deiner Gilde (%s)";
