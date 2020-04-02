@@ -3386,7 +3386,7 @@ function PLDKP_FindAndAnswerClassDkp(whisperTarget, withTwinks)
 
 	local whisperMainChar = PLDkpBidsFrame_GetMainCharOfTwink(whisperTarget)
 	if( whisperMainChar ~= incName and whisperMainChar ~= incFullName and withTwinks == false) then
-		--withTwinks = true
+		withTwinks = true
 		PLDKP_debug("Activating whsiperTwink because a twink is requesting class report")
 	end
 
@@ -3424,6 +3424,8 @@ function PLDKP_FindAndAnswerClassDkp(whisperTarget, withTwinks)
 
 		-- need to create a sorted list of classes
 		if(targetClass ~= nil and playersOfClass ~= nil) then
+			local textWithValues = {} -- for sorting
+
 			for k,v in pairs(playersOfClass) do
 				local vName, vRealm, vFullName = PLDKPBids:CharaterNameTranslation(v)
 				local mainChar = PLDkpBidsFrame_GetMainCharOfTwink(v)
@@ -3437,7 +3439,8 @@ function PLDKP_FindAndAnswerClassDkp(whisperTarget, withTwinks)
 						-- TODO: make rank configurable
 						if (rank ~= "Inaktiv" and charDkp > 0) then
 							-- a twink is requesting dkp
-							table.insert(sendText, string.format(PLDKP_DKPINFO_SENDTWINK_MAIN, vFullName, mainChar, charDkp))	
+							--table.insert(sendText, string.format(PLDKP_DKPINFO_SENDTWINK_MAIN, vFullName, mainChar, charDkp))	
+							textWithValues[string.format(PLDKP_DKPINFO_SENDTWINK_MAIN, vFullName, mainChar, charDkp)] = charDkp
 						end
 					end
 				else
@@ -3448,12 +3451,18 @@ function PLDKP_FindAndAnswerClassDkp(whisperTarget, withTwinks)
 
 						if (rank ~= "Inaktiv" and charDkp > 0) then
 							-- a main is requesting dkp
-							table.insert(sendText, string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp))	
+							--table.insert(sendText, string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp))	
+							textWithValues[string.format(PLDKP_DKPINFO_SENDTWINK, mainChar, charDkp)] = charDkp
 						end
 					end
 				end
 
 			end
+
+			local sortedKeys = PLDKPBids:getKeysSortedByValue(textWithValues, function(a, b) return a >= b end)
+			for _, key in ipairs(sortedKeys) do
+				table.insert(sendText, key)	
+			  end
 		end
 	else
 		table.insert(sendText, PLDKP_DKPINFO_TARGETNOTVALID)
