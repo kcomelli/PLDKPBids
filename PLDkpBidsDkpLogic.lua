@@ -267,6 +267,19 @@ function PLDKPBids:CalculateMinBidPrice(itemLink)
                 PLDKP_debug("Item id " .. tostring(itemId) .. " identified as Equipment configured min-DKP of " .. tostring( PLDKPBids:GetMinDkpOption(currentZone, "MinDKPEquip") .. " for zone '" .. (currentZone or "Default") .. "'"));
                 return  PLDKPBids:GetMinDkpOption(currentZone, "MinDKPEquip")
             end
+        else
+            if PLDKPBids:IsSetToken(itemLink) then
+                if PLDKPBids:IsSetWeaponToken(itemLink) and PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetTokenWeapon") then
+                    PLDKP_debug("Item id " .. tostring(itemId) .. " identified as SET WEAPON token with configured min-DKP of " .. tostring(PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetTokenWeapon") .. " for zone '" .. (currentZone or "Default")  .. "'"));
+                    return PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetTokenWeapon")
+                elseif PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetToken") then
+                    PLDKP_debug("Item id " .. tostring(itemId) .. " identified as SET token with configured min-DKP of " .. tostring(PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetToken") .. " for zone '" .. (currentZone or "Default")  .. "'"));
+                    return PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetToken")
+                end
+            elseif PLDKPBids:IsSetWeaponToken(itemLink) and PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetTokenWeapon") then
+                PLDKP_debug("Item id " .. tostring(itemId) .. " identified as SET WEAPON token with configured min-DKP of " .. tostring(PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetTokenWeapon") .. " for zone '" .. (currentZone or "Default")  .. "'"));
+                return PLDKPBids:GetMinDkpOption(currentZone, "MinDKPSetTokenWeapon")
+            end
         end
     end
 

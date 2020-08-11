@@ -185,9 +185,94 @@ function PLDKPBids:IsSetItem(itemLink)
 		--PLDKP_debug("    Subtype: " .. itemSubType)
 		--PLDKP_debug("    Loc: " .. itemEquipLoc)
 		--PLDKP_debug("    SetId: " .. (tostring(itemSetID) or "na"))
+		--PLDKP_debug("    isCraftingReagent: " .. (tostring(isCraftingReagent) or "na"))
+		--PLDKP_debug("    expacID: " .. (tostring(expacID) or "na"))
+		--PLDKP_debug("    bindType: " .. (tostring(bindType) or "na"))
+		--PLDKP_debug("    itemSubClassID: " .. (tostring(itemSubClassID) or "na"))
+		--PLDKP_debug("    classID: " .. (tostring(classID) or "na"))
 
 		-- if the item is part of a set - the id of the set will be returned
 		return itemSetID ~= nil
+	end
+
+	return false
+end
+
+function PLDKPBids:IsSetToken(itemLink)
+	if itemLink ~= nil then
+		local itemId = PLDKPBids:GetItemIdFromLink(itemLink)
+		local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, itemVendorPrice, classID, itemSubClassID, bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo (itemId);
+		
+		--[[
+		PLDKP_debug(" itemName: " .. (itemName or "n/a"))				-- 
+		PLDKP_debug(" itemLink: " .. (itemLink or "n/a"))
+		PLDKP_debug(" itemRarity: " .. (itemRarity or "n/a"))			-- 4
+		PLDKP_debug(" itemLevel: " .. (itemLevel or "n/a"))				-- 1, 60
+		PLDKP_debug(" itemMinLevel: " .. (itemMinLevel or "n/a"))		-- 0, 60
+		PLDKP_debug(" itemType: " .. (itemType or "n/a"))				-- Quest, Miscellaneous
+		PLDKP_debug(" itemSubType: " .. (itemSubType or "n/a"))			-- Quest, Junk
+		PLDKP_debug(" itemStackCount: " .. (itemStackCount or "n/a"))	-- 1
+		PLDKP_debug(" itemEquipLoc: " .. (itemEquipLoc or "n/a"))		-- empty
+		PLDKP_debug(" itemTexture: " .. (itemTexture or "n/a"))
+		--]]
+
+		if( itemRarity == 4 ) then  -- epic item
+			if( itemMinLevel == itemLevel ) then -- item level and min level are equal for tokens
+				if( (itemType=="Miscellaneous") and ( itemSubType == "Junk") ) then -- token type
+					if( itemStackCount == 1 ) then  -- stack count = 1
+						if( itemEquipLoc == "") then  -- location = empty
+							return true
+						end
+					end
+				end
+			elseif( itemMinLevel == 0 and  itemLevel == 1) then -- check for AQ40 equip set tokens
+				if( (itemType=="Quest") and ( itemSubType == "Quest") ) then -- token type
+					if( itemStackCount == 1 ) then  -- stack count = 1
+						if( itemEquipLoc == "") then  -- location = empty
+							return true
+						end
+					end
+				end
+			end
+		end
+
+	end
+
+	return false
+end
+
+function PLDKPBids:IsSetWeaponToken(itemLink)
+	if itemLink ~= nil then
+		local itemId = PLDKPBids:GetItemIdFromLink(itemLink)
+		local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, itemVendorPrice, classID, itemSubClassID, bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo (itemId);
+		
+		--[[
+		PLDKP_debug(" itemName: " .. (itemName or "n/a"))				-- 
+		PLDKP_debug(" itemLink: " .. (itemLink or "n/a"))
+		PLDKP_debug(" itemRarity: " .. (itemRarity or "n/a"))			-- 4
+		PLDKP_debug(" itemLevel: " .. (itemLevel or "n/a"))				-- 60
+		PLDKP_debug(" itemMinLevel: " .. (itemMinLevel or "n/a"))		-- 60
+		PLDKP_debug(" itemType: " .. (itemType or "n/a"))				-- Miscellaneous
+		PLDKP_debug(" itemSubType: " .. (itemSubType or "n/a"))			-- Junk
+		PLDKP_debug(" itemStackCount: " .. (itemStackCount or "n/a"))	-- 1
+		PLDKP_debug(" itemEquipLoc: " .. (itemEquipLoc or "n/a"))		-- empty
+		PLDKP_debug(" itemTexture: " .. (itemTexture or "n/a"))
+		--]]
+
+		if( itemRarity >= 4 ) then  -- epic item
+			if( itemMinLevel == itemLevel ) then -- item level and min level are equal for tokens
+				if( (itemType=="Miscellaneous") and ( itemSubType == "Junk") ) then -- token type
+					if( itemStackCount == 1 ) then  -- stack count = 1
+						if( itemEquipLoc == "") then  -- location = empty
+							if( string.find(itemName, "Qiraji") or itemRarity > 4) then	-- weapon token in AQ40 or Atiesh fragments
+								return true;
+							end
+						end
+					end
+				end
+			end
+		end
+
 	end
 
 	return false

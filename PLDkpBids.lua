@@ -88,6 +88,7 @@ PLDKP_CurrentRaidID = "";
 PLDKP_AllowTwinkBids = true;
 PLDKP_AllowTwinkBids_Saved = true;
 PLDKP_CurItemIsSetToken = false;
+PLDKP_CurItemIsWeaponToken = false;
 PLDKP_MainOverTwinks = true;
 
 PLDKP_WinnerNote = "";
@@ -242,7 +243,8 @@ function PLDKP_ItemLinkClick(chatframe, linktype, data, button)
 		gitemName, gitemLink, gitemRarity, gitemLevel, gitemMinLevel, gitemType, gitemSubType, gitemStackCount, gitemEquipLoc, gitemTexture = GetItemInfo(linktype);
 		
 		PLDKPBidsFrame_CheckIfItemIsSetToken(data);
-		if( PLDKP_CurItemIsSetToken ) then
+		PLDKPBidsFrame_CheckIfItemIsWeaponToken(data);
+		if( PLDKP_CurItemIsSetToken or PLDKP_CurItemIsWeaponToken ) then
 			if(PLDKP_AllowTwinkBids == true) then
 				PLDKP_AllowTwinkBids_Saved = true
 			end
@@ -330,8 +332,9 @@ function PLDKP_LootFrameItem_OnClick(self, button)
 				end
 			--end
 	
-			PLDKPBidsFrame_CheckIfItemIsSetToken(itemlink);
-			if( PLDKP_CurItemIsSetToken ) then
+			PLDKPBidsFrame_CheckIfItemIsSetToken(itemLink);
+			PLDKPBidsFrame_CheckIfItemIsWeaponToken(itemLink);
+			if( PLDKP_CurItemIsSetToken or PLDKP_CurItemIsWeaponToken ) then
 				if(PLDKP_AllowTwinkBids == true) then
 					PLDKP_AllowTwinkBids_Saved = true
 				end
@@ -561,25 +564,25 @@ end
 ---------------------------------------------------------------------
 function PLDKPBidsFrame_CheckIfItemIsSetToken(data)
 
-	PLDKP_CurItemIsSetToken = false;
-	
-	_,_, itemId = string.find(data, "item:(%d+):");
-	g1itemName, g1itemLink, g1itemRarity, g1itemLevel, g1itemMinLevel, g1itemType, g1itemSubType, g1itemStackCount, g1itemEquipLoc, g1itemTexture = GetItemInfo("item:" .. itemId);
-	
-	if( g1itemRarity == 4 ) then  -- epic item
-		if( g1itemMinLevel == g1itemLevel ) then -- item level and min level are equal for tokens
-			if( (g1itemType=="Miscellaneous") and ( g1itemSubType == "Junk") ) then -- token type
-				if( g1itemStackCount == 1 ) then  -- stack count = 1
-					if( g1itemEquipLoc == "") then  -- location = empty
-						PLDKP_CurItemIsSetToken = true;
-					end
-				end
-			end
-		end
-	end
-	
+	PLDKP_CurItemIsSetToken = PLDKPBids:IsSetToken(data);
+
 	if( PLDKP_CurItemIsSetToken ) then
 		PLDKP_info(string.format(PLDKP_ITEM_TOKENINFO, data));
+	end
+	
+end
+
+---------------------------------------------------------------------
+-- function PLDKPBidsFrame_CheckIfItemIsWeaponToken(data)
+--
+-- checks if the item is a weapon token
+---------------------------------------------------------------------
+function PLDKPBidsFrame_CheckIfItemIsWeaponToken(data)
+
+	PLDKP_CurItemIsWeaponToken = PLDKPBids:IsSetWeaponToken(data);
+
+	if( PLDKP_CurItemIsWeaponToken ) then
+		PLDKP_info(string.format(PLDKP_ITEM_WEAPON_TOKENINFO, data));
 	end
 	
 end
@@ -1482,6 +1485,16 @@ function PLDkpBids_InitOptions()
 	if ( not PLDkpBidsOptions["MinDKPEquip"]) then
 		-- min DKP for equipment slot
 		PLDkpBidsOptions["MinDKPEquip"] = 20;
+	end
+
+	if ( not PLDkpBidsOptions["MinDKPSetToken"]) then
+		-- min DKP for set tokens
+		PLDkpBidsOptions["MinDKPSetToken"] = 50;
+	end
+
+	if ( not PLDkpBidsOptions["MinDKPSetTokenWeapon"]) then
+		-- min DKP for set weapon tokens
+		PLDkpBidsOptions["MinDKPSetTokenWeapon"] = 60;
 	end
 
 	if ( not PLDkpBidsOptions["MinDKPSpecial"]) then

@@ -98,6 +98,7 @@ PLDKP_BID_ALREADY_SCREEN = "** PLDKP: Player %s already bidden on item.";
 PLDKP_BID_ALREADYOV_SCREEN = "** PLDKP: Player %s already bidden on item and must bid higher than last bid.";
 
 PLDKP_ITEM_TOKENINFO = "** PLDKP: %s recognized as set item token.";
+PLDKP_ITEM_WEAPON_TOKENINFO = "** PLDKP: %s recognized as weapon token.";
 PLDKP_NOTE_SAVED = "** PLDKP: Note '%s' saved.";
 PLDKP_NOTE_NOTSAVED = "** PLDKP: Note '%s' NOT saved.";
 
@@ -338,6 +339,7 @@ end
 	PLDKP_BID_ALREADYOV_SCREEN = "** PLDKP: Spieler %s hat bereits geboten und muss hoeher bieten um das letzte Gebot zu ueberschreiben.";
 	
 	PLDKP_ITEM_TOKENINFO = "** PLDKP: %s wurde als Set-Token erkannt.";
+	PLDKP_ITEM_WEAPON_TOKENINFO = "** PLDKP: %s wurde als WAFFEN-Token erkannt.";
 	PLDKP_NOTE_SAVED = "** PLDKP: Notiz '%s' gespeichert.";
 	PLDKP_NOTE_NOTSAVED = "** PLDKP: Notiz '%s' NICHT gespeichert.";
 
