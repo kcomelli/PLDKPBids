@@ -255,6 +255,12 @@ PLDKP_OPTIONS_MINDKP_OH_TP = "Click here to change the minimum DKP for 1H Weapon
 PLDKP_OPTIONS_MINDKP_TH = "Min DKP (2H)";
 PLDKP_OPTIONS_MINDKP_TH_TP = "Click here to change the minimum DKP for 2H Weapons.";
 
+PLDKP_OPTIONS_MINDKP_SETTOKEN = "Min DKP (SET-Token)";
+PLDKP_OPTIONS_MINDKP_SETTOKEN_TP = "Click here to change the minimum DKP for Set TOKENS.";
+
+PLDKP_OPTIONS_MINDKP_SETTOKENWEAPON = "Min DKP (Weapon-Token)";
+PLDKP_OPTIONS_MINDKP_SETTOKENWEAPON_TP = "Click here to change the minimum DKP for WEAPON TOKENS.";
+
 PLDKP_OPTIONS_DEBUG_MODE = "Debug mode";
 PLDKP_OPTIONS_DEBUG_MODE_TP = "Click here to turn debug mode on or off.";
 

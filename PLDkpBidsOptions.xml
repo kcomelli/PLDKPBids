@@ -2,6 +2,345 @@
 	<Script file="PLDkpBidsOptions.lua" />
 	
 	<!-- ======================================================================================= -->
+	<!-- ListHeader-Button Template -->
+	
+	<Button name="PLDkpBidsOptionFrame_ListHeaderTemplate" virtual="true" >
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="5" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="4" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+				</Texture>
+				
+			</Layer>
+		</Layers>
+		
+		<ButtonText inherits="GameFontHighlightSmall">
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="8" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Color r="1" g="0.8196079" b="0" />
+		</ButtonText>	
+		<NormalText inherits="GameFontHighlightSmall">
+			<Anchors>
+				<Anchor point="LEFT">
+					<Offset>
+						<AbsDimension x="8" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Color r="1" g="0.8196079" b="0" />
+		</NormalText>
+	</Button>
+	
+	<!-- END OF ListHeader-Button Template -->
+	<!-- ======================================================================================= -->
+
+	<!-- ======================================================================================= -->
+	<!-- ButtonTemplate SpecialPrices -->
+	<Button name="PLDkpBidsOptionFrame_SpecialPricesTemplate" hidden="true" virtual="true">
+		<Size>
+			<AbsDimension x="365" y="20" />
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentName" inherits="GameFontHighlightSmall" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="160" y="10" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="23" y="-2" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<FontHeight>
+						<AbsValue val="9" />
+					</FontHeight>
+				</FontString>
+				<FontString name="$parentPrice" inherits="GameFontHighlightSmall" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="104" y="10" />
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="305" y="-2" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<FontHeight>
+						<AbsValue val="9" />
+					</FontHeight>
+					<Color r="0.5019607" g="0.5019607" b="0.5019607" />
+				</FontString>
+				<Texture name="$parentLeft" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="10" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset>
+								<AbsDimension x="1" y="2" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.078125" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentMiddle" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="100" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.078125" right="0.75" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentRight" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="10" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.75" right="0.828125" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentLeft1" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="10" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentRight" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.078125" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentMiddle1" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="32" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft1" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.078125" right="0.75" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentRight1" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="10" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle1" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.75" right="0.828125" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentLeft2" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="10" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentRight1" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.078125" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentMiddle2" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="102" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft2" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.078125" right="0.75" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentRight2" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="10" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle2" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.75" right="0.828125" top="0" bottom="1.0" />
+				</Texture>
+				
+				<Texture name="$parentLeft3" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="10" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentRight2" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.078125" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentMiddle3" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="52" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft3" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.078125" right="0.75" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentRight3" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
+					<Size>
+						<AbsDimension x="10" y="20" />
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle3" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.75" right="0.828125" top="0" bottom="1.0" />
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+		
+			<Button name="$parentItem">
+				<Size>
+					<AbsDimension x="16" y="15" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="5" y="-2" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						
+					</OnClick>
+					<OnEnter>
+						PLDKP_ShowSpecialPricestItemToolTip(self, self:GetParent():GetID());
+					</OnEnter>
+					<OnLeave>
+						PLDkpBids_Tooltip:Hide();
+					</OnLeave>
+				</Scripts>
+				<NormalTexture file="Interface\Icons\INV_Misc_QuestionMark">
+					
+				</NormalTexture>
+				<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD" />
+			</Button>
+			<Button name="$parentNote" text="Delete">
+				<Size>
+					<AbsDimension x="16" y="16" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="330" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PLDkpBids_OnSetWinnerNote(self:GetParent():GetID());	
+					</OnClick>
+					<OnEnter>
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_WINNERNOTE_TP);
+					</OnEnter>
+					<OnLeave>
+						PLDkpBids_Tooltip:Hide();
+					</OnLeave>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
+				<PushedTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
+				<DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD" />
+			</Button>
+			<Button name="$parentDelete" text="Delete">
+				<Size>
+					<AbsDimension x="16" y="16" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="350" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PLDkpBids_OnDelWinner(self:GetParent():GetID());	
+					</OnClick>
+					<OnEnter>
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_DELWINNER_TP);
+					</OnEnter>
+					<OnLeave>
+						PLDkpBids_Tooltip:Hide();
+					</OnLeave>
+				</Scripts>
+				<NormalTexture file="Interface\AddOns\PLDkpBids\Images\CloseButton-Up" />
+				<PushedTexture file="Interface\AddOns\PLDkpBids\Images\CloseButton-Down" />
+				<DisabledTexture file="Interface\AddOns\PLDkpBids\Images\CloseButton-Up" />
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD" />
+			</Button>
+		</Frames>
+	</Button>
+	<!-- END OF ButtonTemplate SpecialPrices -->
+	<!-- ======================================================================================= -->
+
+	<!-- ======================================================================================= -->
 	<!-- PLDkpBids Options Frame -->
 	<Frame name="PLDkpBidsOptionFrame" enableMouse="false" movable="true" toplevel="true" frameStrata="DIALOG" hidden="true" parent="UIParent">
 		<Size>
@@ -1495,9 +1834,9 @@
 				<AbsDimension x="190" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPZone" relativePoint="BOITTOMLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPZone" relativePoint="BOTTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="-25" />
+						<AbsDimension x="0" y="-8" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1689,9 +2028,9 @@
 				<AbsDimension x="190" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPEquip" relativePoint="BOITTOMLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPEquip" relativePoint="BOTTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="-20" />
+						<AbsDimension x="0" y="-1" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1884,9 +2223,9 @@
 				<AbsDimension x="190" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetEquip" relativePoint="BOITTOMLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetEquip" relativePoint="BOTTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="-20" />
+						<AbsDimension x="0" y="-1" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2078,9 +2417,9 @@
 				<AbsDimension x="190" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPOneHand" relativePoint="BOITTOMLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPOneHand" relativePoint="BOTTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="-20" />
+						<AbsDimension x="0" y="-1" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -2190,7 +2529,7 @@
 					PLDkpBidsOptionsFrame_ShowMinDKPTwoHandEdit();
 				</OnClick>
 				<OnEnter>
-					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_TH_TP);
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_SETTOKEN_TP);
 				</OnEnter>
 				<OnLeave>
 					PLDkpBids_Tooltip:Hide();
@@ -2267,20 +2606,121 @@
 			</Layers>
 		</Frame>
 
-		<Button name="$parentResetToDefaultsBtn" inherits="GameMenuButtonTemplate" text="0">
+		<Frame name="$parentMinDKPSetToken">
 			<Size>
-				<AbsDimension x="150" y="16"/>
+				<AbsDimension x="190" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHandEditBtn" relativePoint="BOTTOMLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHand" relativePoint="BOTTOMLEFT">
 					<Offset>
-						<AbsDimension x="-30" y="-5" />
+						<AbsDimension x="0" y="-1" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min price SetToken:" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<EditBox name="$parentMinDKPSetTokenEdit" historyLines="0" letters="99999999">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetToken" relativePoint="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="10" y="0" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer level="BACKGROUND">
+					<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="65" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="-10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+						<Size>
+							<AbsDimension x="25" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset>
+									<AbsDimension x="10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="5" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+				</Layer>
+			</Layers>
+			<FontString inherits="ChatFontNormal"/>
+			<Scripts>
+				<OnEscapePressed>
+					PLDkpBidsOptionsFrame_MinDKPSetTokenESC();
+				</OnEscapePressed>
+				<OnEnterPressed>
+					PLDkpBidsOptionsFrame_MinDKPSetTokenENTER();
+				</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+		<Button name="$parentMinDKPSetTokenEditBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetToken" relativePoint="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="10" y="1" />
 					</Offset>
 				</Anchor>
 			</Anchors>
 			<Scripts>
 				<OnClick>
-					PLDkpBidsOptionsFrame_ResetZoneDKPToDefaults();
+					PLDkpBidsOptionsFrame_ShowMinDKPSetTokenEdit();
 				</OnClick>
 				<OnEnter>
 					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_TH_TP);
@@ -2327,16 +2767,433 @@
 			</DisabledText>
 			<PushedTextOffset x="0" y="0" />
 		</Button>
+		<Frame name="$parentMinDKPSetTokenUnit">
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetToken" relativePoint="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="70" y="0" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="DKP" justifyH="LEFT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+
+		<Frame name="$parentMinDKPSetTokenWeapon">
+			<Size>
+				<AbsDimension x="190" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetToken" relativePoint="BOTTOMLEFT">
+					<Offset>
+						<AbsDimension x="0" y="-1" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Min price WeaponToken:" justifyH="RIGHT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<EditBox name="$parentMinDKPSetTokenWeaponEdit" historyLines="0" letters="99999999">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetTokenWeapon" relativePoint="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="10" y="0" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer level="BACKGROUND">
+					<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="65" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="-10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+						<Size>
+							<AbsDimension x="25" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="RIGHT">
+								<Offset>
+									<AbsDimension x="10" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+					<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+						<Size>
+							<AbsDimension x="5" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
+					</Texture>
+				</Layer>
+			</Layers>
+			<FontString inherits="ChatFontNormal"/>
+			<Scripts>
+				<OnEscapePressed>
+					PLDkpBidsOptionsFrame_MinDKPSetTokenWeaponESC();
+				</OnEscapePressed>
+				<OnEnterPressed>
+					PLDkpBidsOptionsFrame_MinDKPSetTokenWeaponENTER();
+				</OnEnterPressed>
+			</Scripts>
+		</EditBox>
+		<Button name="$parentMinDKPSetTokenWeaponEditBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="50" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetTokenWeapon" relativePoint="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="10" y="1" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ShowMinDKPSetTokenWeaponEdit();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_MINDKP_SETTOKENWEAPON_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="0.8196079" b="0" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</NormalText>
+			<HighlightText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="1" b="1" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</HighlightText>
+			<DisabledText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</DisabledText>
+			<PushedTextOffset x="0" y="0" />
+		</Button>
+		<Frame name="$parentMinDKPSetTokenWeaponUnit">
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetTokenWeapon" relativePoint="TOPRIGHT">
+					<Offset>
+						<AbsDimension x="70" y="0" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer>
+					<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="DKP" justifyH="LEFT">
+						<Anchors>
+							<Anchor point="TOPLEFT" />
+							<Anchor point="BOTTOMRIGHT" />
+						</Anchors>
+						<FontHeight>
+							<AbsValue val="10" />
+						</FontHeight>
+						<Color r="1" g="0.8196079" b="0" />
+						<Shadow>
+							<Color r="0" g="0" b="0" />
+							<Offset>
+								<AbsDimension x="1" y="-1" />
+							</Offset>
+						</Shadow>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+
+		<Button name="$parentResetToDefaultsBtn" inherits="GameMenuButtonTemplate" text="0">
+			<Size>
+				<AbsDimension x="150" y="16"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetTokenWeaponEditBtn" relativePoint="BOTTOMLEFT">
+					<Offset>
+						<AbsDimension x="-30" y="-2" />
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PLDkpBidsOptionsFrame_ResetZoneDKPToDefaults();
+				</OnClick>
+				<OnEnter>
+					PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS_TP);
+				</OnEnter>
+				<OnLeave>
+					PLDkpBids_Tooltip:Hide();
+				</OnLeave>
+			</Scripts>
+			<NormalText name="$parentText" font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="0.8196079" b="0" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</NormalText>
+			<HighlightText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="1" g="1" b="1" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</HighlightText>
+			<DisabledText font="Fonts\FRIZQT__.TTF">
+				<FontHeight>
+					<AbsValue val="10" />
+				</FontHeight>
+				<Color r="0.4980392" g="0.4980392" b="0.4980392" />
+				<Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+						<AbsDimension x="1" y="-1" />
+					</Offset>
+				</Shadow>
+			</DisabledText>
+			<PushedTextOffset x="0" y="0" />
+		</Button>
+
+
+
+		
+			<!-- ======================================================================================= -->
+			<!-- BEGIN Table with special prices -->
+			<Button name="$parentSpecialPricesItemButton" inherits="PLDkpBidsOptionFrame_ListHeaderTemplate" text="Item">
+				<Size>
+					<AbsDimension x="200" y="15" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentMinDKPSetTokenWeapon" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="5" y="-15" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+							<Size>
+								<AbsDimension x="190" y="15"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+							</Anchors>
+							<TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				
+				<Scripts></Scripts>
+			</Button>
+			
+			<Button name="$parentSpecialPricesPriceButton" inherits="PLDkpBidsOptionFrame_ListHeaderTemplate" text="Price">
+				<Size>
+					<AbsDimension x="105" y="15" />
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentSpecialPricesItemButton" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-2" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+							<Size>
+								<AbsDimension x="95" y="15"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+							</Anchors>
+							<TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				
+				<Scripts>
+					<OnClick></OnClick>
+				</Scripts>
+			</Button>
+			<ScrollFrame name="$parentSpecialPricesFrame" inherits="FauxScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="300" y="80" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPricesItemButton" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="5" y="-10" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnVerticalScroll>
+						FauxScrollFrame_OnVerticalScroll(self, offset, PLBDKP_SPECIAL_HEIGHT, PLDkpBidsOptionFrame_OnUpdate)
+					</OnVerticalScroll>
+				</Scripts>
+			</ScrollFrame>
+			<Button name="$parentSpecialPriceRowButton1" inherits="PLDkpBidsOptionFrame_SpecialPricesTemplate" id="1">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPricesFrame" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-1" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentSpecialPriceRowButton2" inherits="PLDkpBidsOptionFrame_SpecialPricesTemplate" id="2">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPriceRowButton1" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentSpecialPriceRowButton3" inherits="PLDkpBidsOptionFrame_SpecialPricesTemplate" id="3">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPriceRowButton2" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentSpecialPriceRowButton4" inherits="PLDkpBidsOptionFrame_SpecialPricesTemplate" id="4">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPriceRowButton3" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parentSpecialPriceRowButton5" inherits="PLDkpBidsOptionFrame_SpecialPricesTemplate" id="5">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPriceRowButton4" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<!-- ENDOF Table with special prices -->
+			<!-- ======================================================================================= -->
+		
 
 
 		<Frame name="$parentEnableDebug">
 			<Size>
-				<AbsDimension x="200" y="20" />
+				<AbsDimension x="80" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT" relativeTo="$parentMinDKPTwoHand" relativePoint="BOITTOMLEFT">
+				<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
 					<Offset>
-						<AbsDimension x="0" y="-40" />
+						<AbsDimension x="5" y="30" />
 					</Offset>
 				</Anchor>
 			</Anchors>

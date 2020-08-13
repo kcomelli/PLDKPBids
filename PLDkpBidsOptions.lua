@@ -9,6 +9,8 @@
 local _, PLDKPBids = ...
 
 local selectedMinDKPZoneName = "Default"
+PLBDKP_SPECIALITEM_LIST_NR = 5
+PLBDKP_SPECIAL_HEIGHT = 20
 
 ---------------------------------------------------------------------
 -- event handlersand hooks Options Frame
@@ -81,6 +83,14 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 		PLDkpBidsOptionFrameMinDKPTwoHandLabel:SetText(PLDKP_OPTIONS_MINDKP_TH);
 		PLDkpBidsOptionFrameMinDKPTwoHandUnitLabel:SetText(PLDKP_LABEL_DKP);
 		PLDkpBidsOptionFrameMinDKPTwoHandEdit:Hide();
+
+		PLDkpBidsOptionFrameMinDKPSetTokenLabel:SetText(PLDKP_OPTIONS_MINDKP_SETTOKEN);
+		PLDkpBidsOptionFrameMinDKPSetTokenUnitLabel:SetText(PLDKP_LABEL_DKP);
+		PLDkpBidsOptionFrameMinDKPSetTokenEdit:Hide();
+
+		PLDkpBidsOptionFrameMinDKPSetTokenWeaponLabel:SetText(PLDKP_OPTIONS_MINDKP_SETTOKENWEAPON);
+		PLDkpBidsOptionFrameMinDKPSetTokenWeaponUnitLabel:SetText(PLDKP_LABEL_DKP);
+		PLDkpBidsOptionFrameMinDKPSetTokenWeaponEdit:Hide();
 
 	
 		PLDkpBidsOptionFrameAllowMinBidLabel:SetText(PLDKP_OPTIONS_ALLOW_MINBID);
@@ -161,8 +171,12 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 		UIDropDownMenu_SetText(PLDkpBidsOptionFrameMinDKPZoneDropDown, selectedMinDKPZoneName);
 
 		PLDkpBidsOptionsFrame_FillMinDkpOfZone(selectedMinDKPZoneName)
+
+		PLDKPBidsOptionsFrame_FillSpecialPrices()
 	end
 end
+
+
 
 function PLDkpBidsOptionsFrame_FillMinDkpOfZone(zoneName)
 
@@ -171,12 +185,16 @@ function PLDkpBidsOptionsFrame_FillMinDkpOfZone(zoneName)
 		PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPSetEquip"] or PLDkpBidsOptions["MinDKPSetEquip"]);
 		PLDkpBidsOptionFrameMinDKPOneHandEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPOneHand"] or PLDkpBidsOptions["MinDKPOneHand"]);
 		PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPTwoHand"] or PLDkpBidsOptions["MinDKPTwoHand"]);
+		PLDkpBidsOptionFrameMinDKPSetTokenEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPSetToken"] or PLDkpBidsOptions["MinDKPSetToken"]);
+		PLDkpBidsOptionFrameMinDKPSetTokenWeaponEditBtn:SetText(PLDkpBidsOptions["MinDKPPerZone"][zoneName]["MinDKPSetTokenWeapon"] or PLDkpBidsOptions["MinDKPSetTokenWeapon"]);
 		PLDkpBidsOptionFrameResetToDefaultsBtn:Show();
 	else
     	PLDkpBidsOptionFrameMinDKPEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPEquip"]);
 		PLDkpBidsOptionFrameMinDKPSetEquipEditBtn:SetText(PLDkpBidsOptions["MinDKPSetEquip"]);
 		PLDkpBidsOptionFrameMinDKPOneHandEditBtn:SetText(PLDkpBidsOptions["MinDKPOneHand"]);
 		PLDkpBidsOptionFrameMinDKPTwoHandEditBtn:SetText(PLDkpBidsOptions["MinDKPTwoHand"]);
+		PLDkpBidsOptionFrameMinDKPSetTokenEditBtn:SetText(PLDkpBidsOptions["MinDKPSetToken"]);
+		PLDkpBidsOptionFrameMinDKPSetTokenWeaponEditBtn:SetText(PLDkpBidsOptions["MinDKPSetTokenWeapon"]);
 		PLDkpBidsOptionFrameResetToDefaultsBtn:Hide();
 	end
 end
@@ -475,6 +493,54 @@ function PLDkpBidsOptionsFrame_ShowMinDKPTwoHandEdit()
 	PLDkpBidsOptionsFrame_AdjustResetDkpBtnForZone(true);
 end
 
+function PLDkpBidsOptionsFrame_MinDKPSetTokenESC()
+	PLDkpBidsOptionFrameMinDKPSetTokenEdit:Hide();
+	PLDkpBidsOptionFrameMinDKPSetTokenEdit:SetText(PLDKPBids:GetMinDkpOption(selectedMinDKPZoneName, "MinDKPSetToken"));
+	PLDkpBidsOptionFrameMinDKPSetTokenEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
+	PLDkpBidsOptionsFrame_AdjustResetDkpBtnForZone(false);
+end
+function PLDkpBidsOptionsFrame_MinDKPSetTokenENTER()
+	PLDkpBidsOptionFrameMinDKPSetTokenEdit:Hide();
+	tmp = PLDkpBidsOptionFrameMinDKPSetTokenEdit:GetText();
+	PLDKPBids:SetMinDkpOption(selectedMinDKPZoneName, "MinDKPSetToken", tonumber(tmp))
+	PLDkpBidsOptionFrameMinDKPSetTokenEditBtn:SetText(PLDKPBids:GetMinDkpOption(selectedMinDKPZoneName, "MinDKPSetToken"));
+	PLDkpBidsOptionFrameMinDKPSetTokenEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
+	PLDkpBidsOptionsFrame_AdjustResetDkpBtnForZone(false);
+end
+function PLDkpBidsOptionsFrame_ShowMinDKPSetTokenEdit()
+	PLDkpBidsOptionFrameMinDKPSetTokenEdit:SetText(PLDKPBids:GetMinDkpOption(selectedMinDKPZoneName, "MinDKPSetToken"));
+	PLDkpBidsOptionFrameMinDKPSetTokenEdit:Show();
+	PLDkpBidsOptionFrameMinDKPSetTokenEditBtn:Hide();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Disable();
+	PLDkpBidsOptionsFrame_AdjustResetDkpBtnForZone(true);
+end
+
+function PLDkpBidsOptionsFrame_MinDKPSetTokenWeaponESC()
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEdit:Hide();
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEdit:SetText(PLDKPBids:GetMinDkpOption(selectedMinDKPZoneName, "MinDKPSetTokenWeapon"));
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
+	PLDkpBidsOptionsFrame_AdjustResetDkpBtnForZone(false);
+end
+function PLDkpBidsOptionsFrame_MinDKPSetTokenWeaponENTER()
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEdit:Hide();
+	tmp = PLDkpBidsOptionFrameMinDKPSetTokenWeaponEdit:GetText();
+	PLDKPBids:SetMinDkpOption(selectedMinDKPZoneName, "MinDKPSetTokenWeapon", tonumber(tmp))
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEditBtn:SetText(PLDKPBids:GetMinDkpOption(selectedMinDKPZoneName, "MinDKPSetTokenWeapon"));
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEditBtn:Show();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Enable();
+	PLDkpBidsOptionsFrame_AdjustResetDkpBtnForZone(false);
+end
+function PLDkpBidsOptionsFrame_ShowMinDKPSetTokenWeaponEdit()
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEdit:SetText(PLDKPBids:GetMinDkpOption(selectedMinDKPZoneName, "MinDKPSetTokenWeapon"));
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEdit:Show();
+	PLDkpBidsOptionFrameMinDKPSetTokenWeaponEditBtn:Hide();
+	PLDkpBidsOptionFrameMinDKPZoneDropDown:Disable();
+	PLDkpBidsOptionsFrame_AdjustResetDkpBtnForZone(true);
+end
+
 function PLDkpBidsOptionsFrame_ToggleDebugModeClick()
 	PLDkpBidsOptions["DebugMode"] = not PLDkpBidsOptions["DebugMode"];
 end
@@ -574,5 +640,105 @@ function PLDkpBidsOptionsFrame_ResetZoneDKPToDefaults()
 	if(selectedMinDKPZoneName and selectedMinDKPZoneName ~= "Default") then
 		PLDKPBids:ClearCustomizedZoneDKP(selectedMinDKPZoneName)
 		PLDkpBidsOptionsFrame_FillMinDkpOfZone(selectedMinDKPZoneName)
+	end
+end
+
+
+function PLDkpBidsOptionsFrame_OnUpdate(elapsed)
+	FauxScrollFrame_Update(PLDkpBidsOptionFrameSpecialPricesFrame, PLDKPBidsOptionsFrame_CountSpecialPrices(), PLBDKP_SPECIALITEM_LIST_NR, PLBDKP_SPECIAL_HEIGHT);
+end
+
+function PLDKPBidsOptionsFrame_FillSpecialPrices()
+	local nameOffset = FauxScrollFrame_GetOffset(PLDkpBidsOptionFrameSpecialPricesFrame);
+	local nameIndex;
+
+	-- PLDkpBidsOptions["MinDKPSpecial"][itmId]=price
+
+	for i=1, PLBDKP_SPECIALITEM_LIST_NR do
+		local itemIndex = i + FauxScrollFrame_GetOffset(PLDkpBidsOptionFrameSpecialPricesFrame);
+		
+		PLDKP_debug("UI i=" .. i .. ", itemIndex="..itemIndex..", tablecount="..table.getn(PLDkpBidsOptions["MinDKPSpecial"]));
+		
+		if (itemIndex <= PLDKPBidsOptionsFrame_CountSpecialPrices()) then
+			local itemId = PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(itemIndex);
+			
+			if ( itemId ~= nil ) then
+				local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, itemVendorPrice, classID, itemSubClassID, bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo (itemId);
+
+				--getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Date"):SetText(sDate);
+				
+				PLDKP_debug("Item: " .. itemName .. ", Id: " .. itemId .. ", price: " .. (PLDkpBidsOptions["MinDKPSpecial"][itemId] or "n/a"))
+
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Name"):SetText(itemName);
+
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Price"):SetText(PLDkpBidsOptions["MinDKPSpecial"][itemId]);
+				
+				--getglobal("PLDKPBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetNormalTexture(itemIcon);
+				--getglobal("PLDKPBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetPushedTexture(itemIcon);
+				--getglobal("PLDKPBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetDisabledTexture(itemIcon);
+
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i):Show();
+			else
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i):Hide();
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------
+-- function PLDKPBidsOptionsFrame_CountSpecialPrices()
+--
+-- gets the number of special prices
+---------------------------------------------------------------------
+function PLDKPBidsOptionsFrame_CountSpecialPrices()
+	local nRet = 0;
+	
+	if ( PLDkpBidsOptions ~= nil and PLDkpBidsOptions["MinDKPSpecial"] ~= nil ) then
+		for key in pairs(PLDkpBidsOptions["MinDKPSpecial"]) do
+			nRet = nRet + 1
+		end
+	end
+	
+	return nRet;
+end
+
+---------------------------------------------------------------------
+-- function PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(index)
+--
+-- Returns the itemId by index
+---------------------------------------------------------------------
+function PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(index)
+	local nCount=0;
+	local itemId=nil;
+	
+	if ( PLDkpBidsOptions ~= nil and PLDkpBidsOptions["MinDKPSpecial"] ~= nil ) then
+
+		for curId in pairs(PLDkpBidsOptions["MinDKPSpecial"]) do
+			nCount=nCount+1;
+
+			if(nCount==index) then
+				itemId = curId;
+				return itemId;
+			end
+		end
+	end
+	
+	return itemId;
+end
+
+---------------------------------------------------------------------
+-- function PLDKP_ShowLastWinnerstItemToolTip(self, buttonID)
+--
+-- Shows an item-tooltip for the current last-winner item
+---------------------------------------------------------------------
+function PLDKP_ShowSpecialPricestItemToolTip(self, buttonID)
+	
+	local index = buttonID + FauxScrollFrame_GetOffset(PLDkpBidsOptionFrameSpecialPricesFrame);
+	local itemId = PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(index);
+	if ( itemId ~= nil ) then
+		PLDkpBids_Tooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
+		PLDkpBids_Tooltip:ClearLines();
+		PLDkpBids_Tooltip:SetHyperlink(itemId);
+		PLDkpBids_Tooltip:Show();
 	end
 end
