@@ -71,11 +71,15 @@ function PLDkpBidsSpecialPriceFrame_ItemIdEditFocusLost()
 	tmp = PLDkpBidsSpecialPriceFrameItemIdEdit:GetText()
 	PLDKP_debug("itemid: " ..( tmp or "n/1"))
 	if(tmp) then
-		local _, _, itemLink = PLDKPBidsOptionsFrame_ResolveItem(tonumber(tmp))
-		PLDKP_debug("itemLink: " ..( itemLink or "n/1"))
-		if (itemLink) then
-			PLDkpBidsSpecialPriceFrameItemInfoLabel:SetText(itemLink)
-		end
+		local item = Item:CreateFromItemID(tonumber(tmp))
+		item:ContinueOnItemLoad(function()
+			local _, _, itemLink = PLDKPBidsOptionsFrame_ResolveItem(tonumber(tmp))
+			PLDKP_debug("itemLink: " ..( itemLink or "n/1"))
+			if (itemLink) then
+				PLDkpBidsSpecialPriceFrameItemInfoLabel:SetText(itemLink)
+			end
+		end)
+		
 	end
 end
 
