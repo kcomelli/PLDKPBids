@@ -26,3 +26,4 @@ PLDkpBidsMRTIntegration.lua
 PLDkpBids.xml
 PLDkpBidsOptions.xml
 PLDkpBidsNote.xml
+PLDkpBidsSpecialPrice.xml

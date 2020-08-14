@@ -140,6 +140,7 @@ PLDKP_LABEL_DKP = "DKP";
 PLDKP_DELWINNER_TP = "Delete winner entry";
 PLDKP_WINNERNOTE_TP = "Add a note to the winner entry";
 
+
 PLDKP_TABLABEL_AUCTION = "Auction";
 PLDKP_TABLABEL_CURBIDS = "Cur bids";
 PLDKP_TABLABEL_LASTWINNERS = "Last winners";
@@ -200,6 +201,10 @@ PLDKP_Report_DkpQuery5 = "   optional + will include Twinks in report. Twink rep
 PLDKP_NOTE_UI_HEADER = "Enter note";
 PLDKP_OPTIONS_SAVE = "Save";
 PLDKP_OPTIONS_CANCEL = "Cancel";
+
+-- Special prices frame
+PLDKP_SPECIALPRICE_UI_HEADER = "Special price"
+PLDKP_SPECIALPRICE_NOTSAVED = "Not saved - ItemId and and price required!"
 
 -- Options Frame
 PLDKP_OPTIONS_UI_HEADER = "PL-DKP Options";
@@ -270,12 +275,18 @@ PLDKP_OPTIONS_SEND_DKP_SETTINGS_TP = "Click here to send relevant AddOn settings
 PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS = "Reset to defaults"
 PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS_TP = "Click here to reset the zone DKP settings to the default values"
 
+PLDKP_OPTIONS_DELSPECIALPRICE_TP = "Delete special price entry";
+PLDKP_OPTIONS_EDITSPECIALPRICE_TP = "Change special price entry";
+PLDKP_OPTIONS_ADDSPECIALPRICE_TP = "Add special price entry";
+PLDKP_OPTIONS_SPECIAL_PRICE_OVERRIDES = "Special item prices:"
+
 PLDKP_BUILD_OUTOFDATE = "PLDKP: Your version of PLDkp Bids is out-of-date! Please update to latest version!"
 PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Received new DKP data from: %s from player %s"
 PLDKP_RECEIVED_DEL_WINNER = "PLDKP: Remove winner info for %s from player %s"
 PLDKP_RECEIVED_WINNER_INFO = "PLDKP: Received auction winner information: %s from player %s"
 PLDKP_RECEIVED_MRT_LOOT_INFO = "PLDKP: Received MRT loot notification: %s from player %s"
 PLDKP_RECEIVED_OPTIONS = "PLDKP: Received and saved new settings from player %s"
+PLDKP_RECEIVED_OPTIONS_ACK = "PLDKP: Options successfully set for player %s"
 
 -------------------------------------------------------------------------------
 -- German localization
@@ -388,6 +399,7 @@ end
 	PLDKP_DELWINNER_TP = "Eintrag loeschen";
 	PLDKP_WINNERNOTE_TP = "Notiz zum Gewinner hinzufuegen";
 	
+	
 	PLDKP_TABLABEL_AUCTION = "Auktion";
 	PLDKP_TABLABEL_CURBIDS = "Akt. Gebote";
 	PLDKP_TABLABEL_LASTWINNERS = "Gewinner";
@@ -448,6 +460,9 @@ end
 	PLDKP_NOTE_UI_HEADER = "Notiz eingeben";
 	PLDKP_OPTIONS_SAVE = "Speichern";
 	PLDKP_OPTIONS_CANCEL = "Abbrechen";
+
+	-- Special prices frame
+	PLDKP_SPECIALPRICE_UI_HEADER = "Spezialpreis"
 
 	-- Options Frame
 	PLDKP_OPTIONS_UI_HEADER = "PL-DKP Optionen";
@@ -510,7 +525,14 @@ end
 	PLDKP_OPTIONS_SEND_DKP_SETTINGS_TP = "Hier klicken um die AddOn Einstellungen zu anderen Gildenmitgliedern zu senden"
 
 	PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS = "Zurücksetzen"
-    PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS_TP = "Hier klicken um die Min DKP der Zone auf die Standardwerte zu setzen"
+	PLDKP_OPTIONS_RESET_ZONEDKP_DEFAULTS_TP = "Hier klicken um die Min DKP der Zone auf die Standardwerte zu setzen"
+	
+	PLDKP_OPTIONS_DELSPECIALPRICE_TP = "Spezialpreis löschen";
+	PLDKP_OPTIONS_EDITSPECIALPRICE_TP = "Spezialpreis bearbeiten";
+	PLDKP_OPTIONS_ADDSPECIALPRICE_TP = "Spezialpreis einfügen";
+
+	PLDKP_OPTIONS_SPECIAL_PRICE_OVERRIDES = "Spezial Itempreise:"
+
 
 	PLDKP_BUILD_OUTOFDATE = "PLDKP: Deine Version von PLDkp Bids ist veraltet! Bitte update auf die neuerste Version!"
 	PLDKP_RECEIVED_NEW_DKPDATA = "PLDKP: Neue DKP Daten erhalten. Stand: %s von %s"

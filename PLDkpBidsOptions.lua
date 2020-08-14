@@ -9,7 +9,7 @@
 local _, PLDKPBids = ...
 
 local selectedMinDKPZoneName = "Default"
-PLBDKP_SPECIALITEM_LIST_NR = 5
+PLBDKP_SPECIALITEM_LIST_NR = 4
 PLBDKP_SPECIAL_HEIGHT = 20
 
 ---------------------------------------------------------------------
@@ -175,8 +175,6 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 		PLDKPBidsOptionsFrame_FillSpecialPrices()
 	end
 end
-
-
 
 function PLDkpBidsOptionsFrame_FillMinDkpOfZone(zoneName)
 
@@ -644,8 +642,35 @@ function PLDkpBidsOptionsFrame_ResetZoneDKPToDefaults()
 end
 
 
-function PLDkpBidsOptionsFrame_OnUpdate(elapsed)
+function PLDkpBidsOptionFrame_OnUpdate(elapsed)
+	if (PLDkpBidsOptions == nil) then
+		return;
+	end
 	FauxScrollFrame_Update(PLDkpBidsOptionFrameSpecialPricesFrame, PLDKPBidsOptionsFrame_CountSpecialPrices(), PLBDKP_SPECIALITEM_LIST_NR, PLBDKP_SPECIAL_HEIGHT);
+	PLDKPBidsOptionsFrame_FillSpecialPrices()
+end
+
+function PLDKPBidsOptionsFrame_ResolveItem(itemId)
+	local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, itemVendorPrice, classID, itemSubClassID, bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo (itemId);
+
+	if (itemName) then
+		if (PLDkpBidsOptions["ItemResolvalCache"] == nil) then
+			PLDkpBidsOptions["ItemResolvalCache"] = {}
+		end
+		if (PLDkpBidsOptions["ItemResolvalCache"][itemId] == nil) then
+			PLDkpBidsOptions["ItemResolvalCache"][itemId] = {}
+		end
+
+		PLDkpBidsOptions["ItemResolvalCache"][itemId]["Name"] = itemName
+		PLDkpBidsOptions["ItemResolvalCache"][itemId]["ItemLink"] = itemLink
+		PLDkpBidsOptions["ItemResolvalCache"][itemId]["Texture"] = itemIcon
+	elseif (PLDkpBidsOptions["ItemResolvalCache"] ~= nil and PLDkpBidsOptions["ItemResolvalCache"][itemId] ~= nil) then
+		itemName = PLDkpBidsOptions["ItemResolvalCache"][itemId]["Name"]
+		itemLink = PLDkpBidsOptions["ItemResolvalCache"][itemId]["ItemLink"]
+		itemIcon = PLDkpBidsOptions["ItemResolvalCache"][itemId]["Texture"]
+	end
+
+	return itemId, itemName, itemLink, itemIcon
 end
 
 function PLDKPBidsOptionsFrame_FillSpecialPrices()
@@ -657,25 +682,24 @@ function PLDKPBidsOptionsFrame_FillSpecialPrices()
 	for i=1, PLBDKP_SPECIALITEM_LIST_NR do
 		local itemIndex = i + FauxScrollFrame_GetOffset(PLDkpBidsOptionFrameSpecialPricesFrame);
 		
-		PLDKP_debug("UI i=" .. i .. ", itemIndex="..itemIndex..", tablecount="..table.getn(PLDkpBidsOptions["MinDKPSpecial"]));
+		--PLDKP_debug("UI i=" .. i .. ", itemIndex="..itemIndex..", tablecount="..table.getn(PLDkpBidsOptions["MinDKPSpecial"]));
 		
 		if (itemIndex <= PLDKPBidsOptionsFrame_CountSpecialPrices()) then
 			local itemId = PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(itemIndex);
 			
 			if ( itemId ~= nil ) then
-				local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, itemVendorPrice, classID, itemSubClassID, bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo (itemId);
-
+				local _, itemName, itemLink, itemIcon = PLDKPBidsOptionsFrame_ResolveItem(itemId)
 				--getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Date"):SetText(sDate);
 				
-				PLDKP_debug("Item: " .. itemName .. ", Id: " .. itemId .. ", price: " .. (PLDkpBidsOptions["MinDKPSpecial"][itemId] or "n/a"))
+				--PLDKP_debug("Item: " .. (itemName or "n/a") .. ", Id: " .. itemId .. ", price: " .. (PLDkpBidsOptions["MinDKPSpecial"][itemId] or "n/a"))
 
-				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Name"):SetText(itemName);
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."NameLabel"):SetText(itemLink);
 
 				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Price"):SetText(PLDkpBidsOptions["MinDKPSpecial"][itemId]);
 				
-				--getglobal("PLDKPBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetNormalTexture(itemIcon);
-				--getglobal("PLDKPBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetPushedTexture(itemIcon);
-				--getglobal("PLDKPBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetDisabledTexture(itemIcon);
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetNormalTexture(itemIcon);
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetPushedTexture(itemIcon);
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetDisabledTexture(itemIcon);
 
 				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i):Show();
 			else
@@ -736,9 +760,43 @@ function PLDKP_ShowSpecialPricestItemToolTip(self, buttonID)
 	local index = buttonID + FauxScrollFrame_GetOffset(PLDkpBidsOptionFrameSpecialPricesFrame);
 	local itemId = PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(index);
 	if ( itemId ~= nil ) then
+		local _, itemName, itemLink, itemIcon = PLDKPBidsOptionsFrame_ResolveItem(itemId)
+
 		PLDkpBids_Tooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
 		PLDkpBids_Tooltip:ClearLines();
-		PLDkpBids_Tooltip:SetHyperlink(itemId);
+		if (itemLink) then
+			PLDkpBids_Tooltip:SetHyperlink(itemLink);
+		else
+			PLDkpBids_Tooltip:SetHyperlink("item:" .. itemId .. ":0:0:0:0:0:0:0");
+		end
 		PLDkpBids_Tooltip:Show();
 	end
+end
+
+function PLDKPBidsOptionsFrame_OnAddSpecialPrice()
+	PLDKP_SPECIALPRICE_EDITID = nil
+	PLDKP_SPECIALPRICE_EDITLINK = nil
+	ShowUIPanel(PLDkpBidsSpecialPriceFrame)
+	PLDkpBidsSpecialPriceFrame_InitDialog()
+end
+
+function PLDKPBidsOptionsFrame_OnDeleteSpecialPrice(buttonID)
+	local index = buttonID + FauxScrollFrame_GetOffset(PLDkpBidsOptionFrameSpecialPricesFrame);
+	local itemId = PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(index);
+	if ( itemId ~= nil ) then
+		PLDkpBidsOptions["MinDKPSpecial"][itemId] = nil
+		PLDKPBidsOptionsFrame_FillSpecialPrices()
+	end
+end
+
+function PLDKPBidsOptionsFrame_OnEditSpecialPrice(buttonID)
+	local index = buttonID + FauxScrollFrame_GetOffset(PLDkpBidsOptionFrameSpecialPricesFrame);
+	local itemId = PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(index);
+	if ( itemId ~= nil ) then
+		local _, itemName, itemLink, itemIcon = PLDKPBidsOptionsFrame_ResolveItem(itemId)
+		PLDKP_SPECIALPRICE_EDITID = itemId
+		PLDKP_SPECIALPRICE_EDITLINK = itemLink
+		ShowUIPanel(PLDkpBidsSpecialPriceFrame)
+		PLDkpBidsSpecialPriceFrame_InitDialog()
+	end	
 end

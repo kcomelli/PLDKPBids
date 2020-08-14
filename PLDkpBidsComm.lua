@@ -19,7 +19,8 @@ function PLDKPBids.Sync:OnEnable()
     PLDKPBids.Sync:RegisterComm("PLMRTItemLoot", PLDKPBids.Sync:OnCommReceived())	        -- A new item loot info from another raidtracker has been received
     PLDKPBids.Sync:RegisterComm("PLDKPDelWinner", PLDKPBids.Sync:OnCommReceived())	        -- Delete a winner info
     PLDKPBids.Sync:RegisterComm("PLDKPEdtWinner", PLDKPBids.Sync:OnCommReceived())	        -- Edit a winner info
-    PLDKPBids.Sync:RegisterComm("PLDKPSettings", PLDKPBids.Sync:OnCommReceived())	        -- Edit a winner info
+    PLDKPBids.Sync:RegisterComm("PLDKPSettings", PLDKPBids.Sync:OnCommReceived())	        -- DKP settings and options sent
+    PLDKPBids.Sync:RegisterComm("PLDKPSettingsReceived", PLDKPBids.Sync:OnCommReceived())	-- Options received successfully
 end
 
 function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
@@ -165,22 +166,27 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
                 PLDkpBidsOptions["MinDKPEquip"] = deserialized["MinDKPEquip"] or PLDkpBidsOptions["MinDKPEquip"]
 
                 if(deserialized["MinDKPSpecial"]) then
+                    PLDkpBidsOptions["MinDKPSpecial"] = {}
                     for itemId in pairs(deserialized["MinDKPSpecial"]) do
                         PLDkpBidsOptions["MinDKPSpecial"][itemId] = deserialized["MinDKPSpecial"][itemId]
                     end
                 end
 
                 if(deserialized["MinDKPPerZone"]) then
+                    PLDkpBidsOptions["MinDKPPerZone"] = {}
                     for zoneName in pairs(deserialized["MinDKPPerZone"]) do
                         PLDkpBidsOptions["MinDKPPerZone"][zoneName] = deserialized["MinDKPPerZone"][zoneName]
                     end
                 end
 
                 PLDKP_println(string.format(PLDKP_RECEIVED_OPTIONS, sender))
+                PLDKPBids.Sync:SendData("PLDKPSettingsReceived", "0")
             else
                 PLDKP_debug("Error deserializing: " .. deserialized)
                 print(deserialized)  -- error reporting if string doesn't get deserialized correctly
             end
+        elseif prefix == "PLDKPSettingsReceived" and sender ~= UnitName("player") then
+            PLDKP_println(string.format(PLDKP_RECEIVED_OPTIONS_ACK, sender))
         end
     end
 end

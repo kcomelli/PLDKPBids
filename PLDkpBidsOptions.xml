@@ -58,33 +58,18 @@
 	<!-- ButtonTemplate SpecialPrices -->
 	<Button name="PLDkpBidsOptionFrame_SpecialPricesTemplate" hidden="true" virtual="true">
 		<Size>
-			<AbsDimension x="365" y="20" />
+			<AbsDimension x="305" y="20" />
 		</Size>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<FontString name="$parentName" inherits="GameFontHighlightSmall" justifyH="LEFT">
-					<Size>
-						<AbsDimension x="160" y="10" />
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="23" y="-2" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<FontHeight>
-						<AbsValue val="9" />
-					</FontHeight>
-				</FontString>
 				<FontString name="$parentPrice" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Size>
-						<AbsDimension x="104" y="10" />
+						<AbsDimension x="105" y="10" />
 					</Size>
 					<Anchors>
 						<Anchor point="TOPLEFT">
 							<Offset>
-								<AbsDimension x="305" y="-2" />
+								<AbsDimension x="205" y="-2" />
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -100,7 +85,7 @@
 					<Anchors>
 						<Anchor point="LEFT">
 							<Offset>
-								<AbsDimension x="1" y="2" />
+								<AbsDimension x="-5" y="2" />
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -108,7 +93,7 @@
 				</Texture>
 				<Texture name="$parentMiddle" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
 					<Size>
-						<AbsDimension x="100" y="20" />
+						<AbsDimension x="180" y="20" />
 					</Size>
 					<Anchors>
 						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
@@ -147,7 +132,7 @@
 				</Texture>
 				<Texture name="$parentMiddle1" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
 					<Size>
-						<AbsDimension x="32" y="20" />
+						<AbsDimension x="95" y="20" />
 					</Size>
 					<Anchors>
 						<Anchor point="LEFT" relativeTo="$parentLeft1" relativePoint="RIGHT">
@@ -171,89 +156,44 @@
 					</Anchors>
 					<TexCoords left="0.75" right="0.828125" top="0" bottom="1.0" />
 				</Texture>
-				<Texture name="$parentLeft2" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
-					<Size>
-						<AbsDimension x="10" y="20" />
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativeTo="$parentRight1" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="0" y="0" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0" right="0.078125" top="0" bottom="1.0" />
-				</Texture>
-				<Texture name="$parentMiddle2" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
-					<Size>
-						<AbsDimension x="102" y="20" />
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativeTo="$parentLeft2" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="0" y="0" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0.078125" right="0.75" top="0" bottom="1.0" />
-				</Texture>
-				<Texture name="$parentRight2" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
-					<Size>
-						<AbsDimension x="10" y="20" />
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativeTo="$parentMiddle2" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="0" y="0" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0.75" right="0.828125" top="0" bottom="1.0" />
-				</Texture>
-				
-				<Texture name="$parentLeft3" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
-					<Size>
-						<AbsDimension x="10" y="20" />
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativeTo="$parentRight2" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="0" y="0" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0" right="0.078125" top="0" bottom="1.0" />
-				</Texture>
-				<Texture name="$parentMiddle3" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
-					<Size>
-						<AbsDimension x="52" y="20" />
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativeTo="$parentLeft3" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="0" y="0" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0.078125" right="0.75" top="0" bottom="1.0" />
-				</Texture>
-				<Texture name="$parentRight3" file="Interface\AuctionFrame\UI-AuctionItemNameFrame">
-					<Size>
-						<AbsDimension x="10" y="20" />
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativeTo="$parentMiddle3" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="0" y="0" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0.75" right="0.828125" top="0" bottom="1.0" />
-				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
 		
+			<Frame name="$parentName">
+				<Size>
+					<AbsDimension x="170" y="6" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="20" y="-5" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString name="$parentLabel" font="GameFontHighlightSmall" text="Name" justifyH="LEFT">
+							<Anchors>
+								<Anchor point="TOPLEFT" />
+								<Anchor point="BOTTOMRIGHT" />
+							</Anchors>
+							<FontHeight>
+								<AbsValue val="9" />
+							</FontHeight>
+							<Color r="1" g="0.8196079" b="0" />
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter>
+						PLDKP_ShowSpecialPricestItemToolTip(self, self:GetParent():GetID());
+					</OnEnter>
+					<OnLeave>
+						PLDkpBids_Tooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Frame>
 			<Button name="$parentItem">
 				<Size>
 					<AbsDimension x="16" y="15" />
@@ -261,7 +201,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="5" y="-2" />
+							<AbsDimension x="1" y="0" />
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -281,50 +221,24 @@
 				</NormalTexture>
 				<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD" />
 			</Button>
-			<Button name="$parentNote" text="Delete">
+			
+	<Button name="$parentDelete" text="Delete">
 				<Size>
 					<AbsDimension x="16" y="16" />
 				</Size>
 				<Anchors>
-					<Anchor point="TOPLEFT">
+					<Anchor point="TOPRIGHT" relativeTo="$parentPrice" relativePoint="TOPRIGHT">
 						<Offset>
-							<AbsDimension x="330" y="0" />
+							<AbsDimension x="-5" y="2" />
 						</Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						PLDkpBids_OnSetWinnerNote(self:GetParent():GetID());	
+						PLDKPBidsOptionsFrame_OnDeleteSpecialPrice(self:GetParent():GetID());	
 					</OnClick>
 					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_WINNERNOTE_TP);
-					</OnEnter>
-					<OnLeave>
-						PLDkpBids_Tooltip:Hide();
-					</OnLeave>
-				</Scripts>
-				<NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
-				<PushedTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
-				<DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD" />
-			</Button>
-			<Button name="$parentDelete" text="Delete">
-				<Size>
-					<AbsDimension x="16" y="16" />
-				</Size>
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="350" y="0" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						PLDkpBids_OnDelWinner(self:GetParent():GetID());	
-					</OnClick>
-					<OnEnter>
-						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_DELWINNER_TP);
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_DELSPECIALPRICE_TP);
 					</OnEnter>
 					<OnLeave>
 						PLDkpBids_Tooltip:Hide();
@@ -335,6 +249,36 @@
 				<DisabledTexture file="Interface\AddOns\PLDkpBids\Images\CloseButton-Up" />
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD" />
 			</Button>
+
+			<Button name="$parentNote" text="Edit">
+				<Size>
+					<AbsDimension x="16" y="16" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parentDelete" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-1" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PLDKPBidsOptionsFrame_OnEditSpecialPrice(self:GetParent():GetID());	
+					</OnClick>
+					<OnEnter>
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_EDITSPECIALPRICE_TP);
+					</OnEnter>
+					<OnLeave>
+						PLDkpBids_Tooltip:Hide();
+					</OnLeave>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
+				<PushedTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
+				<DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up.blp" />
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD" />
+			</Button>
+			
+			
 		</Frames>
 	</Button>
 	<!-- END OF ButtonTemplate SpecialPrices -->
@@ -385,6 +329,17 @@
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnLoad>
+				PLDkpBidsOptionFrame_OnLoad();
+			</OnLoad>
+			<OnEvent>
+				PLDkpBidsOptionFrame_OnEvent(event, ...);
+			</OnEvent>
+			<OnUpdate>
+				PLDkpBidsOptionFrame_OnUpdate(elapsed);
+			</OnUpdate>
+		</Scripts>
 		<Frames>
 		<!-- ======================================================================================= -->
 		<!-- Controls -->
@@ -1246,14 +1201,14 @@
 				</Layer>
 			</Layers>
 		</Frame>
-		<CheckButton name="$parentAllowMinBidCheck" inherits="OptionsCheckButtonTemplate">
+		<CheckButton name="$parentAllowMinBidCheck" inherits="UICheckButtonTemplate">
 			<Size>
 				<AbsDimension x="20" y="20" />
 			</Size>
 			<Anchors>
-				<Anchor point="TOPLEFT">
+				<Anchor point="TOPLEFT" relativeTo="$parentAllowMinBid" relativePoint="TOPRIGHT">
 					<Offset>
-						<AbsDimension x="215" y="-153" />
+						<AbsDimension x="5" y="-1" />
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -1302,7 +1257,7 @@
 				</Layer>
 			</Layers>
 		</Frame>
-		<CheckButton name="$parentAllowHighOverwriteCheck" inherits="OptionsCheckButtonTemplate">
+		<CheckButton name="$parentAllowHighOverwriteCheck" inherits="UICheckButtonTemplate">
 			<Size>
 				<AbsDimension x="20" y="20" />
 			</Size>
@@ -1358,7 +1313,7 @@
 				</Layer>
 			</Layers>
 		</Frame>
-		<CheckButton name="$parentRaidWarningCheck" inherits="OptionsCheckButtonTemplate">
+		<CheckButton name="$parentRaidWarningCheck" inherits="UICheckButtonTemplate">
 			<Size>
 				<AbsDimension x="20" y="20" />
 			</Size>
@@ -1414,7 +1369,7 @@
 				</Layer>
 			</Layers>
 		</Frame>
-		<CheckButton name="$parentAllowDeleteCheck" inherits="OptionsCheckButtonTemplate">
+		<CheckButton name="$parentAllowDeleteCheck" inherits="UICheckButtonTemplate">
 			<Size>
 				<AbsDimension x="20" y="20" />
 			</Size>
@@ -1505,7 +1460,7 @@
 				</Layer>
 			</Layers>
 		</Frame>
-		<CheckButton name="$parentDKPonEqualBidsCheck" inherits="OptionsCheckButtonTemplate">
+		<CheckButton name="$parentDKPonEqualBidsCheck" inherits="UICheckButtonTemplate">
 			<Size>
 				<AbsDimension x="20" y="20" />
 			</Size>
@@ -1561,7 +1516,7 @@
 				</Layer>
 			</Layers>
 		</Frame>
-		<CheckButton name="$parentHighBidsCheck" inherits="OptionsCheckButtonTemplate">
+		<CheckButton name="$parentHighBidsCheck" inherits="UICheckButtonTemplate">
 			<Size>
 				<AbsDimension x="20" y="20" />
 			</Size>
@@ -3060,6 +3015,8 @@
 		
 			<!-- ======================================================================================= -->
 			<!-- BEGIN Table with special prices -->
+			
+
 			<Button name="$parentSpecialPricesItemButton" inherits="PLDkpBidsOptionFrame_ListHeaderTemplate" text="Item">
 				<Size>
 					<AbsDimension x="200" y="15" />
@@ -3091,7 +3048,7 @@
 			
 			<Button name="$parentSpecialPricesPriceButton" inherits="PLDkpBidsOptionFrame_ListHeaderTemplate" text="Price">
 				<Size>
-					<AbsDimension x="105" y="15" />
+					<AbsDimension x="115" y="15" />
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentSpecialPricesItemButton" relativePoint="RIGHT">
@@ -3105,7 +3062,7 @@
 					<Layer level="BACKGROUND">
 						<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
 							<Size>
-								<AbsDimension x="95" y="15"/>
+								<AbsDimension x="105" y="15"/>
 							</Size>
 							<Anchors>
 								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
@@ -3119,14 +3076,75 @@
 					<OnClick></OnClick>
 				</Scripts>
 			</Button>
+
+			<Button name="$parentAddSpecialPrice" text="Add">
+				<Size>
+					<AbsDimension x="16" y="16" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="$parentSpecialPricesItemButton" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="2" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PLDKPBidsOptionsFrame_OnAddSpecialPrice();	
+					</OnClick>
+					<OnEnter>
+						PLDkpBidsFrame_DisplayTooltip(self, PLDKP_OPTIONS_ADDSPECIALPRICE_TP);
+					</OnEnter>
+					<OnLeave>
+						PLDkpBids_Tooltip:Hide();
+					</OnLeave>
+				</Scripts>
+				<NormalTexture file="Interface\MINIMAP\UI-Minimap-ZoomInButton-Up" />
+				<PushedTexture file="Interface\MINIMAP\UI-Minimap-ZoomInButton-Down" />
+				<DisabledTexture file="Interface\MINIMAP\UI-Minimap-ZoomInButton-Up" />
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD" />
+			</Button>
+			<Frame name="$parentSpecialPrices">
+				<Size>
+					<AbsDimension x="190" y="20" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentAddSpecialPrice" relativePoint="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="3" y="2" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString name="$parentLabel" font="Fonts\FRIZQT__.TTF" text="Special price overrides:" justifyH="LEFT">
+							<Anchors>
+								<Anchor point="TOPLEFT" />
+								<Anchor point="BOTTOMRIGHT" />
+							</Anchors>
+							<FontHeight>
+								<AbsValue val="10" />
+							</FontHeight>
+							<Color r="1" g="0.8196079" b="0" />
+							<Shadow>
+								<Color r="0" g="0" b="0" />
+								<Offset>
+									<AbsDimension x="1" y="-1" />
+								</Offset>
+							</Shadow>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+
 			<ScrollFrame name="$parentSpecialPricesFrame" inherits="FauxScrollFrameTemplate">
 				<Size>
-					<AbsDimension x="300" y="80" />
+					<AbsDimension x="305" y="80" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPricesItemButton" relativePoint="BOTTOMLEFT">
 						<Offset>
-							<AbsDimension x="5" y="-10" />
+							<AbsDimension x="5" y="-2" />
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -3140,7 +3158,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPricesFrame" relativePoint="TOPLEFT">
 						<Offset>
-							<AbsDimension x="0" y="-1" />
+							<AbsDimension x="0" y="-2" />
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -3166,15 +3184,6 @@
 			<Button name="$parentSpecialPriceRowButton4" inherits="PLDkpBidsOptionFrame_SpecialPricesTemplate" id="4">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPriceRowButton3" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="$parentSpecialPriceRowButton5" inherits="PLDkpBidsOptionFrame_SpecialPricesTemplate" id="5">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parentSpecialPriceRowButton4" relativePoint="BOTTOMLEFT">
 						<Offset>
 							<AbsDimension x="0" y="0" />
 						</Offset>
@@ -3218,7 +3227,7 @@
 				</Layer>
 			</Layers>
 		</Frame>
-		<CheckButton name="$parentEnableDebugCheck" inherits="OptionsCheckButtonTemplate">
+		<CheckButton name="$parentEnableDebugCheck" inherits="UICheckButtonTemplate">
 			<Size>
 				<AbsDimension x="20" y="20" />
 			</Size>

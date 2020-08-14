@@ -94,6 +94,9 @@ PLDKP_MainOverTwinks = true;
 PLDKP_WinnerNote = "";
 PLDKP_WinnerNoteKey = "";
 
+PLDKP_SPECIALPRICE_EDITID = nil;
+PLDKP_SPECIALPRICE_EDITLINK = nil;
+
 -- Function hooks
 PLDKP_Saved_LootFrameItem_OnClick = nil;
 PLDKP_Saved_ChatFrame_OnEvent = nil;
@@ -2708,7 +2711,6 @@ function PLDkpBidsFrame_ClickTab(tabID)
 		_selectedTab = 1;
 		PLDKP_debug("Clicked auction tab");
 		
-	
 		CurBidsNameButton:Hide();
 		CurBidsClassButton:Hide();
 		CurBidsBidButton:Hide();
