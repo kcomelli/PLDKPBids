@@ -323,10 +323,13 @@
 		<Scripts>
 			<OnLoad>
 				PLDkpBidsSpecialPriceFrame_OnLoad();
+				self:RegisterForDrag("LeftButton");
 			</OnLoad>
 			<OnEvent>
 				PLDkpBidsSpecialPriceFrame_OnEvent(event);
 			</OnEvent>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+  			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 		</Scripts>
 	</Frame>
 	<!-- END OF PLDkpBids Note Frame -->

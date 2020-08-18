@@ -6,7 +6,7 @@
 ## URL: https://www.primal-legion.net
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-## SavedVariables: PLDkpBidsOptions, PLDKP_LastWinners, PLDKP_DkpData, PLDKP_DkpInfo
+## SavedVariables: PLDkpBidsOptions, PLDKP_LastWinners, PLDKP_DkpData, PLDKP_DkpInfo, PLDKPItemCache
 
 libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml

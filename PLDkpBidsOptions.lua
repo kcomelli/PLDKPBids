@@ -12,6 +12,19 @@ local selectedMinDKPZoneName = "Default"
 PLBDKP_SPECIALITEM_LIST_NR = 4
 PLBDKP_SPECIAL_HEIGHT = 20
 
+StaticPopupDialogs["PLBDKP_POPUP_OPTION_DELETE_CONFIRM"] = {
+    text = PLDKP_OPTIONS_PRICEDELETE_CONFIRM,
+    button1 = YES,
+    button2 = NO,
+    OnAccept = function(self)
+        PLDkpBidsOptions["MinDKPSpecial"][self.data] = nil
+		PLDKPBidsOptionsFrame_FillSpecialPrices()
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+  }
+
 ---------------------------------------------------------------------
 -- event handlersand hooks Options Frame
 ---------------------------------------------------------------------
@@ -42,7 +55,12 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 			PLDkpBids_InitOptions();
 		end
 		
-		PLDkpBidsOptionFrameHeaderString:SetText( PLDKP_OPTIONS_UI_HEADER );
+		
+	end
+end
+
+function PLDkpBidsOptionFrame_OnShow()
+	PLDkpBidsOptionFrameHeaderString:SetText( PLDKP_OPTIONS_UI_HEADER );
 		PLDkpBidsOptionFrameCloseButton:SetText( PLDKP_OPTIONS_CLOSE );
 		
 		PLDkpBidsOptionFrameAuctionAcceptTimeLabel:SetText(PLDKP_OPTIONS_DEF_TS);
@@ -173,7 +191,6 @@ function PLDkpBidsOptionFrame_OnEvent(event)
 		PLDkpBidsOptionsFrame_FillMinDkpOfZone(selectedMinDKPZoneName)
 
 		PLDKPBidsOptionsFrame_FillSpecialPrices()
-	end
 end
 
 function PLDkpBidsOptionsFrame_FillMinDkpOfZone(zoneName)
@@ -651,23 +668,29 @@ function PLDkpBidsOptionFrame_OnUpdate(elapsed)
 end
 
 function PLDKPBidsOptionsFrame_ResolveItem(itemId)
-	local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemIcon, itemVendorPrice, classID, itemSubClassID, bindType, expacID, itemSetID, isCraftingReagent = GetItemInfo (itemId);
+	local itemName = nil
+	local itemLink = nil
+	local itemIcon = nil
 
-	if (itemName) then
-		if (PLDkpBidsOptions["ItemResolvalCache"] == nil) then
-			PLDkpBidsOptions["ItemResolvalCache"] = {}
-		end
-		if (PLDkpBidsOptions["ItemResolvalCache"][itemId] == nil) then
-			PLDkpBidsOptions["ItemResolvalCache"][itemId] = {}
-		end
+	if (PLDKPItemCache ~= nil and PLDKPItemCache[itemId] ~= nil) then
+		itemName = PLDKPItemCache[itemId]["Name"]
+		itemLink = PLDKPItemCache[itemId]["ItemLink"]
+		itemIcon = PLDKPItemCache[itemId]["Texture"]
+	else
+		itemName, itemLink, _, _, _, _, _, _, _, itemIcon = GetItemInfo (itemId);
 
-		PLDkpBidsOptions["ItemResolvalCache"][itemId]["Name"] = itemName
-		PLDkpBidsOptions["ItemResolvalCache"][itemId]["ItemLink"] = itemLink
-		PLDkpBidsOptions["ItemResolvalCache"][itemId]["Texture"] = itemIcon
-	elseif (PLDkpBidsOptions["ItemResolvalCache"] ~= nil and PLDkpBidsOptions["ItemResolvalCache"][itemId] ~= nil) then
-		itemName = PLDkpBidsOptions["ItemResolvalCache"][itemId]["Name"]
-		itemLink = PLDkpBidsOptions["ItemResolvalCache"][itemId]["ItemLink"]
-		itemIcon = PLDkpBidsOptions["ItemResolvalCache"][itemId]["Texture"]
+		if (itemName) then
+			if (PLDKPItemCache == nil) then
+				PLDKPItemCache = {}
+			end
+			if (PLDKPItemCache[itemId] == nil) then
+				PLDKPItemCache[itemId] = {}
+			end
+
+			PLDKPItemCache[itemId]["Name"] = itemName
+			PLDKPItemCache[itemId]["ItemLink"] = itemLink
+			PLDKPItemCache[itemId]["Texture"] = itemIcon
+		end
 	end
 
 	return itemId, itemName, itemLink, itemIcon
@@ -688,7 +711,21 @@ function PLDKPBidsOptionsFrame_FillSpecialPrices()
 			local itemId = PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(itemIndex);
 			
 			if ( itemId ~= nil ) then
-				local _, itemName, itemLink, itemIcon = PLDKPBidsOptionsFrame_ResolveItem(itemId)
+
+				PLDKPBids:LoadItemAndRun(itemId, function(itemId, itemName, itemLink, itemIcon)
+					
+					getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."NameLabel"):SetText(itemLink);
+
+					getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Price"):SetText(PLDkpBidsOptions["MinDKPSpecial"][itemId]);
+					
+					getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetNormalTexture(itemIcon);
+					getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetPushedTexture(itemIcon);
+					getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetDisabledTexture(itemIcon);
+
+					getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i):Show();
+				end)
+
+				--[[local _, itemName, itemLink, itemIcon = PLDKPBidsOptionsFrame_ResolveItem(itemId)
 				--getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Date"):SetText(sDate);
 				
 				--PLDKP_debug("Item: " .. (itemName or "n/a") .. ", Id: " .. itemId .. ", price: " .. (PLDkpBidsOptions["MinDKPSpecial"][itemId] or "n/a"))
@@ -701,7 +738,7 @@ function PLDKPBidsOptionsFrame_FillSpecialPrices()
 				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetPushedTexture(itemIcon);
 				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i.."Item"):SetDisabledTexture(itemIcon);
 
-				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i):Show();
+				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i):Show();]]--
 			else
 				getglobal("PLDkpBidsOptionFrameSpecialPriceRowButton"..i):Hide();
 			end
@@ -784,8 +821,10 @@ function PLDKPBidsOptionsFrame_OnDeleteSpecialPrice(buttonID)
 	local index = buttonID + FauxScrollFrame_GetOffset(PLDkpBidsOptionFrameSpecialPricesFrame);
 	local itemId = PLDKPBidsOptionsFrame_GetSpecialPricesByIndex(index);
 	if ( itemId ~= nil ) then
-		PLDkpBidsOptions["MinDKPSpecial"][itemId] = nil
-		PLDKPBidsOptionsFrame_FillSpecialPrices()
+		local _, itemName, itemLink, itemIcon = PLDKPBidsOptionsFrame_ResolveItem(itemId)
+		StaticPopup_Show("PLBDKP_POPUP_OPTION_DELETE_CONFIRM", (itemName or "n/a"), nil, itemId)
+		--PLDkpBidsOptions["MinDKPSpecial"][itemId] = nil
+		--PLDKPBidsOptionsFrame_FillSpecialPrices()
 	end
 end
 

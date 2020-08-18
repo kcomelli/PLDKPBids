@@ -20,7 +20,7 @@ function PLDKPBids.Sync:OnEnable()
     PLDKPBids.Sync:RegisterComm("PLDKPDelWinner", PLDKPBids.Sync:OnCommReceived())	        -- Delete a winner info
     PLDKPBids.Sync:RegisterComm("PLDKPEdtWinner", PLDKPBids.Sync:OnCommReceived())	        -- Edit a winner info
     PLDKPBids.Sync:RegisterComm("PLDKPSettings", PLDKPBids.Sync:OnCommReceived())	        -- DKP settings and options sent
-    PLDKPBids.Sync:RegisterComm("PLDKPSettingsReceived", PLDKPBids.Sync:OnCommReceived())	-- Options received successfully
+    PLDKPBids.Sync:RegisterComm("PLDKPSettingsAck", PLDKPBids.Sync:OnCommReceived())	-- Options received successfully
 end
 
 function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
@@ -180,12 +180,12 @@ function PLDKPBids.Sync:OnCommReceived(prefix, message, distribution, sender)
                 end
 
                 PLDKP_println(string.format(PLDKP_RECEIVED_OPTIONS, sender))
-                PLDKPBids.Sync:SendData("PLDKPSettingsReceived", "0")
+                PLDKPBids.Sync:SendData("PLDKPSettingsAck", "0")
             else
                 PLDKP_debug("Error deserializing: " .. deserialized)
                 print(deserialized)  -- error reporting if string doesn't get deserialized correctly
             end
-        elseif prefix == "PLDKPSettingsReceived" and sender ~= UnitName("player") then
+        elseif prefix == "PLDKPSettingsAck" and sender ~= UnitName("player") then
             PLDKP_println(string.format(PLDKP_RECEIVED_OPTIONS_ACK, sender))
         end
     end

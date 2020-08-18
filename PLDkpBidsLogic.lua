@@ -478,3 +478,41 @@ function PLDKPBids:CheckOfficer()      -- checks if user is an officer IF core.I
   function PLDKPBids:GetTimestamp()
 	return time()
 end
+
+function PLDKPBids:LoadItemAndRun(itemId, callback)
+	if(itemId and itemId ~= "") then
+		if (PLDKPItemCache ~= nil and PLDKPItemCache[itemId] ~= nil) then
+			local itemName = PLDKPItemCache[itemId]["Name"]
+			local itemLink = PLDKPItemCache[itemId]["ItemLink"]
+			local itemIcon = PLDKPItemCache[itemId]["Texture"]
+
+			if (type(callback) == "function") then
+				pcall(callback, itemId, itemName, itemLink, itemIcon)
+			end
+		else
+			local item = Item:CreateFromItemID(itemId)
+				item:ContinueOnItemLoad(function()
+					-- inside callback!
+					local itemId = item:GetItemID()
+					local itemName = item:GetItemName()
+					local itemLink = item:GetItemLink()
+					local itemIcon = item:GetItemIcon()
+
+					if (PLDKPItemCache == nil) then
+						PLDKPItemCache = {}
+					end
+					if (PLDKPItemCache[itemId] == nil) then
+						PLDKPItemCache[itemId] = {}
+					end
+
+					PLDKPItemCache[itemId]["Name"] = itemName
+					PLDKPItemCache[itemId]["ItemLink"] = itemLink
+					PLDKPItemCache[itemId]["Texture"] = itemIcon
+
+					if (type(callback) == "function" and item:IsItemEmpty() ~= true) then
+						pcall(callback, itemId, itemName, itemLink, itemIcon)
+					end
+				end)
+		end
+	end
+end

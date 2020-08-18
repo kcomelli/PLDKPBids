@@ -210,6 +210,8 @@ PLDKP_SPECIALPRICE_NOTSAVED = "Not saved - ItemId and and price required!"
 PLDKP_OPTIONS_UI_HEADER = "PL-DKP Options";
 PLDKP_OPTIONS_CLOSE = "Close";
 
+PLDKP_OPTIONS_PRICEDELETE_CONFIRM = "Are you sure that you want to delete the item %s from the special price list?";
+
 PLDKP_OPTIONS_DEF_MINDP = "Default min. DKP";
 PLDKP_OPTIONS_DEF_MINDP_TP = "Click here to set the default min. DKP.";
 
@@ -463,10 +465,13 @@ end
 
 	-- Special prices frame
 	PLDKP_SPECIALPRICE_UI_HEADER = "Spezialpreis"
+	PLDKP_SPECIALPRICE_NOTSAVED = "Nicht gespeichert - ItemId und Preis wird benötigt!"
 
 	-- Options Frame
 	PLDKP_OPTIONS_UI_HEADER = "PL-DKP Optionen";
 	PLDKP_OPTIONS_CLOSE = "Schliessen";
+
+	PLDKP_OPTIONS_PRICEDELETE_CONFIRM = "Moechtest Du das Item %s aus der Liste der Speizialpreise loeschen?";
 
 	PLDKP_OPTIONS_DEF_MINDP = "Standard mind. DKP";
 	PLDKP_OPTIONS_DEF_MINDP_TP = "Hier klicken um den Standardwert fuer die MindestDKP einzugeben.";
@@ -530,7 +535,6 @@ end
 	PLDKP_OPTIONS_DELSPECIALPRICE_TP = "Spezialpreis löschen";
 	PLDKP_OPTIONS_EDITSPECIALPRICE_TP = "Spezialpreis bearbeiten";
 	PLDKP_OPTIONS_ADDSPECIALPRICE_TP = "Spezialpreis einfügen";
-
 	PLDKP_OPTIONS_SPECIAL_PRICE_OVERRIDES = "Spezial Itempreise:"
 
 

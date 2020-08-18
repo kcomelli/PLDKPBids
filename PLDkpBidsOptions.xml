@@ -3295,6 +3295,9 @@
 				PLDkpBidsOptionFrame_OnLoad();
 				self:RegisterForDrag("LeftButton");
 			</OnLoad>
+			<OnShow>
+				PLDkpBidsOptionFrame_OnShow();
+			</OnShow>
 			<OnEvent>
 				PLDkpBidsOptionFrame_OnEvent(event);
 			</OnEvent>
