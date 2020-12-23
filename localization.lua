@@ -38,7 +38,7 @@ PLDKP_Command_Report = "report";
 -------------------------------------------------------------------------------
 
 PLDKP_VERSION_STRING = "Primal Legion DKP-Bids 4.0.5";
-PLDKP_BUILD_NUMBER = "4000006"
+PLDKP_BUILD_NUMBER = "4000010"
 
 PLDKP_ClosedMessage = "PL DKP-Bids window closed.  Type \"/pldkp show\" to make it visible again."
 
