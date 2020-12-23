@@ -218,7 +218,7 @@ function PLDKPBids:IsSetToken(itemLink)
 
 		if( itemRarity == 4 ) then  -- epic item
 			if( itemMinLevel == itemLevel ) then -- item level and min level are equal for tokens
-				if( (itemType=="Miscellaneous") and ( itemSubType == "Junk") ) then -- token type
+				if( (itemType == MISCELLANEOUS) and ( itemSubType == BAG_FILTER_JUNK) ) then -- token type
 					if( itemStackCount == 1 ) then  -- stack count = 1
 						if( itemEquipLoc == "") then  -- location = empty
 							return true
@@ -261,7 +261,7 @@ function PLDKPBids:IsSetWeaponToken(itemLink)
 
 		if( itemRarity >= 4 ) then  -- epic item
 			if( itemMinLevel == itemLevel ) then -- item level and min level are equal for tokens
-				if( (itemType=="Miscellaneous") and ( itemSubType == "Junk") ) then -- token type
+				if( (itemType == MISCELLANEOUS) and ( itemSubType == BAG_FILTER_JUNK) ) then -- token type
 					if( itemStackCount == 1 ) then  -- stack count = 1
 						if( itemEquipLoc == "") then  -- location = empty
 							if( string.find(itemName, "Qiraji") or itemRarity > 4) then	-- weapon token in AQ40 or Atiesh fragments
