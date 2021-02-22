@@ -1847,8 +1847,8 @@ function PLDKP_processWhisper(name, message)
 
 			if #whisperArgs > 1 then
 				if(string.lower(whisperArgs[2]) == "class" or string.lower(whisperArgs[2]) == "klasse" or string.lower(whisperArgs[2]) == "class+" or string.lower(whisperArgs[2]) == "klasse+") then
-
 					local withTwinks = (string.lower(whisperArgs[2]) == "class+" or string.lower(whisperArgs[2]) == "klasse+")
+					PLDKP_debug("Query dkp standings for player class referencing " .. name);
 
 					if #whisperArgs > 2 then
 						withTwinks = (string.lower(whisperArgs[3]) == "+" or string.lower(whisperArgs[3]) == "true" or string.lower(whisperArgs[3]) == "t" or string.lower(whisperArgs[3]) == "yes" or string.lower(whisperArgs[3]) == "y" or string.lower(whisperArgs[3]) == "twink" or string.lower(whisperArgs[3]) == "twinks")
@@ -1857,6 +1857,7 @@ function PLDKP_processWhisper(name, message)
 					-- argument 2 is class query
 					PLDKP_FindAndAnswerClassDkp(name, withTwinks)
 				else
+					PLDKP_debug("Query dkp standings for player " .. whisperArgs[2]);
 					-- argument 2 is name of the player
 					PLDKP_FindAndAnswerPlayerDkp(whisperArgs[2], name)
 				end
@@ -3520,13 +3521,13 @@ function PLDKP_FindAndAnswerPlayerDkp(name, whisperTarget)
 
 	PLDkpBidsFrame_GenerateTwinktranslationTable()
 
-	--PLDKP_debug("Name: " .. name)
+	PLDKP_debug("Name: " .. name)
 	local incName, incRealm, incFullName = PLDKPBids:CharaterNameTranslation(name)
-	--PLDKP_debug("Name1: " .. incName)
-	--PLDKP_debug("Name2: " .. incRealm)
-	--PLDKP_debug("Name3: " .. incFullName)
+	PLDKP_debug("Name1: " .. incName)
+	PLDKP_debug("Name2: " .. incRealm)
+	PLDKP_debug("Name3: " .. incFullName)
 	local mainChar = PLDkpBidsFrame_GetMainCharOfTwink(incName)
-	--PLDKP_debug("Main: " .. mainChar)
+	PLDKP_debug("Main: " .. mainChar)
 
 	pointUpdateDateInfo = PLDKP_DKPINFO_BEGINOFRAID
 

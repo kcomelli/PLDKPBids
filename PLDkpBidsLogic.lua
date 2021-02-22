@@ -68,10 +68,7 @@ function PLDKPBids:CharaterNameTranslation(characterName)
 	local nameOnly
 	local realmName
 	local serverName
-
-	-- make sure first Character is upper case
-	nameOnly = characterName:sub(1,1):upper()..characterName:sub(2)
-	characterName = nameOnly
+	local startCharByte
 
 	local dashIndex = string.find(characterName, "-", 1, true)
 
@@ -83,6 +80,13 @@ function PLDKPBids:CharaterNameTranslation(characterName)
 		nameOnly = characterName
 		realmName = PLDKPBids.localRealm
 		serverName = nameOnly .. "-" .. realmName
+	end
+
+	startCharByte = string.byte(nameOnly)
+	PLDKP_debug("    First byte code : " .. startCharByte)
+	if((startCharByte >= 97 and startCharByte <= 122) or (startCharByte >= 97 and startCharByte <= 122) ) then
+		-- make sure first Character is upper case
+		nameOnly = nameOnly:sub(1,1):upper()..nameOnly:sub(2)
 	end
 
 	return nameOnly, realmName, serverName
