@@ -3,7 +3,7 @@
 	
 	<!-- ======================================================================================= -->
 	<!-- PLDkpBids Note Frame -->
-	<Frame name="PLDkpBidsSpecialPriceFrame" enableMouse="false" movable="true" toplevel="true" frameStrata="DIALOG" hidden="true" parent="UIParent">
+	<Frame name="PLDkpBidsSpecialPriceFrame" enableMouse="false" movable="true" toplevel="true" frameStrata="DIALOG" hidden="true" parent="UIParent" inherits="DialogBorderTemplate,BackdropTemplate">
 		<Size>
 			<AbsDimension x="350" y="160"/>
 		</Size>
@@ -326,7 +326,7 @@
 				self:RegisterForDrag("LeftButton");
 			</OnLoad>
 			<OnEvent>
-				PLDkpBidsSpecialPriceFrame_OnEvent(event);
+				PLDkpBidsSpecialPriceFrame_OnEvent(event, ...);
 			</OnEvent>
 			<OnDragStart>self:StartMoving();</OnDragStart>
   			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>

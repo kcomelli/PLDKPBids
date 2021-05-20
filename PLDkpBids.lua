@@ -2254,7 +2254,7 @@ end
 
 
 ---------------------------------------------------------------------
--- function PLDKPForm_OnLoad()
+-- function PLDKPForm_OnLoad()Ba
 --
 -- Called when the Mod-Frame is loaded
 --
@@ -2262,8 +2262,8 @@ end
 ---------------------------------------------------------------------
 function PLDKPForm_OnLoad()
 
-	PLDKPForm:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 0.8);
-	PLDKPForm:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1.0);
+	-- PLDKPForm:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b, 0.8);
+	-- PLDKPForm:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b, 1.0);
 	
 	PLDKPForm:RegisterEvent("VARIABLES_LOADED");
 	PLDKPForm:RegisterEvent("PLAYER_ENTERING_WORLD");

@@ -37,8 +37,8 @@ PLDKP_Command_Report = "report";
 -- English localization (Default)
 -------------------------------------------------------------------------------
 
-PLDKP_VERSION_STRING = "Primal Legion DKP-Bids 4.0.5";
-PLDKP_BUILD_NUMBER = "4000006"
+PLDKP_VERSION_STRING = "Primal Legion DKP-Bids 4.1.0";
+PLDKP_BUILD_NUMBER = "4100000"
 
 PLDKP_ClosedMessage = "PL DKP-Bids window closed.  Type \"/pldkp show\" to make it visible again."
 
@@ -298,7 +298,7 @@ if ( GetLocale() == "deDE" ) then
 
 end
 
-	PLDKP_VERSION_STRING = "Primal Legion DKP-Bietsystem 4.0";
+	PLDKP_VERSION_STRING = "Primal Legion DKP-Bids 4.1.0";
 
 	PLDKP_ClosedMessage = "PL-DKP Fenster geschlossen.  \"/pldkp show\" eingeben um es wieder sichtbar zu machen."
 

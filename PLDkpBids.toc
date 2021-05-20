@@ -1,8 +1,8 @@
-## Interface: 11302
+## Interface: 20501
 ## Title: PL DKP Bids
-## Author: Aori/Fuddler (Destromath-EU, Venoxis-EU)
-## Version: 4.0
-## Notes: Primal Legion - DKP Bidding System
+## Author: Aori/Fuddler (Venoxis-EU)
+## Version: 4.1
+## Notes: Primal Legion - DKP Bidding System (TBC Classic)
 ## URL: https://www.primal-legion.net
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
@@ -15,6 +15,8 @@ libs\AceComm-3.0\AceComm-3.0.xml
 libs\ChatThrottleLib\ChatThrottleLib.xml
 libs\AceSerializer-3.0\AceSerializer-3.0.xml
 libs\LibCompress\lib.xml
+libs\LibBabble-Zone-3.0\lib.xml
+libs\LibBabble-Boss-3.0\lib.xml
 
 localization.lua
 PLDkpBidsLogic.lua

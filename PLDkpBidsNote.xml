@@ -3,7 +3,7 @@
 	
 	<!-- ======================================================================================= -->
 	<!-- PLDkpBids Note Frame -->
-	<Frame name="PLDkpBidsNoteFrame" enableMouse="false" movable="true" toplevel="true" frameStrata="DIALOG" hidden="true" parent="UIParent">
+	<Frame name="PLDkpBidsNoteFrame" enableMouse="false" movable="true" toplevel="true" frameStrata="DIALOG" hidden="true" parent="UIParent" inherits="DialogBorderTemplate,BackdropTemplate">
 		<Size>
 			<AbsDimension x="350" y="100"/>
 		</Size>
@@ -162,10 +162,13 @@
 		<Scripts>
 			<OnLoad>
 				PLDkpBidsNoteFrame_OnLoad();
+				self:RegisterForDrag("LeftButton");
 			</OnLoad>
 			<OnEvent>
-				PLDkpBidsNoteFrame_OnEvent(event);
+				PLDkpBidsNoteFrame_OnEvent(event, ...);
 			</OnEvent>
+			<OnDragStart>self:StartMoving();</OnDragStart>
+  			<OnDragStop>self:StopMovingOrSizing();</OnDragStop>
 		</Scripts>
 	</Frame>
 	<!-- END OF PLDkpBids Note Frame -->
