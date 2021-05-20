@@ -286,7 +286,7 @@
 
 	<!-- ======================================================================================= -->
 	<!-- PLDkpBids Options Frame -->
-	<Frame name="PLDkpBidsOptionFrame" enableMouse="false" movable="true" toplevel="true" frameStrata="DIALOG" hidden="true" parent="UIParent" inherits="DialogBorderTemplate,BackdropTemplate">
+	<Frame name="PLDkpBidsOptionFrame" enableMouse="false" movable="true" toplevel="true" frameStrata="DIALOG" hidden="true" parent="UIParent" inherits="TooltipBorderedFrameTemplate,BackdropTemplate">
 		<Size>
 			<AbsDimension x="650" y="350"/>
 		</Size>

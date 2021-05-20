@@ -865,7 +865,7 @@
 	
 	<!-- ======================================================================================= -->
 	<!-- Main Mod-Form UI -->
-		<Frame name="PLDKPForm"  enableMouse="true" movable="true" hidden="false" frameStrata="LOW" inherits="DialogBorderTemplate,BackdropTemplate">
+		<Frame name="PLDKPForm"  enableMouse="true" movable="true" hidden="false" frameStrata="LOW" inherits="TooltipBorderedFrameTemplate,BackdropTemplate">
 		
 		<Size>
 			<AbsDimension x="400" y="280" />
