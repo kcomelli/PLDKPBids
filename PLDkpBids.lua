@@ -52,7 +52,9 @@ PLDKP_VS2 = string.find(GetBuildInfo(), "^2%.");
 -- Version 3
 PLDKP_VS3 = string.find(GetBuildInfo(), "^3%.");
 -- WoW Classic
-PLDKP_CLASSIC = string.find(GetBuildInfo(), "^1.13%.");
+PLDKP_CLASSIC = string.find(GetBuildInfo(), "^1.13%.") 
+-- WoW TBC Classic
+PLDKP_TBC_CLASSIC = string.find(GetBuildInfo(), "^2.5%.");
 
 -- print state messages
 PLDKP_PrintAll = true;
@@ -122,7 +124,7 @@ function PLDkpBidsFrame_OnLoad()
 	PLDkpBidsFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 	PLDkpBidsFrame:RegisterEvent("CHAT_MSG_WHISPER");
 	
-	if ( PLDKP_VS2) then
+	if ( not PLDKP_TBC_CLASSIC and PLDKP_VS2) then
 		-- Version 2.0
 		PLDKP_Saved_OnButtonClick = LootButton_OnClick;
 		LootButton_OnClick = PLDKP_LootFrameItem_OnButtonClick;
@@ -133,7 +135,8 @@ function PLDkpBidsFrame_OnLoad()
 		-- Lootwindow hook - OnClick on Item
 		PLDKP_Saved_LootFrameItem_OnClick = LootFrameItem_OnClick;
 		LootFrameItem_OnClick = PLDKP_LootFrameItem_OnClick;
-	elseif( PLDKP_CLASSIC ) then
+	elseif( PLDKP_CLASSIC or PLDKP_TBC_CLASSIC ) then
+		PLDKP_debug("Identified WoW classc or TBC classic")
 		PLDKP_Register_ShiftClickLootWindowHook()
 	else
 		PLDKP_debug("Unknown or unsupported WoW version!")
@@ -715,13 +718,15 @@ function PLDkpBidsFrame_GenerateID()
 	local tmp = "";
 	
 
-	if( PLDKP_VS2 or PLDKP_VS3 ) then
+	if( not PLDKP_CLASSIC and not PLDKP_TBC_CLASSIC and (PLDKP_VS2 or PLDKP_VS3 )) then
 		difficulty = GetInstanceDifficulty()
 	end
 
 	-- gets the current zone name
 	PLDKP_CurrentZone = GetRealZoneText();
 	
+	PLDKP_debug("Zone: " .. PLDKP_CurrentZone .. " - Difficulty: " .. difficulty)
+
 	-- get raid size
 	if ( UnitInRaid("player") ) then
 		
@@ -744,6 +749,7 @@ function PLDkpBidsFrame_GenerateID()
 		
 	end
 	
+	PLDKP_debug("Group size: " .. PLDKP_CurrentRaidSize)
 	
 	tempDate["hour"], tempDate["min"] = GetGameTime()
 	
@@ -780,6 +786,8 @@ function PLDkpBidsFrame_GenerateID()
 	
 	PLDKP_CurrentRaidID = PLDKP_CurrentDate .."|" .. PLDKP_CurrentRaidSize .. "|" .. PLDKP_CurrentRaidMode .. "|" .. PLDKP_CurrentZone;
 	
+	PLDKP_debug("Raid ID: " .. PLDKP_CurrentRaidID);
+
 end
 
 ---------------------------------------------------------------------
@@ -926,6 +934,7 @@ end
 -- start bidding ( entered on console )
 ---------------------------------------------------------------------
 function PLDKP_StartBidding(args)
+	PLDKP_debug("Start bidding")
 	local playerName = PLDKPBids:GetPlayerName("player");
 
 	--if ( PLDkpBidsOptions["IgnoreBidsOutsideGrp"] == true ) then
@@ -940,6 +949,8 @@ function PLDKP_StartBidding(args)
 	
 			
 	if (args[2] ~= nil) then
+		PLDKP_debug("Item argument found")
+
 		local minBidIndex = 3;
 		local sItem = args[2];
 		local bfound=false;
@@ -1011,15 +1022,21 @@ function PLDKP_StartAuction(itemLink, itemTexture, minPrice, sec)
 	local playerName = PLDKPBids:GetPlayerName("player");
 	local mainInfo = "";
 
+	PLDKP_debug("Starting auction ...");
+
 	-- always recreate this table before start an auction
 	PLDKP_TwinktranslationTable = {}
 
 	-- Generate twink table
 	PLDkpBidsFrame_GenerateTwinktranslationTable();
 	
+	PLDKP_debug("Main <-> Twink translation table loaded.");
+
 	-- generate raid id
 	PLDkpBidsFrame_GenerateID();
 	
+	PLDKP_debug("Raid ID generated.");
+
 	PLDKP_InBuffer = {};
 	PLDKP_OutBuffer = {};
 	PLDKP_CurrentBids = {};
@@ -1030,6 +1047,7 @@ function PLDKP_StartAuction(itemLink, itemTexture, minPrice, sec)
 
 	PLDKP_ScheduledActions = {}
 
+	PLDKP_debug("Sending chat messages.");
 	SendChatMessage(PLDKP_BID_OPENING1, PLDKP_GetAnnounceChannel());
 	SendChatMessage(string.format(PLDKP_BID_OPENING2, _pldkp_currentBidTime), PLDKP_GetAnnounceChannel());
 	
